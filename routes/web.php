@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('percobaan2');
 });
 
-Route::get('/coba', function () {
+Route::get('/akun', function () {
     return view('admin.akun');
 });
 
