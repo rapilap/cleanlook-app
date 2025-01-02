@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Poppins", serif;
+    font-style: normal;
+}
+
+.btn-primary-custom {
+    @apply border border-primary text-primary hover:bg-secondary hover:text-white hover:border-secondary;
+}
+
+.btn-secondary-custom {
+    @apply bg-secondary text-white hover:bg-primary hover:text-white hover:border-primary;
+}
