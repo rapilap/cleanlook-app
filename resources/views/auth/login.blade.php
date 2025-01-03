@@ -66,9 +66,7 @@
                 loginContainer.classList.remove('opacity-0', 'translate-y-full');
                 loginContainer.classList.add('opacity-100', 'translate-y-0');
 
-                // Ubah background hijau menjadi putih
-                // mainContainer.classList.remove('bg-green-300');
-                // mainContainer.classList.add('bg-white');
+              
             }, 300);
         };
     </script>
