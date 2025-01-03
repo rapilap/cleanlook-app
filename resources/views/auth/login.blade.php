@@ -56,13 +56,13 @@
             const loginContainer = document.getElementById('login-container');
             const mainContainer = document.getElementById('main-container');
 
-            // Tunggu 2 detik sebelum animasi dimulai
+            // Tunggu 2 detik sebelum animasi dimulai a
             setTimeout(() => {
                 // Pindahkan logo ke atas
                 logo.classList.add('translate-y-[-200px]', 'scale-75'); // Pindah ke atas dan kecilkan
                 logo.classList.remove('translate-y-0');
                 
-                // Animasi login container muncul dari bawah
+                
                 loginContainer.classList.remove('opacity-0', 'translate-y-full');
                 loginContainer.classList.add('opacity-100', 'translate-y-0');
 
