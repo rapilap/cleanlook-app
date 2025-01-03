@@ -1,12 +1,15 @@
 <x-app title="Akun" bodyClass="relative h-screen bg-gray-50"> {{-- Tambahkan relative untuk container utama --}}
     <div class="p-3">
-        <div class="justify-between flex flex-row">
+        <div class="justify-between flex flex-row items-center">
             <div class="gap-3">
                 <x-button variant="primary" class="max-w-fit">Akun kurir</x-button>
                 <x-button variant="primary" class="max-w-fit">Akun pengguna</x-button>
             </div>
             <div>
                 <input type="search" class="p-3 rounded-lg border max-w-fit bg-white hover:border-secondary" placeholder="Search">
+            </div>
+            <div class="">
+                <x-button as='a' href="/admin/tambah" variant="secondary">Tambah Kurir</x-button>
             </div>
         </div>
 
