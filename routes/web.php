@@ -7,8 +7,21 @@ Route::get('/', function () {
     return view('percobaan2');
 });
 
-Route::get('/akun', function () {
-    return view('admin.akun');
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin'
+], function() {
+    Route::get('/akun', function () {
+        return view('admin.akun');
+    });
+
+    Route::get('/tambah', function () {
+        return view('admin.add');
+    });
+});
+
+Route::get('/register', function () {
+    return view('auth.register');
 });
 
 // Route::get('/test',[TestController::class, 'index']);
