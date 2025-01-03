@@ -20,6 +20,9 @@ Route::group([
     });
 });
 
+Route::get('/register', function () {
+    return view('auth.register');
+});
 
 // Route::get('/test',[TestController::class, 'index']);
 
