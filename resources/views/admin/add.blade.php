@@ -1,28 +1,72 @@
-<x-app title="Tambah Akun" bodyClass="gap-3">
-    <div class="px-3 pb-3 w-screen flex flex-row">
+<x-app title="Tambah Akun" bodyClass="h-screen flex flex-col gap-3">
+    <div class="flex flex-row flex-grow w-full">
+        {{-- Sidebar --}}
         <div class="w-fit flex flex-col gap-5 p-7 items-center">
             <div class="avatar">
-                <div class="w-56 rounded-full items-center border">
+                <div class="w-64 rounded-full items-center border">
                     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                    {{-- <input type="file" name="" id=""> --}}
                 </div>
             </div>
 
-            <div class="stats stats-vertical shadow">
+            <div class="stats stats-vertical drop-shadow-lg w-full">
                 <div class="stat">
-                  <div class="stat-title">Jumlah Pesanan</div>
-                  <div class="stat-value">34</div>
+                    <div class="stat-title">Jumlah Pesanan</div>
+                    <div class="stat-value">34</div>
                 </div>
-              
+
                 <div class="stat">
-                  <div class="stat-title">Total Pendapatan</div>
-                  <div class="stat-value">Rp. 270.000</div>
+                    <div class="stat-title">Total Pendapatan</div>
+                    <div class="stat-value">Rp. 270.000</div>
                 </div>
             </div>
         </div>
 
-        <div class="bg-red-300 w-full p-3">
-            Nama
+        {{-- Main Content --}}
+        <div class="flex flex-col flex-grow p-7">
+            <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
+                <div class="w-4/6">
+                    Nama Lengkap
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                </div>
+                <div>
+                    Email
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                </div>
+            </div>
+
+            <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
+                <div class="w-full">
+                    No Telepon
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                </div>
+            </div>
+
+            <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
+                <div class="w-4/6">
+                    Tanggal Lahir
+                    <input type="date" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                </div>
+                <div class="">
+                    Jenis Kelamin
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                </div>
+            </div>
+
+            <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
+                <div class="w-4/6">
+                    Alamat
+                    <textarea class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary"></textarea>
+                </div>
+                <div>
+                    Kota
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                </div>
+            </div>
+
+            {{-- Footer Section --}}
+            <div class="mt-auto mb-3">
+                <x-button variant="secondary" class="w-full">Simpan</x-button>
+            </div>
         </div>
     </div>
 </x-app>
