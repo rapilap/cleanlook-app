@@ -20,5 +20,9 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [require("daisyui")],
+    daisyui: {
+        themes: false,
+        darkTheme: false, // Disable dark mode
+    },
 };
