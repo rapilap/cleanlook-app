@@ -55,6 +55,10 @@ npm install
 ```bash
 php artisan migrate
 ```
+### Seed database
+```bash
+php artisan db:seed
+```
 
 ### Aktifkan server dan tailwind
 Server
