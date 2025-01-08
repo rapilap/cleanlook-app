@@ -24,6 +24,15 @@ Route::get('/register', function () {
     return view('auth.register');
 });
 
+Route::group([
+    'prefix' => 'courier',
+    'as' => 'courier'
+], function() {
+    Route::get('/order/{id}', function () {
+        return view('courier.courierOrder');
+    });
+});
+
 // Route::get('/test',[TestController::class, 'index']);
 
 // Route::get('/testController', [TestController::class, 'asar'] ); 
