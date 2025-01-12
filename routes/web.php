@@ -11,7 +11,7 @@ Route::group([
     'prefix' => 'admin',
     'as' => 'admin'
 ], function() {
-    Route::get('/account', function () {
+    Route::get('/accounts', function () {
         return view('admin.akun');
     });
 
