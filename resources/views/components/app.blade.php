@@ -18,9 +18,10 @@
 </head>
 <body class="flex flex-col {{ $bodyClass ?? '' }}">
     <!-- Navbar -->
-    @include('components.navbar.navbar')
-
     {{ $slot }}
-
+    
+    <div class="items-end">
+        @include('components.navbar.navbar')
+    </div>
 </body>
 </html>
