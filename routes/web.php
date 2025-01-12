@@ -11,12 +11,16 @@ Route::group([
     'prefix' => 'admin',
     'as' => 'admin'
 ], function() {
-    Route::get('/akun', function () {
+    Route::get('/account', function () {
         return view('admin.akun');
     });
 
-    Route::get('/tambah', function () {
+    Route::get('/add', function () {
         return view('admin.add');
+    });
+
+    Route::get('/income', function() {
+        return view('admin.income');
     });
 
     Route::get('/dashboard', function () {
