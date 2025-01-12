@@ -18,20 +18,17 @@ Route::group([
     Route::get('/tambah', function () {
         return view('admin.add');
     });
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    });
 });
 
 Route::get('/register', function () {
     return view('auth.register');
 });
 
-Route::group([
-    'prefix' => 'courier',
-    'as' => 'courier'
-], function() {
-    Route::get('/order/{id}', function () {
-        return view('courier.courierOrder');
-    });
-});
+
 
 // Route::get('/test',[TestController::class, 'index']);
 
