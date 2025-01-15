@@ -11,4 +11,8 @@ class Category extends Model
         'cat_name', 
         'cat_price', 
     ];
+
+    public function transaction() {
+        return $this->hasMany(Transaction::class);
+    }
 }
