@@ -18,4 +18,8 @@ class Landfill extends Model
         'latitude',
         'longitude',
     ];
+
+    public function transaction() {
+        return $this->hasMany(Transaction::class);
+    }
 }

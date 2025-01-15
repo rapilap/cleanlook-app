@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Landfill;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,14 +15,17 @@ class LandfillFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+     protected $model = Landfill::class;
+
     public function definition(): array
     {
         return [
             'name'=>fake()->name(),
             'address'=>fake()->address(),
             'capacity'=>fake()->numberBetween(1000,100000),
-            'latitude'=>fake()->latitude(),
-            'longitude'=>fake()->longitude(),
+            'latitude'=>fake()->latitude(-6.95, -6.85),
+            'longitude'=>fake()->longitude(107.55, 107.75),
         ];
     }
 }
