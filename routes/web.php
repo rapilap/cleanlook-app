@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,13 +10,13 @@ Route::get('/', function () {
 
 Route::group([
     'prefix' => 'admin',
-    'as' => 'admin'
 ], function() {
-    Route::get('/accounts', function () {
-        return view('admin.akun');
-    });
 
-    Route::get('/add', function () {
+    Route::get('/accounts', [AccountListController::class, 'index'])->name('admin.index');
+
+    Route::get('/accounts/{id}', [AccountListController::class, 'edit'])->name('admin.edit');
+
+    Route::get('/account/add', function () {
         return view('admin.add');
     });
 
