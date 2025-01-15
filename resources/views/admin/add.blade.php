@@ -48,7 +48,6 @@
                 </div>
                 <div class="">
                     Jenis Kelamin
-                    {{-- <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->gender ?? '' }}"> --}}
                     <select class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
                         <option value="Laki-laki" {{ $user->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
                         <option value="Perempuan" {{ $user->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
@@ -66,6 +65,10 @@
                 <div>
                     Kota
                     <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->city ?? '' }}">
+                </div>
+                <div>
+                    Plat Nomor
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->plate_number ?? '' }}">
                 </div>
             </div>
 
