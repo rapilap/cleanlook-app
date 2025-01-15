@@ -1,30 +1,55 @@
-<x-app title="Akun" bodyClass="relative h-screen bg-gray-50"> {{-- Tambahkan relative untuk container utama --}}
+<x-app title="{{ $title }}" bodyClass="relative h-screen px-5 bg-gray-50"> {{-- Tambahkan relative untuk container utama --}}
     <div class="p-3">
-        <div class="justify-between flex flex-row items-center">
-            <div class="gap-3">
-                {{-- <x-button variant="primary" class="max-w-fit">Akun kurir</x-button>
-                <x-button variant="primary" class="max-w-fit">Akun pengguna</x-button> --}}
-
-                <x-button 
-                    as="a" 
-                    href="{{ route('admin.index', ['type' => 'courier']) }}" 
-                    variant="{{ request('type') === 'courier' ? 'secondary' : 'primary' }}" 
-                    class="max-w-fit mr-3">Akun Kurir</x-button>
-                <x-button 
-                    as="a" 
-                    href="{{ route('admin.index', ['type' => 'user']) }}" 
-                    variant="{{ request('type') === 'user' ? 'secondary' : 'primary' }}" 
-                    class="max-w-fit">Akun Pengguna</x-button>
+        @if ($dataType === 'courier')
+            <div class="justify-between flex flex-row items-center">
+                <div class="gap-3">
+                    <x-button 
+                        as="a" 
+                        href="{{ route('admin.index', ['type' => 'courier']) }}" 
+                        variant="{{ request('type', 'courier') === 'courier' ? 'secondary' : 'primary' }}" 
+                        class="max-w-fit mr-3">Akun Kurir</x-button>
+                    <x-button 
+                        as="a" 
+                        href="{{ route('admin.index', ['type' => 'user']) }}" 
+                        variant="{{ request('type') === 'user' ? 'secondary' : 'primary' }}" 
+                        class="max-w-fit">Akun Pengguna</x-button>
+                </div>
+                <div> 
+                    <input 
+                    type="text"
+                    name="search"
+                    placeholder="Search"
+                    class="p-2 rounded-lg border border-gray-300 focus">
+                </div>
+                <div>
+                    @if ($dataType === 'courier')
+                        <x-button as='a' href="/admin/account/add" variant="secondary">Tambah Kurir</x-button>
+                    @endif
+                </div>
             </div>
-            <div> 
-                <input type="search" class="p-3 rounded-lg border max-w-fit bg-white hover:border-secondary" placeholder="Search">
+        @else
+            <div class="justify-between flex flex-row items-center">
+                <div class="gap-3">
+                    <x-button 
+                        as="a" 
+                        href="{{ route('admin.index', ['type' => 'courier']) }}" 
+                        variant="{{ request('type', 'courier') === 'courier' ? 'secondary' : 'primary' }}" 
+                        class="max-w-fit mr-3">Akun Kurir</x-button>
+                    <x-button 
+                        as="a" 
+                        href="{{ route('admin.index', ['type' => 'user']) }}" 
+                        variant="{{ request('type') === 'user' ? 'secondary' : 'primary' }}" 
+                        class="max-w-fit">Akun Pengguna</x-button>
+                </div>
+                <div> 
+                    <input 
+                    type="text"
+                    name="search"
+                    placeholder="Search"
+                    class="p-2 rounded-lg border border-gray-300 focus">
+                </div>
             </div>
-            <div>
-                @if ($dataType === 'courier')
-                    <x-button as='a' href="/admin/account/add" variant="secondary">Tambah Kurir</x-button>
-                @endif
-            </div>
-        </div>
+        @endif
 
         <table class="w-full border-collapse border border-gray-300 mt-3">
             <thead>
@@ -55,8 +80,8 @@
                         {{ $user->plate_number }}
                     </td>
                     @endif
-                    <td class="border border-gray-300 p-2 text-center">
-                        <x-button as="a" href="{{ route('admin.edit', $user->id)}}" variant="secondary">Detail</x-button>
+                    <td class="border border-gray-300 px-4 py-3  text-center">
+                        <a href="{{ route('admin.edit', $user->id)}}" class="bg-secondary text-white hover:bg-primary hover:text-white hover:border-primary p-2 rounded-lg">Detail</a>
                     </td>
                 </tr>
                 @endforeach
@@ -71,3 +96,13 @@
         <span>3</span>
     </div>
 </x-app>
+<script>
+    let timeout = null;
+
+    function filterDelay() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            document.getElementById('filter-form').submit();
+        }, 300);
+    }
+</script>

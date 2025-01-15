@@ -10,24 +10,25 @@ class AccountListController extends Controller
 {
     public function index(Request $request)
     {
-         // Ambil parameter filter dari query string
-         $type = $request->get('type');
+        $type = $request->get('type', 'courier');
+        // $search = $request->input('search');
 
-         // Tentukan data yang akan diambil berdasarkan type
-         if ($type === 'courier') {
-             $user = Courier::all(); // Ambil semua data kurir dari tabel couriers
-             $dataType = 'courier'; // Jenis data untuk view
-         } else {
-             $user = User::all(); // Ambil semua data pengguna dari tabel users
-             $dataType = 'user'; // Jenis data untuk view
-         }
+        if ($type === 'courier') {
+            $user = Courier::all();
+            $dataType = 'courier';
+            $title = 'Akun Kurir';
+        } else {
+            $user = User::all();
+            $dataType = 'user'; 
+            $title = 'Akun Pengguna';
+        }
  
-         return view('admin.akun', compact('user', 'dataType'));
+        return view('admin.akun', compact('user', 'dataType', 'title'));
     }
 
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = Courier::find($id);
 
         return view('admin.add', compact('user'));
     }
