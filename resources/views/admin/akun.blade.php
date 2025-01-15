@@ -2,14 +2,27 @@
     <div class="p-3">
         <div class="justify-between flex flex-row items-center">
             <div class="gap-3">
-                <x-button variant="primary" class="max-w-fit">Akun kurir</x-button>
-                <x-button variant="primary" class="max-w-fit">Akun pengguna</x-button>
+                {{-- <x-button variant="primary" class="max-w-fit">Akun kurir</x-button>
+                <x-button variant="primary" class="max-w-fit">Akun pengguna</x-button> --}}
+
+                <x-button 
+                    as="a" 
+                    href="{{ route('admin.index', ['type' => 'courier']) }}" 
+                    variant="{{ request('type') === 'courier' ? 'secondary' : 'primary' }}" 
+                    class="max-w-fit mr-3">Akun Kurir</x-button>
+                <x-button 
+                    as="a" 
+                    href="{{ route('admin.index', ['type' => 'user']) }}" 
+                    variant="{{ request('type') === 'user' ? 'secondary' : 'primary' }}" 
+                    class="max-w-fit">Akun Pengguna</x-button>
             </div>
-            <div>
+            <div> 
                 <input type="search" class="p-3 rounded-lg border max-w-fit bg-white hover:border-secondary" placeholder="Search">
             </div>
-            <div class="">
-                <x-button as='a' href="/admin/tambah" variant="secondary">Tambah Kurir</x-button>
+            <div>
+                @if ($dataType === 'courier')
+                    <x-button as='a' href="/admin/account/add" variant="secondary">Tambah Kurir</x-button>
+                @endif
             </div>
         </div>
 
@@ -21,18 +34,32 @@
                     <th class="border border-gray-300 p-2 font-normal text-center">Nama</th>
                     <th class="border border-gray-300 p-2 font-normal text-center">No Telepon</th>
                     <th class="border border-gray-300 p-2 font-normal text-center">Domisili</th>
+                    @if ($dataType === 'courier')
+                        <th class="border border-gray-300 p-2 font-normal text-center">
+                            No Kendaraan
+                        </th>
+                    @endif
                     <th class="border border-gray-300 p-2 font-normal text-center">Detail</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="border border-gray-300 p-2 text-center">1</td>
-                    <td class="border border-gray-300 p-2">ahmad@gmail.xyz</td>
-                    <td class="border border-gray-300 p-2">Ahmad</td>
-                    <td class="border border-gray-300 p-2">Jalan jalan</td>
-                    <td class="border border-gray-300 p-2">Pangandaran</td>
-                    <td class="border border-gray-300 p-2 text-center"><x-button variant="secondary">Detail</x-button></td>
+                @foreach ($user as $user)
+                <tr class="my-3">
+                    <td class="border border-gray-300 p-2 text-center">{{ $user->id }}</td>
+                    <td class="border border-gray-300 p-2">{{ $user->email }}</td>
+                    <td class="border border-gray-300 p-2">{{ $user->name }}</td>
+                    <td class="border border-gray-300 p-2">{{ $user->phone }}</td>
+                    <td class="border border-gray-300 p-2">{{ $user->city }}</td>
+                    @if ($dataType === 'courier')
+                    <td class="border border-gray-300 p-2">        
+                        {{ $user->plate_number }}
+                    </td>
+                    @endif
+                    <td class="border border-gray-300 p-2 text-center">
+                        <x-button as="a" href="{{ route('admin.edit', $user->id)}}" variant="secondary">Detail</x-button>
+                    </td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

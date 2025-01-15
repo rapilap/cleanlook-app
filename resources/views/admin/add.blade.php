@@ -25,41 +25,47 @@
         <div class="flex flex-col flex-grow p-7">
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-4/6">
-                    Nama Lengkap
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    Nama Lengkap 
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->name ?? '' }}">
                 </div>
                 <div>
                     Email
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->email ?? '' }}">
                 </div>
             </div>
 
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-full">
                     No Telepon
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->phone ?? '' }}">
                 </div>
             </div>
 
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-4/6">
                     Tanggal Lahir
-                    <input type="date" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    <input type="date" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->birthdate ?? '' }}">
                 </div>
                 <div class="">
                     Jenis Kelamin
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    {{-- <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->gender ?? '' }}"> --}}
+                    <select class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                        <option value="Laki-laki" {{ $user->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ $user->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
                 </div>
             </div>
 
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-4/6">
                     Alamat
-                    <textarea class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary"></textarea>
+                    <textarea class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    {{ $user->address ?? '' }}
+                    </textarea>
                 </div>
                 <div>
                     Kota
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->city ?? '' }}">
                 </div>
             </div>
 
