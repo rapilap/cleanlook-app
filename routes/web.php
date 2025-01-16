@@ -30,3 +30,7 @@ Route::get('/berandauser', function () {
 // Route::get('/test',[TestController::class, 'index']);
 
 // Route::get('/testController', [TestController::class, 'asar'] ); 
+
+Route::get('/berandakurir',function () {
+    return view('berandakurir');
+});
