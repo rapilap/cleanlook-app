@@ -14,11 +14,13 @@ class AccountListController extends Controller
         // $search = $request->input('search');
 
         if ($type === 'courier') {
-            $user = Courier::all();
+            // $user = Courier::all();
+            $user = Courier::query()->paginate(5);
             $dataType = 'courier';
             $title = 'Akun Kurir';
         } else {
-            $user = User::all();
+            // $user = User::all();
+            $user = User::query()->paginate(5);
             $dataType = 'user'; 
             $title = 'Akun Pengguna';
         }
@@ -26,10 +28,57 @@ class AccountListController extends Controller
         return view('admin.akun', compact('user', 'dataType', 'title'));
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $user = Courier::find($id);
+        $type = $request->get('type', 'courier');
 
-        return view('admin.add', compact('user'));
+        if ($type === 'courier') {
+            $user = Courier::findOrFail($id);
+            $dataType = 'courier';
+        } else {
+            $user = User::findOrFail($id);
+            $dataType = 'user';
+        }
+        // $user = Courier::find($id);
+
+        return view('admin.edit', compact('user', 'dataType'));
+    }
+
+    public function create()
+    {
+        $dataType = 'courier'; // Default untuk kurir
+        return view('admin.add', compact('dataType'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:couriers,email',
+            'phone' => 'required|string|max:15',
+            'birthdate' => 'required|date',
+            'gender' => 'required|in:L,P',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'plate_number' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Buat kurir baru
+        Courier::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'birthdate' => $request->birthdate,
+            'gender' => $request->gender,
+            'address' => $request->address,
+            'city' => $request->city,
+            'plate_number' => $request->plate_number,
+            'password' => bcrypt($request->password), // Enkripsi password
+        ]);
+
+        // Redirect ke halaman daftar kurir
+        return redirect()->route('admin.index', ['type' => 'courier'])->with('success', 'Kurir berhasil ditambahkan!');
     }
 }

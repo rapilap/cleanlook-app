@@ -16,9 +16,9 @@ Route::group([
 
     Route::get('/accounts/{id}', [AccountListController::class, 'edit'])->name('admin.edit');
 
-    Route::get('/account/add', function () {
-        return view('admin.add');
-    });
+    Route::get('/account/add', [AccountListController::class, 'create'])->name('admin.create');
+    
+    Route::post('/account/add', [AccountListController::class, 'store'])->name('admin.store');
 
     Route::get('/income', function() {
         return view('admin.income');
