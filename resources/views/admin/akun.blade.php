@@ -50,7 +50,8 @@
                 </div>
             </div>
         @endif
-
+        
+        <div class="max-h-[500px] overflow-y-auto">
         <table class="w-full border-collapse border border-gray-300 mt-3">
             <thead>
                 <tr class="bg-gray-100">
@@ -87,13 +88,13 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 
     {{-- Pagination --}}
-    <div class="absolute bottom-0 inset-x-0 flex justify-between p-3 bg-white">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
+    {{-- <div class="absolute bottom-0 inset-x-0 flex justify-between p-3 bg-white"> --}}
+    <div class="mt-auto mb-3">
+        {{-- {{ $users->links() }} --}}
     </div>
 </x-app>
 <script>
