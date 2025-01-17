@@ -14,13 +14,14 @@
                         variant="{{ request('type') === 'user' ? 'secondary' : 'primary' }}" 
                         class="max-w-fit">Akun Pengguna</x-button>
                 </div>
-                <div> 
+                <form action="{{ route('admin.index') }}" method="GET"> 
                     <input 
                     type="text"
                     name="search"
                     placeholder="Search"
+                    value="{{ request('search') }}"
                     class="p-2 rounded-lg border border-gray-300 focus">
-                </div>
+                </form>
                 <div>
                     @if ($dataType === 'courier')
                         <x-button as='a' href="{{ route('admin.create') }}" variant="secondary">Tambah Kurir</x-button>
@@ -51,7 +52,7 @@
             </div>
         @endif
         
-        <div class="max-h-[500px] overflow-y-auto mt-2">
+        <div class="max-h-[480px] overflow-y-auto mt-2">
             <table class="table">
               <!-- head -->
               <thead>
@@ -68,7 +69,7 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($user as $user)
+                @foreach ($page as $user)
                     
                 <!-- row 1 -->
                 <tr class="hover">
@@ -111,8 +112,8 @@
 
     {{-- Pagination --}}
     {{-- <div class="absolute bottom-0 inset-x-0 flex justify-between p-3 bg-white"> --}}
-    <div class="mt-auto mb-3">
-        {{-- {{ $users->links() }} --}}
+    <div class="mt-auto mb-1">
+        {{ $page->links() }}
     </div>
 </x-app>
 <script>
