@@ -15,17 +15,23 @@ class AccountListController extends Controller
 
         if ($type === 'courier') {
             // $user = Courier::all();
-            $user = Courier::get();
+            $user = Courier::query();
             $dataType = 'courier';
             $title = 'Akun Kurir';
         } else {
             // $user = User::all();
-            $user = User::get();
+            $user = User::query();
             $dataType = 'user'; 
             $title = 'Akun Pengguna';
         }
+
+        $page = $user->when($search, function($query, $search) {
+            $query->where('id', 'like', "%$search%")
+            ->orWhere('name', 'like', "%$search%");
+            // ->orWhere('plate_number', 'like', "%$search$");
+        })->paginate(10);
  
-        return view('admin.akun', compact('user', 'dataType', 'title'));
+        return view('admin.akun', compact('user', 'dataType', 'title', 'page'));
     }
 
     public function edit($id, Request $request)
