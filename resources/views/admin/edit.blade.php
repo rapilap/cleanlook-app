@@ -1,7 +1,7 @@
-<x-app title="Tambah Akun" bodyClass="h-screen flex flex-col gap-3">
-    <div class="flex flex-row flex-grow w-full">
+<x-app title="Detail Akun {{ $user->id }}" bodyClass="h-screen flex flex-col gap-3">
+    <div class="flex flex-row flex-grow w-full h-full">
         {{-- Sidebar --}}
-        <div class="w-fit flex flex-col gap-5 p-7 items-center">
+        <div class="w-fit flex flex-col gap-5 p-7 items-center h-auto">
             <div class="avatar">
                 <div class="w-64 rounded-full items-center border">
                     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
@@ -14,7 +14,7 @@
                     <div class="stat-value">34</div>
                 </div>
 
-                <div class="stat">
+                <div class="stat h-full">
                     @if ($dataType === 'courier')
                         <div class="stat-title">Total Pendapatan</div>
                     @else
@@ -30,58 +30,54 @@
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-4/6">
                     Nama Lengkap 
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->name ?? '' }}">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->name ?? '' }}" readonly>
                 </div>
                 <div>
                     Email
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->email ?? '' }}">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->email ?? '' }}" readonly>
                 </div>
             </div>
 
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-full">
                     No Telepon
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->phone ?? '' }}">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->phone ?? '' }}" readonly>
                 </div>
             </div>
 
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-4/6">
                     Tanggal Lahir
-                    <input type="date" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->birthdate ?? '' }}">
+                    <input type="date" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->birthdate ?? '' }}" readonly>
                 </div>
                 <div class="">
                     Jenis Kelamin
-                    <select class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
-                        <option value="Laki-laki" {{ $user->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="Perempuan" {{ $user->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
+                    <input class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->gender === 'P' ? 'Perempuan' : 'Laki-laki' }}" >
                 </div>
             </div>
 
             <div class="mb-2 w-full text-xl flex flex-row justify-between gap-3">
                 <div class="w-4/6">
                     Alamat
-                    <textarea class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary">
-                    {{ $user->address ?? '' }}
-                    </textarea>
+                    <textarea id="address" name="address" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" readonly>{{ $user->address ?? '' }}</textarea>
+
                 </div>
                 <div>
                     Kota
-                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->city ?? '' }}">
+                    <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->city ?? '' }}" readonly>
                 </div>
                 @if ($dataType === 'courier')
                     <div>
                         Plat Nomor
-                        <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->plate_number ?? '' }}">
+                        <input type="text" class="w-full p-2 rounded-xl border-2 drop-shadow-lg hover:border-secondary" value="{{ $user->plate_number ?? '' }}" readonly>
                     </div>
                 @endif
             </div>
 
             {{-- Footer Section --}}
-            <div class="mt-auto mb-3">
-                <x-button variant="secondary" class="w-full">Simpan</x-button>
-            </div>
+            <form action="{{ route('admin.index', ['type' => $dataType]) }}" class="mt-auto mb-3">
+                <x-button variant="secondary" class="w-full">Kembali</x-button>
+            </form>
         </div>
     </div>
 </x-app>

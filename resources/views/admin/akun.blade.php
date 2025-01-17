@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     @if ($dataType === 'courier')
-                        <x-button as='a' href="/admin/account/add" variant="secondary">Tambah Kurir</x-button>
+                        <x-button as='a' href="{{ route('admin.create') }}" variant="secondary">Tambah Kurir</x-button>
                     @endif
                 </div>
             </div>
@@ -51,43 +51,61 @@
             </div>
         @endif
         
-        <div class="max-h-[500px] overflow-y-auto">
-        <table class="w-full border-collapse border border-gray-300 mt-3">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 p-2 font-normal text-center">ID</th>
-                    <th class="border border-gray-300 p-2 font-normal text-center">Email</th>
-                    <th class="border border-gray-300 p-2 font-normal text-center">Nama</th>
-                    <th class="border border-gray-300 p-2 font-normal text-center">No Telepon</th>
-                    <th class="border border-gray-300 p-2 font-normal text-center">Domisili</th>
-                    @if ($dataType === 'courier')
-                        <th class="border border-gray-300 p-2 font-normal text-center">
+        <div class="max-h-[500px] overflow-y-auto mt-2">
+            <table class="table">
+              <!-- head -->
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>No Telepon</th>
+                  @if ($dataType === 'courier')
+                        <th>
                             No Kendaraan
                         </th>
                     @endif
-                    <th class="border border-gray-300 p-2 font-normal text-center">Detail</th>
+                  <th>Aksi</th>
                 </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
                 @foreach ($user as $user)
-                <tr class="my-3">
-                    <td class="border border-gray-300 p-2 text-center">{{ $user->id }}</td>
-                    <td class="border border-gray-300 p-2">{{ $user->email }}</td>
-                    <td class="border border-gray-300 p-2">{{ $user->name }}</td>
-                    <td class="border border-gray-300 p-2">{{ $user->phone }}</td>
-                    <td class="border border-gray-300 p-2">{{ $user->city }}</td>
-                    @if ($dataType === 'courier')
-                    <td class="border border-gray-300 p-2">        
+                    
+                <!-- row 1 -->
+                <tr class="hover">
+                    <td>
+                        {{ $user->id }}
+                    </td>
+                  <td>
+                    <div class="flex items-center gap-3">
+                      <div class="avatar">
+                        <div class="mask mask-squircle h-12 w-12">
+                          <img
+                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                            alt="Avatar Tailwind CSS Component" />
+                        </div>
+                      </div>
+                      <div>
+                        <div class="font-bold">{{ $user->name }}</div>
+                        <div class="text-sm opacity-50">{{ $user->email }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {{ $user->phone }}
+                    <br />
+                  </td>
+                  @if ($dataType === 'courier')
+                    <td>        
                         {{ $user->plate_number }}
                     </td>
                     @endif
-                    <td class="border border-gray-300 px-4 py-3  text-center">
-                        <a href="{{ route('admin.edit', $user->id)}}" class="bg-secondary text-white hover:bg-primary hover:text-white hover:border-primary p-2 rounded-lg">Detail</a>
+                    <td>
+                        <a href="{{ route('admin.edit', [$user->id, 'type'=>$dataType]) }}" class="bg-secondary text-white hover:bg-primary hover:text-white hover:border-primary p-2 rounded-lg">Detail</a>
                     </td>
                 </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+              </tbody>
+            </table>
         </div>
     </div>
 
