@@ -11,16 +11,16 @@ class AccountListController extends Controller
     public function index(Request $request)
     {
         $type = $request->get('type', 'courier');
-        // $search = $request->input('search');
+        $search = $request->input('search');
 
         if ($type === 'courier') {
             // $user = Courier::all();
-            $user = Courier::query()->paginate(5);
+            $user = Courier::get();
             $dataType = 'courier';
             $title = 'Akun Kurir';
         } else {
             // $user = User::all();
-            $user = User::query()->paginate(5);
+            $user = User::get();
             $dataType = 'user'; 
             $title = 'Akun Pengguna';
         }
@@ -33,10 +33,10 @@ class AccountListController extends Controller
         $type = $request->get('type', 'courier');
 
         if ($type === 'courier') {
-            $user = Courier::findOrFail($id);
+            $user = Courier::find($id);
             $dataType = 'courier';
-        } else {
-            $user = User::findOrFail($id);
+        } else if ($type === 'user') {
+            $user = User::find($id);
             $dataType = 'user';
         }
         // $user = Courier::find($id);
@@ -62,7 +62,17 @@ class AccountListController extends Controller
             'address' => 'required|string',
             'city' => 'required|string',
             'plate_number' => 'required|string',
-            'password' => 'required|string|min:8|confirmed',
+            // 'password' => 'required|string|min:8|confirmed',
+        ], [
+            // Custom error messages
+            'name.required' => 'Nama lengkap harap diisi.',
+            'email.required' => 'Email harap diisi.',
+            'phone.required' => 'Nomor telepon harap diisi.',
+            'birthdate.required' => 'Tanggal lahir harap diisi.',
+            'gender.required' => 'Jenis kelamin harap dipilih.',
+            'address.required' => 'Alamat harap diisi.',
+            'city.required' => 'Kota harap diisi.',
+            'plate_number.required' => 'Plat nomor harap diisi.',
         ]);
 
         // Buat kurir baru
@@ -75,7 +85,7 @@ class AccountListController extends Controller
             'address' => $request->address,
             'city' => $request->city,
             'plate_number' => $request->plate_number,
-            'password' => bcrypt($request->password), // Enkripsi password
+            'password' => bcrypt('password'), // Enkripsi password
         ]);
 
         // Redirect ke halaman daftar kurir
