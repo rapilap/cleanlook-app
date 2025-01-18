@@ -13,6 +13,6 @@ class LandfillSeeder extends Seeder
      */
     public function run(): void
     {
-        Landfill::factory(10)->create();
+        Landfill::factory(20)->create();
     }
 }

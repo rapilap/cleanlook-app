@@ -9,9 +9,20 @@ class LandfillController extends Controller
 {
     public function index()
     {
-        $landfill = Landfill::query()
-        ->orderBy('capacity', 'desc')->paginate(5);
+        // Data untuk daftar di sidebar (dengan pagination)
+        $landfillPaginated = Landfill::orderBy('name', 'asc')->paginate(10);
 
-        return view('admin.landfill.landfill', compact('landfill'));
+        // Data untuk peta (tanpa pagination)
+        $landfillForMap = Landfill::orderBy('name', 'asc')
+            ->select('id', 'name', 'address', 'capacity', 'latitude', 'longitude')
+            ->get();
+
+        return view('admin.landfill.landfill', [
+            'landfill' => $landfillPaginated,
+            'landfillForMap' => $landfillForMap,
+        ]);
     }
+
+    
+
 }

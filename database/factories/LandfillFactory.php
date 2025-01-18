@@ -21,7 +21,7 @@ class LandfillFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=>fake()->name(),
+            'name'=>fake()->company(),
             'address'=>fake()->address(),
             'capacity'=>fake()->numberBetween(1000,100000),
             'latitude'=>fake()->latitude(-6.95, -6.85),
