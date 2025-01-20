@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.register');
-});
-Route::post('/', [AuthUserController::class, 'login'])->name('login');
+})->name('loginView');
+Route::post('/login', [AuthUserController::class, 'login'])->name('login');
+Route::post('/register', [AuthUserController::class, 'register'])->name('register');
 
 Route::middleware('auth:web')->group(function () {
     Route::group([
