@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountListController;
+use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,8 @@ Route::get('/register', function () {
     return view('auth.register');
 });
 
+Route::post('/register', [AuthUserController::class, 'login'])->name('login');
+
 Route::get('/berandauser', function () {
     return view('berandauser');
 });
@@ -47,4 +50,21 @@ Route::get('/berandauser', function () {
 
 Route::get('/berandakurir',function () {
     return view('berandakurir');
+});
+
+Route::middleware('auth:web')->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+
+    Route::get('/berandauser', function () {
+        return view('berandauser');
+    });
+});
+
+// routes/web.php
+Route::middleware('auth:courier')->group(function () {
+    Route::get('/berandakurir', function () {
+        return view('berandakurir');
+    });
 });
