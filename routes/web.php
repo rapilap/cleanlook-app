@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountListController;
+use App\Http\Controllers\AuthCourierController;
 use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\TestController;
@@ -10,6 +11,10 @@ Route::get('/', function () {
     return view('auth.register');
 });
 Route::post('/', [AuthUserController::class, 'login'])->name('login');
+Route::get('/courier', function() {
+    return view('auth.loginCourier');
+});
+Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
 
 
 Route::middleware('auth:web')->group(function () {
