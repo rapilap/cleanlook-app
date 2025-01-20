@@ -17,7 +17,7 @@ class AuthCourierController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('courier')->attempt($credentials)) {
-            return redirect('/courier/dashboard'); // Redirect ke halaman dashboard kurir
+            return redirect('/berandakurir'); // Redirect ke halaman dashboard kurir
         }
 
         return back()->withErrors(['message' => 'Email atau password salah.']);
