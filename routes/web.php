@@ -11,11 +11,6 @@ Route::get('/', function () {
     return view('auth.register');
 });
 Route::post('/', [AuthUserController::class, 'login'])->name('login');
-Route::get('/courier', function() {
-    return view('auth.loginCourier');
-});
-Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
-
 
 Route::middleware('auth:web')->group(function () {
     Route::group([
@@ -25,7 +20,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/accounts/{id}', [AccountListController::class, 'edit'])->name('admin.edit');
         Route::get('/account/add', [AccountListController::class, 'create'])->name('admin.create');
         Route::post('/account/add', [AccountListController::class, 'store'])->name('admin.store');
-    
+        
         Route::get('/income', function () {
             return view('admin.income');
         });
@@ -36,7 +31,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/location/{id}', [LandfillController::class, 'edit'])->name('landfill.edit');
         Route::put('/location/{id}', [LandfillController::class, 'update'])->name('landfill.update');
         Route::delete('/location/{id}', [LandfillController::class, 'destroy'])->name('landfill.destroy');
-
+        
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         });
@@ -46,6 +41,11 @@ Route::middleware('auth:web')->group(function () {
         return view('berandauser');
     });
 });
+
+Route::get('/courier', function() {
+return view('auth.loginCourier');
+});
+Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
 
 Route::middleware('auth:courier')->group(function () {
     Route::get('/berandakurir', function () {
