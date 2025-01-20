@@ -18,10 +18,12 @@
 </head>
 <body class="flex flex-col {{ $bodyClass ?? '' }}">
     <!-- Navbar -->
-    {{ $slot }}
+    <main class="flex-grow pb-16"> 
+        {{ $slot }}
+    </main>
     
-    <div class="items-end">
+    <nav class="fixed bottom-0 left-0 w-full bg-white shadow-t z-50 h-16 flex items-center justify-around">
         @include('components.navbar.navbar')
-    </div>
+    </nav>
 </body>
 </html>
