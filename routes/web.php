@@ -12,14 +12,15 @@ Route::get('/', function () {
 
 Route::group([
     'prefix' => 'admin',
-], function() {
+], function () {
 
     Route::get('/accounts', [AccountListController::class, 'index'])->name('admin.index');
     Route::get('/accounts/{id}', [AccountListController::class, 'edit'])->name('admin.edit');
     Route::get('/account/add', [AccountListController::class, 'create'])->name('admin.create');
+
     Route::post('/account/add', [AccountListController::class, 'store'])->name('admin.store');
 
-    Route::get('/income', function() {
+    Route::get('/income', function () {
         return view('admin.income');
     });
 
@@ -53,9 +54,12 @@ Route::get('/berandauser', function () {
 
 // Route::get('/testController', [TestController::class, 'asar'] ); 
 
-Route::get('/berandakurir',function () {
+Route::get('/berandakurir', function () {
     return view('berandakurir');
 });
+
+Route::get('/detailprofile', function () {
+    return view('detailprofile');
 
 Route::middleware('auth:web')->group(function () {
     Route::get('/admin/dashboard', function () {
