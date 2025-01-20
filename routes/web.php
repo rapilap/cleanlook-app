@@ -41,9 +41,14 @@ Route::get('/register', function () {
 
 Route::post('/register', [AuthUserController::class, 'login'])->name('login');
 
+Route::get('/pendapatan', function () {
+    return view('courier.pendapatan');
+});
+
 Route::get('/berandauser', function () {
     return view('berandauser');
 });
+
 // Route::get('/test',[TestController::class, 'index']);
 
 // Route::get('/testController', [TestController::class, 'asar'] ); 

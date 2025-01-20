@@ -5,6 +5,8 @@
     <!-- import geocoder mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+    <!-- import cdn sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <x-app title="Edit Lokasi" bodyClass="h-screen gap-3 p-4">
@@ -43,8 +45,8 @@
                 </div>
             </div>
 
-            <div class="h-full items-end">
-                <x-button variant="secondary" class="w-full items-end" type="submit" onclick="return confirm('Apakah Anda yakin ingin mengubah data ini?')">Simpan Lokasi</x-button>
+            <div class="h-full items-end"id="editForm-{{ $landfill->id }}">
+                <x-button variant="secondary" class="w-full items-end" type="submit" onclick="confirmEdit('{{ $landfill->id }}')">Simpan Lokasi</x-button>
             </div>
         </div>
 
@@ -85,4 +87,20 @@
             document.getElementById('longitude').value = lng;
         });
     });
+
+    function confirmEdit(id) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, ubah!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`editForm-${id}`).submit();
+            }
+        });
+    }
 </script>

@@ -37,6 +37,7 @@
         <img id="logo" src="{{ asset('assets/logo.jpg') }}" alt="Logo" class="h-20 w-20  rounded-full mr-2  transition-all duration-1000">
 
         <!-- Login Section -->
+
         <div id="login-container" class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
             <h2 class="p-3 text-xl font-medium w-full text-center">Login ke Akun Anda!</h2>
             <form action="{{ route('login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 gap-12 rounded-t-3xl justify-center">

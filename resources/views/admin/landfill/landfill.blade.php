@@ -1,5 +1,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <x-app title="Lokasi TPA" bodyClass="h-screen gap-3 p-4">
     <div class="grid grid-cols-2 h-full">
@@ -43,10 +45,10 @@
                                     Edit
                                 </button>
                             </form>
-                            <form action="{{ route('landfill.destroy', $ld->id) }}" method="POST" class="w-2/4 text-center bg-red-500 p-3 rounded-md text-white font-medium transition-all duration-300 hover:bg-red-400" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                            <form action="{{ route('landfill.destroy', $ld->id) }}" method="POST" id="deleteForm-{{ $ld->id }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit">
+                                <button type="button" class="w-full md:w-auto text-center bg-red-500 p-3 rounded-md text-white font-medium transition-all duration-300 hover:bg-red-400" onclick="confirmDelete('{{ $ld->id }}')">
                                     Hapus
                                 </button>
                             </form>
@@ -124,6 +126,22 @@
                         });
                     }
 
+                    function confirmDelete(id) {
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: "Data yang dihapus tidak dapat dikembalikan!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById(`deleteForm-${id}`).submit();
+                            }
+                        });
+                    }
                 </script>
                 
             <div class="mt-3">
