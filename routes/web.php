@@ -35,7 +35,7 @@ Route::group([
 });
 
 Route::get('/register', function () {
-    return view('auth.register');
+    return view('auth.logandreg');
 });
 
 Route::get('/berandauser', function () {

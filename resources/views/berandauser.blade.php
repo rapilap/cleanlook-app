@@ -14,8 +14,14 @@
 <body class="bg-gray-100">
 
     <!-- Navbar -->
-    <nav class="bg-green-500 text-white py-4 px-6">
+    <nav class="bg-green-500 text-white py-4 px-6 flex justify-between">
         <div class="text-2xl font-bold">Cleanlook</div>
+        <div>
+        <a href="" 
+           class="text-white font-bold hover:underline">
+           Log Out
+        </a>
+    </div>
     </nav>
 
     <!-- Interactive Text -->
