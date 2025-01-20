@@ -15,7 +15,7 @@
 
     <!-- Navbar -->
     <nav class="bg-green-500 text-white py-4 px-6">
-        <img src="{{asset('assets/logo.jpg')}}" alt="Logo" class="h-12 w-12 rounded-full  ">
+        <div class="text-2xl font-bold">Cleanlook</div>
     </nav>
 
     <!-- Interactive Text -->
