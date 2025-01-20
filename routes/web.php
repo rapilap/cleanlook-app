@@ -6,9 +6,9 @@ use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('percobaan2');
-});
+// Route::get('/', function () {
+//     return view('percobaan2');
+// });
 
 Route::group([
     'prefix' => 'admin',
@@ -36,30 +36,19 @@ Route::group([
     });
 });
 
-Route::get('/register', function () {
+Route::get('/', function () {
     return view('auth.register');
 });
 
-Route::post('/register', [AuthUserController::class, 'login'])->name('login');
+Route::post('/', [AuthUserController::class, 'login'])->name('login');
 
 Route::get('/pendapatan', function () {
     return view('courier.pendapatan');
 });
 
-Route::get('/berandauser', function () {
-    return view('berandauser');
-});
-
-// Route::get('/test',[TestController::class, 'index']);
-
-// Route::get('/testController', [TestController::class, 'asar'] ); 
-
-Route::get('/berandakurir', function () {
-    return view('berandakurir');
-});
-
 Route::get('/detailprofile', function () {
     return view('detailprofile');
+});
 
 Route::middleware('auth:web')->group(function () {
     Route::get('/admin/dashboard', function () {
