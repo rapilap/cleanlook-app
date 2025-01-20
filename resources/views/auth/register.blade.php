@@ -40,9 +40,10 @@
         <div id="login-container" 
              class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
              <h2 class="p-3 text-xl font-medium w-full text-center">Login To Your Account</h2>
+             <form action="{{}}" method="post"></form>
             <div class="bg-white flex h-full flex-col px-12 py-12 gap-12 rounded-t-3xl justify-center">
                 <div class="flex flex-col gap-8">
-                    <input type="text" class="border border-slate-800 p-2 rounded" placeholder="Username">
+                    <input type="text" class="border border-slate-800 p-2 rounded" placeholder="E-mail">
                     <input type="password" class="border p-2 rounded border-slate-800" placeholder="Password">
                 </div>
                 <div class="flex flex-col items-center justify-center gap-2">
