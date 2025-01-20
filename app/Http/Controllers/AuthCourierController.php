@@ -7,20 +7,19 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthCourierController extends Controller
 {
-    public function courierLogin(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    // Login menggunakan guard 'courier'
-    if (Auth::guard('courier')->attempt($credentials)) {
-        return redirect('/courier/dashboard');
+        if (Auth::guard('courier')->attempt($credentials)) {
+            return redirect('/courier/dashboard'); // Redirect ke halaman dashboard kurir
+        }
+
+        return back()->withErrors(['message' => 'Email atau password salah.']);
     }
-
-    return back()->withErrors(['message' => 'Email atau password salah.']);
-}
 }
