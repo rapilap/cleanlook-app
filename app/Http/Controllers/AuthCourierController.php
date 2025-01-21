@@ -22,4 +22,10 @@ class AuthCourierController extends Controller
 
         return back()->withErrors(['message' => 'Email atau password salah.']);
     }
+
+    public function logout()
+    {
+        Auth::guard('courier')->logout();
+        return redirect('/courier')->with('success', 'Logout berhasil!');
+    }
 }

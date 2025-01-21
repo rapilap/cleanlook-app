@@ -36,6 +36,8 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         });
+
+        Route::post('/logout', [AuthUserController::class, 'logout'])->name('logout');
     });
     
     Route::get('/berandauser', function () {
@@ -52,10 +54,12 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/berandakurir', function () {
         return view('berandakurir');
     });
-});
-
-Route::get('/pendapatan', function () {
-    return view('courier.pendapatan');
+    
+    Route::get('/pendapatan', function () {
+        return view('courier.pendapatan');
+    });
+    
+    Route::post('/logoutcourier', [AuthCourierController::class, 'logout'])->name('courier.logout');
 });
 
 Route::get('/detailprofile', function () {
