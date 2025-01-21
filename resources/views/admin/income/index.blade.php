@@ -11,9 +11,14 @@
             <label for="end">Tanggal Akhir</label>
             <input type="date" name="end-date" id="end-date" class="mt-2 p-2 w-full border border-black rounded-lg hover:border-primary">
         </div>
-        <div class="w-full text-end mt-5 flex items-end justify-end">
-            <input type="text" name="search" id="search" placeholder="Cari di sini" class="p-2 w-5/6 md:w-2/6 items-end border border-black rounded-lg hover:border-primary">
-        </div>
+        <form action="{{ route('admin.history.index') }}" method="GET" class="w-full text-end mt-5 flex items-end justify-end">
+            <input 
+            type="text" 
+            name="search" 
+            value="{{ request('search') }}"
+            id="search" 
+            placeholder="Cari di sini" class="p-2 w-5/6 md:w-2/6 items-end border border-black rounded-lg hover:border-primary">
+        </form>
     </div>
 
     <div class="overflow-x-auto overflow-y-auto max-h-[360px] mt-5">
