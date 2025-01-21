@@ -23,7 +23,7 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/account/add', [AccountListController::class, 'store'])->name('admin.store');
         
         Route::get('/income', function () {
-            return view('admin.income');
+            return view('admin.income.index');
         });
     
         Route::get('/location', [LandfillController::class, 'index'])->name('landfill.index');
