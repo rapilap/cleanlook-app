@@ -15,10 +15,10 @@
 
         <!-- Cards Section -->
         <div class="grid grid-cols-2 gap-4 p-6">
-            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-60"></div>
-            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-60"></div>
-            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-60"></div>
-            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-60"></div>
+            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-70"></div>
+            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-70"></div>
+            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-70"></div>
+            <div class="h-24 bg-white rounded-lg shadow-md outline md:outline-green-500 w-80 h-70"></div>
         </div>
 
         <!-- Overview Section -->
