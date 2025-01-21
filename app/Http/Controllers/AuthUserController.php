@@ -59,4 +59,10 @@ class AuthUserController extends Controller
         return redirect()->route('loginView')->with('success', 'Data berhasil dibuat!');
 
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/')->with('success', 'Logout berhasil!');
+    }
 }
