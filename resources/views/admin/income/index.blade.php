@@ -1,9 +1,8 @@
-<x-app title="Pendapatan" bodyClass="p-4 flex h-screen">
+<x-app title="Pendapatan" bodyClass="p-4 flex h-screen flex-col">
     <div class="container text-5xl text-secondary">
         Pendapatan
     </div>
     <div class="flex w-full flex-row gap-3 justify-between">
-
         <div class="mt-5 flex flex-col w-1/4">
             <label for="start">Tanggal Awal</label>
             <input type="date" name="start-date" id="start-date" class="mt-2 p-2 w-full border border-black rounded-lg hover:border-primary">
@@ -13,48 +12,37 @@
             <input type="date" name="end-date" id="end-date" class="mt-2 p-2 w-full border border-black rounded-lg hover:border-primary">
         </div>
         <div class="w-full text-end mt-5 flex items-end justify-end">
-            <input type="text" name="search" id="search" placeholder="Cari di sini" class="p-2 w-2/6 items-end border border-black rounded-lg hover:border-primary">
+            <input type="text" name="search" id="search" placeholder="Cari di sini" class="p-2 w-5/6 md:w-2/6 items-end border border-black rounded-lg hover:border-primary">
         </div>
     </div>
 
-    <div class="overflow-x-auto mt-5">
-        <table class="table">
-          <!-- head -->
-          <thead>
-            <tr>
-              <th>ID Pesanan</th>
-              <th>Tanggal</th>
-              <th>Tipe Sampah</th>
-              <th>Berat Sampah</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- row 1 -->
-            <tr>
-              <th>1</th>
-              <td>03-03-2023</td>
-              <td>Organik</td>
-              <td>2</td>
-              <td>Rp. 35,000</td>
-            </tr>
-            <!-- row 2 -->
-            <tr class="hover">
-              <th>2</th>
-              <td>03-03-2023</td>
-              <td>Organik</td>
-              <td>2</td>
-              <td>Rp. 35,000</td>
-            </tr>
-            <!-- row 3 -->
-            <tr>
-              <th>3</th>
-              <td>03-03-2023</td>
-              <td>Organik</td>
-              <td>2</td>
-              <td>Rp. 35,000</td>
-            </tr>
-          </tbody>
+    <div class="overflow-x-auto overflow-y-auto max-h-[360px] mt-5">
+        <table class="table table-auto border-collapse w-full">
+            <!-- head -->
+            <thead class="bg-white sticky top-0 z-10">
+                <tr>
+                  <th class="p-2">ID Pesanan</th>
+                  <th class="p-2">Tanggal</th>
+                  <th class="p-2">Tipe Sampah</th>
+                  <th class="p-2">Berat Sampah</th>
+                  <th class="p-2">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($history as $his)
+                <tr class="hover">
+                    <td class="p-2">{{ $his->id }}</td>
+                    <td class="p-2">{{ $his->date }}</td>
+                    <td class="p-2">{{ $his->category->cat_name }}</td>
+                    <td class="p-2">{{ $his->weight }} Kg</td>
+                    <td class="p-2">Rp. {{ number_format($his->price, 0, ',', '.') }}</td>
+                </tr>
+                @endforeach
+            </tbody>
         </table>
-      </div>
+    </div>
+    
+    <div class="my-2">
+        {{ $history->links() }}
+    </div>
 </x-app>

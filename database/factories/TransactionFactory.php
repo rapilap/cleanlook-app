@@ -34,6 +34,7 @@ class TransactionFactory extends Factory
             'courier_id'=>$courier->id,
             'category_id'=>$category->id,
             'landfill_id'=>$landfill->id,
+            'date'=>fake()->date('Y-m-d'),
             'pickup_lat'=>fake()->latitude(-6.95, -6.85),
             'pickup_long'=>fake()->longitude(107.55, 107.75),
             "weight"=>$weight,
