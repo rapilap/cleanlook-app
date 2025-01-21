@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
     <title>Register</title>
     @vite('resources/css/app.css')
     <style>
@@ -30,15 +34,16 @@
 <body>
     <div id="main-container" class="bg-green-300 w-full h-screen flex flex-col justify-center items-center relative overflow-hidden">
         <!-- Logo Section -->
-        <h2 id="logo" class="text-5xl font-medium transition-all duration-1000">Logo</h2>
+        <img id="logo" src="{{ asset('assets/logo.jpg') }}" alt="Logo" class="h-20 w-20  rounded-full mr-2  transition-all duration-1000">
 
         <!-- Login Section -->
         <div id="login-container" 
              class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
              <h2 class="p-3 text-xl font-medium w-full text-center">Login To Your Account</h2>
+             <form action="{{}}" method="post"></form>
             <div class="bg-white flex h-full flex-col px-12 py-12 gap-12 rounded-t-3xl justify-center">
                 <div class="flex flex-col gap-8">
-                    <input type="text" class="border border-slate-800 p-2 rounded" placeholder="Username">
+                    <input type="text" class="border border-slate-800 p-2 rounded" placeholder="E-mail">
                     <input type="password" class="border p-2 rounded border-slate-800" placeholder="Password">
                 </div>
                 <div class="flex flex-col items-center justify-center gap-2">
@@ -93,7 +98,7 @@
             const mainContainer = document.getElementById('main-container');
 
                 // Pindahkan logo ke atas
-                logo.classList.remove('translate-y-[-200px]', 'scale-75'); // Pindah ke atas dan kecilkan
+                logo.classList.remove('translate-y-[-200px]' , 'scale-75'); // Pindah ke atas dan kecilkan
                 
                 // Animasi login container muncul dari bawah
                 registerContainer.classList.add('opacity-0', 'translate-y-full');
