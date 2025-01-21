@@ -41,11 +41,65 @@
   </div>
   </div>
 </div>
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
-  <span style="font-size: 16px; font-weight: bold;">Transactions History</span>
-  <a href="#" style="font-size: 14px; color: #888; text-decoration: none;">See all</a>
+<div class="flex justify-between items-center pl-6">
+  <span class="text-lg font-bold">Transactions History</span>
+  <button id="accordion-toggle" class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none pr-6">See all</button>
+</div>
+<<div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 m-3">
+<div>
+<div class="text-lg font-bold text-black">User</div>
+<div class="text-sm text-gray-500">Today</div>
+</div>
+<div class="text-lg font-bold text-teal-500">+Rp. 15.000,00</div>
 </div>
 <div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 m-3">
+  <div>
+    <div class="text-lg font-bold text-black">Admin</div>
+    <div class="text-sm text-gray-500">Today</div>
+  </div>
+  <div class="text-lg font-bold text-red-600">-Rp. 15.000,00</div>
+</div>
+<div id="accordion-content" class="hidden bg-white p-0 rounded-md">
+  <!-- Konten accordion -->
+  <ul class="list-disc p-0">
+
+<div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 m-3">
+  <div>
+    <div class="text-lg font-bold text-black">User</div>
+    <div class="text-sm text-gray-500">Yesterdey</div>
+  </div>
+  <div class="text-lg font-bold text-red-600">-Rp. 15.000,00</div>
+</div>
+
+<div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 m-3">
+  <div>
+    <div class="text-lg font-bold text-black">User</div>
+    <div class="text-sm text-gray-500">Friday</div>
+  </div>
+  <div class="text-lg font-bold text-red-600">-Rp. 15.000,00</div>
+</div>
+
+<div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 m-3">
+  <div>
+    <div class="text-lg font-bold text-black">User</div>
+    <div class="text-sm text-gray-500">Wednesdey</div>
+  </div>
+  <div class="text-lg font-bold text-teal-500">+Rp. 15.000,00</div>
+</div>
+
+  </ul>
+</div>
+
+<script>
+  const toggleButton = document.getElementById('accordion-toggle');
+  const content = document.getElementById('accordion-content');
+
+  toggleButton.addEventListener('click', () => {
+    content.classList.toggle('hidden');
+  });
+</script>
+
+<!-- <div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 m-3">
   <div>
     <div class="text-lg font-bold text-black">User</div>
     <div class="text-sm text-gray-500">Today</div>
@@ -75,7 +129,7 @@
     <div class="text-sm text-gray-500">Today</div>
   </div>
   <div class="text-lg font-bold text-teal-500">+Rp. 15.000,00</div>
-</div>
+</div> -->
 
 
 
