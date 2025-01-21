@@ -15,6 +15,7 @@ class Transaction extends Model
         'courier_id',
         'category_id',
         'landfill_id',
+        'date',
         'pickup_lat',
         'pickup_long',
         'weight',

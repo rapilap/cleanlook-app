@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AuthCourierController;
 use App\Http\Controllers\AuthUserController;
+use App\Http\Controllers\HistoryAdminController;
 use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/account/add', [AccountListController::class, 'create'])->name('admin.create');
         Route::post('/account/add', [AccountListController::class, 'store'])->name('admin.store');
         
-        Route::get('/income', function () {
-            return view('admin.income.index');
-        });
+        Route::get('/income', [HistoryAdminController::class, 'index'])->name('admin.history.index');
     
         Route::get('/location', [LandfillController::class, 'index'])->name('landfill.index');
         Route::get('/location/add', [LandfillController::class, 'create'])->name('landfill.create');

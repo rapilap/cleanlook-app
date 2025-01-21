@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('courier_id');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('landfill_id');
+            $table->date('date');
             $table->float('pickup_lat');
             $table->float('pickup_long');
             $table->float('weight');
