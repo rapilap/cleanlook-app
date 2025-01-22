@@ -29,7 +29,7 @@ class AuthUserController extends Controller
                 }
 
                 if ($role === 'user') {
-                    return redirect('/berandauser');
+                    return redirect('/home');
                 }
             }
 
