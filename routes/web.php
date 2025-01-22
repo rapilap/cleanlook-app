@@ -39,7 +39,7 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/logout', [AuthUserController::class, 'logout'])->name('logout');
     });
     
-    Route::get('/berandauser', function () {
+    Route::get('/home', function () {
         return view('berandauser');
     });
 });
@@ -50,11 +50,11 @@ return view('auth.loginCourier');
 Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
 
 Route::middleware('auth:courier')->group(function () {
-    Route::get('/berandakurir', function () {
+    Route::get('/courier/home', function () {
         return view('berandakurir');
     });
     
-    Route::get('/pendapatan', function () {
+    Route::get('/courier/history', function () {
         return view('courier.pendapatan');
     });
     
