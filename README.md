@@ -46,6 +46,11 @@ git checkout nama_branch
 
 ### Buat .env ambil dari .env.example, sesuaikan dengan databasenya
 
+### Instalasi composer
+``` bash
+composer install
+```
+
 ### Instalasi tailwind
 ```bash
 npm install
