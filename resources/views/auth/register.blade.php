@@ -45,11 +45,6 @@
                 <div class="flex flex-col gap-8">
                     <input type="email" name="email" id="email" class="border w-full border-black hover:border-primary p-2 rounded-lg" placeholder="Email">
                     <div class="flex flex-row gap-4">
-                        <select class="select select-accent border-black hover:border-primary w-full" name="role" id="role" required>
-                            <option disabled selected>Pilih Role</option>
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
                         <input type="password" name="password" id="password" class="border w-full p-2 rounded-lg border-black hover:border-primary" placeholder="Password">
                     </div>
                 </div>
