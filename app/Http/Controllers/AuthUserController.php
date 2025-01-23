@@ -10,33 +10,22 @@ class AuthUserController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'role' => 'required|in:admin,user', // Tambahkan validasi untuk role
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        $credentials = $request->only('email', 'password');
-        $role = $request->input('role');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        // Login menggunakan guard 'web'
-        if (Auth::guard('web')->attempt($credentials)) {
-            $user = Auth::guard('web')->user();
+            $user = Auth::user();
 
-            if ($user->role === $role) {
-                if ($role === 'admin') {
-                    return redirect('/admin/dashboard');
-                }
-
-                if ($role === 'user') {
-                    return redirect('/home');
-                }
-            }
-
-            Auth::guard('web')->logout(); // Logout jika role tidak sesuai
+            return redirect()->intended($user->role === 'admin' ? route('admin.dashboard') : route('user.home'));
         }
 
-        return back()->withErrors(['message' => 'Email atau password salah, atau role tidak sesuai.']);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function register(Request $request)
