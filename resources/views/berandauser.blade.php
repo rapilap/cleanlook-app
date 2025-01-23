@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<x-app_user title="Home">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
     
-    <title>Cleanlook</title>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
 <body class="bg-gray-100">
 
     <!-- Navbar -->
-    <nav class="bg-green-500 text-white py-4 px-6">
+    <nav class="bg-primary text-white py-4 px-6 flex flex-row justify-between items-center">
         <div class="text-2xl font-bold">Cleanlook</div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <x-button variant='secondary'>Logout</x-button>
+        </form>
     </nav>
 
     <!-- Interactive Text -->
@@ -25,18 +27,30 @@
     </div>
 
     <!-- Map Section -->
-    <div class="bg-gray-300 h-48 mt-4"><script src="https://maps.googleapis.com/maps/api/js?key= SILAHKAN ISI
-DENGAN KEY YANG SUDAH ANDA DAPATKAN DARI GOOGLE
-&libraries=places"></script> </div>
+    <div class="bg-gray-300 h-48 mt-4">
+        {{-- <div id="map"></div> --}}
+        <div id="map" style="width: 100%; height: 95%;"></div>
+
+    </div>
 
     <!-- Form Section -->
     <div class="p-6">
         <form action="/pesan" method="POST" class="bg-white p-6 rounded shadow-md">
             @csrf
             <!-- Alamat Input -->
-            <div class="mb-4">
-                <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                <input type="text" id="alamat" name="alamat" class="w-full border-gray-300 rounded mt-1 focus:ring-green-500 focus:border-green-500">
+            <div class="gap-4 mb-4 flex flex-row">
+                <div class="flex-col w-full">
+                    <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+                    <input type="text" id="alamat" name="alamat" class="w-full p-2 border border-primary hover:border-secondary rounded mt-1 focus:ring-green-500 focus:border-green-500" placeholder="Masukkan alamat pengambilan">
+                </div>
+                <div class="flex-col w-full">
+                    <label for="landfill" class="block text-sm font-medium text-gray-700">Pilih TPS</label>
+                    <select class="select select-bordered w-full max-w-xs">
+                        <option disabled selected>Who shot first?</option>
+                        <option>Han Solo</option>
+                        <option>Greedo</option>
+                      </select>
+                </div>
             </div>
 
             <!-- Berat Sampah and Type Sampah -->
@@ -81,23 +95,29 @@ DENGAN KEY YANG SUDAH ANDA DAPATKAN DARI GOOGLE
             <p>WhatsApp: <a href="https://wa.me/xxxxxx" class="text-green-500">xxxxxx</a></p>
         </div>
     </div>
-    <div>
-    @include('components.navbar.footer_navbar')
-    </div>
-    <!-- Scripts -->
-    <script>
-        // Animasi teks interaktif
-        const options = {
-            strings: ["Sampah apa yang hari ini Anda akan buang?"],
-            typeSpeed: 50
-        };
+</x-app_user>
 
-        const typed = new Typed("#interactive-text", options);
+<script>
+    mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
 
-        // Dinamis nama user
-        const user = "{{ Auth::user()->name ?? 'user' }}";
-        document.getElementById('user').innerText = user;
-    </script>
+    // Inisialisasi Mapbox
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [107.6191, -6.9175], // Titik pusat awal (Bandung)
+        zoom: 10,
+    });
+</script>
+<script>
+    // Animasi teks interaktif
+    const options = {
+        strings: ["Sampah apa yang hari ini Anda akan buang?"],
+        typeSpeed: 50
+    };
 
-</body>
-</html>
+    const typed = new Typed("#interactive-text", options);
+
+    // Dinamis nama user
+    const user = "{{ Auth::user()->name ?? 'user' }}";
+    document.getElementById('user').innerText = user;
+</script>
