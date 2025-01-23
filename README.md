@@ -56,6 +56,11 @@ composer install
 npm install
 ```
 
+### Set key
+```bash
+php artisan key:generate
+```
+
 ### Migrasi database
 ```bash
 php artisan migrate
