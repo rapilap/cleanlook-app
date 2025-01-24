@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Landfill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LandfillController extends Controller
 {
@@ -94,6 +95,52 @@ class LandfillController extends Controller
         $landfill->delete();
 
         return redirect()->route('landfill.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function getNearbyLandfills(Request $request)
+    {
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+
+        $landfills = Landfill::select(
+            'id',
+            'name',
+            'address',
+            'latitude',
+            'longitude',
+            'capacity',
+            DB::raw("(
+                6371 * acos(
+                    cos(radians($latitude)) *
+                    cos(radians(latitude)) *
+                    cos(radians(longitude) - radians($longitude)) +
+                    sin(radians($latitude)) *
+                    sin(radians(latitude))
+                )
+            ) AS distance")
+        )
+        ->orderBy('distance', 'asc') // Urutkan berdasarkan jarak
+        ->limit(5) // Ambil hanya 5 TPS terdekat
+        ->get();
+
+        return response()->json($landfills);
+    }
+
+    public function show($id)
+    {
+        $landfill = Landfill::find($id);
+
+        if (!$landfill) {
+            return response()->json(['error' => 'TPS tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'id' => $landfill->id,
+            'name' => $landfill->name,
+            'latitude' => $landfill->latitude,
+            'longitude' => $landfill->longitude,
+            'address' => $landfill->address,
+        ]);
     }
 
 }
