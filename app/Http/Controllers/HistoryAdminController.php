@@ -10,25 +10,29 @@ class HistoryAdminController extends Controller
 {
     public function index(Request $request)
     {
-        // Auth::user()->role === 'admin';
 
         $search = $request->input('search');
+        $startDate = $request->input('start-date');
+        $endDate = $request->input('end-date');
 
-        $history = Transaction::with('category')
-            ->when($search, function($query, $search) {
-                $query->where('id', 'like', "%$search%");
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+        $query = Transaction::with('category');
 
-        // $dAwal = $request->input('start-date');
-        // $dAkhir = $request->input('end-date');
-        // if ($dAwal && $dAkhir) {
-        //     $history = Transaction::with('category')
-        //     ->whereBetween('created_at', [$dAwal, $dAkhir])
-        //     ->orderBy('id', 'desc')
-        //     ->paginate(10);
-        // }
+        if ($startDate) {
+            $query->where('date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->where('date', '<=', $endDate);
+        }
+
+        if ($search) {
+            $query->whereHas('category', function ($q) use ($search) {
+                $q->where('cat_name', 'like', "%$search%");
+            });
+        }
+
+        // Paginate data
+        $history = $query->orderBy('date', 'desc')->paginate(10);
 
         return view('admin.income.index', compact('history'));
     }
