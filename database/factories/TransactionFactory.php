@@ -24,22 +24,25 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         $user = User::inRandomOrder()->first();
-        $courier = Courier::inRandomOrder()->first();
+        $courier = $this->faker->randomElement([null, Courier::inRandomOrder()->first()?->id]);
         $category = Category::inRandomOrder()->first();
         $landfill = Landfill::inRandomOrder()->first();
-        $weight = fake()->numberBetween(1,10);
-
+        $weight = fake()->numberBetween(1, 10);
+    
         return [
-            'user_id'=>$user->id,
-            'courier_id'=>$courier->id,
-            'category_id'=>$category->id,
-            'landfill_id'=>$landfill->id,
-            'date'=>fake()->date('Y-m-d'),
-            'pickup_lat'=>fake()->latitude(-6.95, -6.85),
-            'pickup_long'=>fake()->longitude(107.55, 107.75),
-            "weight"=>$weight,
-            'price'=>$weight * $category->cat_price,
-            'status'=>$this->faker->randomElement(['pending', 'accepted', 'completed', 'canceled']),
+            'user_id' => $user->id,
+            'courier_id' => $courier, // Bisa null atau ID kurir
+            'category_id' => $category->id,
+            'landfill_id' => $landfill->id,
+            'date' => fake()->date('Y-m-d'),
+            'pickup_lat' => fake()->latitude(-6.95, -6.85),
+            'pickup_long' => fake()->longitude(107.55, 107.75),
+            'address' => fake()->address(),
+            'weight' => $weight,
+            'price' => $weight * $category->cat_price,
+            'status' => $courier == null
+                ? 'searching'
+                : $this->faker->randomElement(['pickup', 'deliver', 'completed', 'canceled'])
         ];
     }
 }

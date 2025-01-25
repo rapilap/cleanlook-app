@@ -14,12 +14,16 @@
     <body class="bg-gray-100">
 
         <!-- Navbar -->
-        <nav class="bg-primary text-white py-4 px-6 flex justify-between items-center">
-            <div class="text-xl md:text-2xl font-bold">Cleanlook</div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <x-button variant='secondary'>Logout</x-button>
-            </form>
+        <nav class="bg-primary py-4 px-6 flex justify-between">
+            <div class="flex items-center">
+                <div class="text-2xl font-bold">Cleanlook</div>
+            </div>
+            <div>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-secondary hover:bg-green-300 duration-700 text-white text-sm font-medium py-2 px-4 rounded">Logout</button>
+                </form>
+            </div>
         </nav>
 
         <!-- Interactive Text -->
