@@ -72,10 +72,10 @@
                                 <input type="radio" name="type_sampah" value="organik" class="radio mr-2"/> Organik
                             </label>
                             <label class="block">
-                                <input type="radio" name="type_sampah" value="organik" class="radio mr-2"/> Anorganik
+                                <input type="radio" name="type_sampah" value="anorganik" class="radio mr-2"/> Anorganik
                             </label>
                             <label class="block">
-                                <input type="radio" name="type_sampah" value="organik" class="radio mr-2"/> B3
+                                <input type="radio" name="type_sampah" value="b3" class="radio mr-2"/> B3
                             </label>
                         </div>
                     </div>
@@ -110,174 +110,249 @@
 <script>
     mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
 
-// Inisialisasi Mapbox
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: [107.6191, -6.9175],
-    zoom: 10,
-});
+    // Inisialisasi Mapbox
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [107.6191, -6.9175],
+        zoom: 10,
+    });
 
-// Tambahkan kontrol Directions API ke peta
-const directions = new MapboxDirections({
-    accessToken: mapboxgl.accessToken,
-    unit: 'metric',
-    profile: 'mapbox/driving',
-});
-map.addControl(directions, 'bottom-right');
+    // Tambahkan kontrol Directions API ke peta
+    const directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: 'metric',
+        profile: 'mapbox/driving',
+    });
+    map.addControl(directions, 'bottom-right');
 
-// Menambahkan kontrol Geolokasi
-const geolocateControl = new mapboxgl.GeolocateControl({
-    positionOptions: {
-        enableHighAccuracy: true,
-    },
-    trackUserLocation: true,
-    showUserHeading: true,
-});
-map.addControl(geolocateControl);
+    // Menambahkan kontrol Geolokasi
+    const geolocateControl = new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true,
+        },
+        trackUserLocation: true,
+        showUserHeading: true,
+    });
+    map.addControl(geolocateControl);
 
-// Trigger tombol "Find My Location" saat peta dimuat
-map.on('load', () => {
-    geolocateControl.trigger();
-});
+    // Trigger tombol "Find My Location" saat peta dimuat
+    map.on('load', () => {
+        geolocateControl.trigger();
+    });
 
-let marker = null;
+    let marker = null;
 
-// Fungsi reverse geocoding untuk mendapatkan alamat dari koordinat
-function reverseGeocode(lng, lat) {
-    const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}`;
-
-    fetch(geocodingUrl)
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.features && data.features.length > 0) {
-                const address = data.features[0].place_name;
-                document.getElementById('alamat').value = address; // Masukkan alamat ke input
-            }
-        })
-        .catch((error) => console.error('Error reverse geocoding:', error));
-}
-
-// Event listener untuk menambahkan marker saat peta diklik
-map.on('click', (event) => {
-    const { lng, lat } = event.lngLat;
-
-    // Jika marker sudah ada, perbarui posisinya
-    if (marker) {
-        marker.setLngLat([lng, lat]);
-    } else {
-        // Jika belum ada marker, buat marker baru
-        marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
-    }
-
-    // Panggil fungsi untuk mendapatkan TPS terdekat
-    fetchNearbyLandfills(lng, lat);
-
-    // Reverse geocoding untuk alamat
-    reverseGeocode(lng, lat);
-});
-
-// Fungsi untuk mendapatkan TPS terdekat berdasarkan koordinat
-function fetchNearbyLandfills(lng, lat) {
-    const url = `/home/nearby?longitude=${lng}&latitude=${lat}`;
-
-    fetch(url)
-        .then((response) => response.json())
-        .then((landfills) => {
-            const landfillSelect = document.getElementById('landfill');
-
-            // Bersihkan opsi sebelumnya
-            landfillSelect.innerHTML = '<option disabled selected>Pilih TPS</option>';
-
-            // Tambahkan opsi TPS terdekat
-            landfills.forEach((landfill) => {
-                const option = document.createElement('option');
-                option.value = landfill.id;
-                option.textContent = `${landfill.name} - ${landfill.distance.toFixed(2)} km`;
-                landfillSelect.appendChild(option);
-            });
-        })
-        .catch((error) => console.error('Error fetching nearby landfills:', error));
-}
-
-// Saat TPS dipilih dari dropdown
-document.getElementById('landfill').addEventListener('change', function () {
-    const selectedOption = this.options[this.selectedIndex];
-    if (!selectedOption || selectedOption.value === '') return;
-
-    const landfillId = selectedOption.value;
-
-    // Ambil data TPS berdasarkan ID
-    fetch(`/home/nearby/${landfillId}`)
-        .then((response) => response.json())
-        .then(landfill => {
-            const { latitude, longitude, name } = landfill;
-
-            // Arahkan peta ke lokasi TPS
-            map.flyTo({
-                center: [longitude, latitude],
-                zoom: 14,
-            });
-
-            // Atur rute dari lokasi marker ke TPS
-            if (marker) {
-                const markerPosition = marker.getLngLat();
-                directions.setOrigin([markerPosition.lng, markerPosition.lat]); // Lokasi marker
-                directions.setDestination([longitude, latitude]); // Lokasi TPS
-            } else {
-                alert('Tentukan titik jemput terlebih dahulu dengan mengklik peta.');
-            }
-        })
-        .catch(error => console.error('Error fetching landfill data:', error));
-});
-
-// Event listener untuk autocomplete input alamat
-const alamatInput = document.getElementById('alamat');
-alamatInput.addEventListener('input', () => {
-    const query = alamatInput.value;
-
-    if (query.length > 3) {
-        const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}`;
+    // Fungsi reverse geocoding untuk mendapatkan alamat dari koordinat
+    function reverseGeocode(lng, lat) {
+        // console.log(`Reverse geocoding for coordinates: ${lng}, ${lat}`);
+        const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}`;
 
         fetch(geocodingUrl)
             .then((response) => response.json())
             .then((data) => {
-                const suggestions = data.features;
+                if (data.features && data.features.length > 0) {
+                    const address = data.features[0].place_name;
+                    // console.log('Reverse geocoded address:', address);
+                    document.getElementById('alamat').value = address;
+                }
+            })
+            .catch((error) => console.error('Error reverse geocoding:', error));
+    }
 
-                // Buat daftar saran autocomplete
-                const suggestionList = document.getElementById('autocomplete-list');
-                suggestionList.innerHTML = '';
+    // Event listener untuk menambahkan marker saat peta diklik
+    map.on('click', (event) => {
+        const { lng, lat } = event.lngLat;
 
-                suggestions.forEach((feature) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = feature.place_name;
-                    listItem.className = 'cursor-pointer hover:bg-gray-200 p-2';
+        // console.log('Map clicked at:', lng, lat);
 
-                    // Saat saran diklik, isi input dan pindahkan marker
-                    listItem.addEventListener('click', () => {
-                        alamatInput.value = feature.place_name;
-                        const [lng, lat] = feature.geometry.coordinates;
+        // Jika marker sudah ada, perbarui posisinya
+        if (marker) {
+            marker.setLngLat([lng, lat]);
+        } else {
+            // Jika belum ada marker, buat marker baru
+            marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+        }
 
-                        // Pindahkan marker ke lokasi yang dipilih
-                        if (marker) {
-                            marker.setLngLat([lng, lat]);
-                        } else {
-                            marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
-                        }
+        // Panggil fungsi untuk mendapatkan TPS terdekat
+        fetchNearbyLandfills(lng, lat);
 
-                        // Geser peta ke lokasi
-                        map.flyTo({ center: [lng, lat], zoom: 15 });
+        // Reverse geocoding untuk alamat
+        reverseGeocode(lng, lat);
+    });
 
-                        // Bersihkan daftar autocomplete
-                        suggestionList.innerHTML = '';
-                    });
+    // Fungsi untuk mendapatkan TPS terdekat berdasarkan koordinat
+    function fetchNearbyLandfills(lng, lat) {
+        // console.log('Fetching nearby landfills for coordinates:', lng, lat);
+        const url = `/home/nearby?longitude=${lng}&latitude=${lat}`;
 
-                    suggestionList.appendChild(listItem);
+        fetch(url)
+            .then((response) => response.json())
+            .then((landfills) => {
+                // console.log('Nearby landfills:', landfills);
+                const landfillSelect = document.getElementById('landfill');
+
+                // Bersihkan opsi sebelumnya
+                landfillSelect.innerHTML = '<option disabled selected>Pilih TPS</option>';
+
+                // Tambahkan opsi TPS terdekat
+                landfills.forEach((landfill) => {
+                    const option = document.createElement('option');
+                    option.value = landfill.id;
+                    option.textContent = `${landfill.name} - ${landfill.distance.toFixed(2)} km`;
+                    option.dataset.distance = landfill.distance;
+                    landfillSelect.appendChild(option);
                 });
             })
-            .catch((error) => console.error('Error fetching autocomplete:', error));
+            .catch((error) => console.error('Error fetching nearby landfills:', error));
     }
-});
+
+    let selectedTPS = null;
+
+    // Saat TPS dipilih dari dropdown
+    document.getElementById('landfill').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (!selectedOption || selectedOption.value === '') return;
+
+        const landfillId = selectedOption.value;
+        // console.log('Selected landfill ID:', landfillId);
+
+        // Ambil data TPS berdasarkan ID
+        fetch(`/home/nearby/${landfillId}`)
+            .then((response) => response.json())
+            .then((landfill) => {
+                // console.log('Fetched TPS data:', landfill);
+
+                const { latitude, longitude, name } = landfill;
+
+                // Arahkan peta ke lokasi TPS
+                map.flyTo({
+                    center: [longitude, latitude],
+                    zoom: 14,
+                });
+
+                // Atur rute dari lokasi marker ke TPS
+                if (marker) {
+                    const markerPosition = marker.getLngLat();
+                    directions.setOrigin([markerPosition.lng, markerPosition.lat]); // Lokasi marker
+                    directions.setDestination([longitude, latitude]); // Lokasi TPS
+                } else {
+                    alert('Tentukan titik jemput terlebih dahulu dengan mengklik peta.');
+                }
+
+                selectedTPS = {
+                    id: selectedOption.value,
+                    distance: selectedOption.dataset.distance, // Ambil distance dari atribut dataset
+                };
+
+                // console.log('TPS Terpilih:', selectedTPS);
+
+                updateTotal(); // Perbarui total harga
+            })
+            .catch((error) => console.error('Error fetching landfill data:', error));
+    });
+
+    document.getElementById('berat').addEventListener('input', updateTotal);
+    document.querySelectorAll('input[name="type_sampah"]').forEach((radio) => {
+        radio.addEventListener('change', updateTotal);
+    });
+
+    const categories = [
+        { cat_name: "organik", cat_price: 3000 },
+        { cat_name: "anorganik", cat_price: 4000 },
+        { cat_name: "b3", cat_price: 5000 },
+    ];
+
+    function updateTotal() {
+        const berat = parseFloat(document.getElementById('berat').value) || 0;
+        const selectedType = document.querySelector('input[name="type_sampah"]:checked')?.value;
+
+        // console.log('Selected Type:', selectedType);
+        // console.log('Selected TPS:', selectedTPS);
+
+        // Pastikan TPS sudah dipilih
+        if (!selectedTPS || !selectedType) {
+            console.warn('TPS atau tipe sampah belum dipilih.');
+            document.getElementById('total').textContent = 'Rp. 0';
+            return;
+        }
+
+        // Pastikan distance memiliki nilai numerik
+        const distance = parseFloat(selectedTPS.distance);
+        if (isNaN(distance)) {
+            console.error('Distance tidak valid:', selectedTPS.distance);
+            document.getElementById('total').textContent = 'Rp. 0';
+            return;
+        }
+
+        // Cari kategori berdasarkan tipe sampah
+        const category = categories.find((cat) => cat.cat_name === selectedType);
+
+        // console.log('Category:', category);
+
+        const categoryPrice = category ? category.cat_price : 0; // Jika tidak ditemukan, default 0
+
+        // Hitung biaya
+        const distanceCost = distance * 5000; // Biaya per km
+        const weightCost = berat * categoryPrice; // Biaya per kg
+
+        const totalPrice = Math.ceil(distanceCost + weightCost);
+
+        // console.log('Distance Cost:', distanceCost);
+        // console.log('Weight Cost:', weightCost);
+        // console.log('Total Price:', totalPrice);
+
+        // Tampilkan total harga
+        document.getElementById('total').textContent = `Rp. ${totalPrice.toLocaleString()}`;
+    }
+
+    // Event listener untuk autocomplete input alamat
+    const alamatInput = document.getElementById('alamat');
+    alamatInput.addEventListener('input', () => {
+        const query = alamatInput.value;
+
+        if (query.length > 3) {
+            const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}`;
+
+            fetch(geocodingUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    const suggestions = data.features;
+
+                    // Buat daftar saran autocomplete
+                    const suggestionList = document.getElementById('autocomplete-list');
+                    suggestionList.innerHTML = '';
+
+                    suggestions.forEach((feature) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = feature.place_name;
+                        listItem.className = 'cursor-pointer hover:bg-gray-200 p-2';
+
+                        // Saat saran diklik, isi input dan pindahkan marker
+                        listItem.addEventListener('click', () => {
+                            alamatInput.value = feature.place_name;
+                            const [lng, lat] = feature.geometry.coordinates;
+
+                            // Pindahkan marker ke lokasi yang dipilih
+                            if (marker) {
+                                marker.setLngLat([lng, lat]);
+                            } else {
+                                marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+                            }
+
+                            // Geser peta ke lokasi
+                            map.flyTo({ center: [lng, lat], zoom: 15 });
+
+                            // Bersihkan daftar autocomplete
+                            suggestionList.innerHTML = '';
+                        });
+
+                        suggestionList.appendChild(listItem);
+                    });
+                })
+                .catch((error) => console.error('Error fetching autocomplete:', error));
+        }
+    });
 </script>
 <script>
     // Animasi teks interaktif
