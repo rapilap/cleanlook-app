@@ -18,6 +18,7 @@ class Transaction extends Model
         'date',
         'pickup_lat',
         'pickup_long',
+        'address',
         'weight',
         'price',
         'status',

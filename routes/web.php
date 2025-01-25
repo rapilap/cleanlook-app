@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AuthCourierController;
 use App\Http\Controllers\AuthUserController;
+use App\Http\Controllers\CourierOrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoryAdminController;
 use App\Http\Controllers\LandfillController;
@@ -53,9 +54,7 @@ return view('auth.loginCourier');
 Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
 
 Route::middleware('auth:courier')->group(function () {
-    Route::get('/courier/home', function () {
-        return view('berandakurir');
-    });
+    Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
     
     Route::get('/courier/history', function () {
         return view('courier.pendapatan');
