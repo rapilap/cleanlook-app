@@ -7,6 +7,11 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.2.0/mapbox-gl-directions.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    {{-- midtrans --}}
+    <script type="text/javascript"
+      src="https://app.sandbox.midtrans.com/snap/snap.js"
+      data-client-key="{{ config('midtrans.clientKey') }}"></script>
 </head>
 
 <x-app_user title="Home">
@@ -43,7 +48,7 @@
 
         <!-- Form Section -->
         <div class="p-4 md:p-6">
-            <form action="/pesan" method="POST" class="bg-white p-4 md:p-6 rounded shadow-md">
+            <form action="{{ route('user.payment') }}" method="POST" class="bg-white p-4 md:p-6 rounded shadow-md">
                 @csrf
                 <!-- Alamat Input -->
                 <div class="gap-4 mb-4 grid grid-cols-1 md:grid-cols-2">
@@ -85,6 +90,7 @@
                     </div>
 
                     <!-- Total Price -->
+                    <input type="hidden" id="price" name="price" value="0">
                     <div class="text-2xl rounded-lg p-2 border border-primary hover:border-secondary flex flex-col justify-between">
                         <div>Total:</div>
                         <span id="total" class="text-5xl font-bold items-end h-full">Rp. 0</span>
@@ -92,7 +98,7 @@
                 </div>
 
                 <!-- Pesan Button -->
-                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded text-lg font-semibold hover:bg-green-600">PESAN</button>
+                <button type="submit" id="pay-button" class="w-full bg-green-500 text-white py-2 rounded text-lg font-semibold hover:bg-green-600">PESAN</button>
             </form>
         </div>
 
@@ -370,4 +376,35 @@
     // Dinamis nama user
     const user = "{{ Auth::user()->name ?? 'user' }}";
     document.getElementById('user').innerText = user;
+</script>
+<script type="text/javascript">
+    // For example trigger on button clicked, or any time you need
+    var payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', function () {
+      // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+        @if (isset($snapToken))
+            window.snap.pay('{{ $snapToken }}', {
+                onSuccess: function(result){
+                /* You may add your own implementation here */
+                alert("payment success!"); 
+                //   window.location.href = '/invoice/{{ $order->id }}';
+                console.log(result);
+                },
+                onPending: function(result){
+                /* You may add your own implementation here */
+                alert("wating your payment!"); console.log(result);
+                },
+                onError: function(result){
+                /* You may add your own implementation here */
+                alert("payment failed!"); console.log(result);
+                },
+                onClose: function(){
+                /* You may add your own implementation here */
+                alert('you closed the popup without finishing the payment');
+                }
+            })
+        @else
+        alert('Transaction token not found');
+        @endif
+    });
 </script>

@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [OrderController::class, 'index'])->name('user.home');
     Route::get('/home/nearby', [LandfillController::class, 'getNearbyLandfills'])->name('user.nearby');
     Route::get('/home/nearby/{id}', [LandfillController::class, 'show'])->name('landfill.show');
+    Route::post('/home/pay', [OrderController::class, 'payment'])->name('user.payment');
 });
 
 Route::middleware('auth')->group(function() {
