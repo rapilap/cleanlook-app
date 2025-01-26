@@ -41,7 +41,7 @@ class TransactionFactory extends Factory
             'weight' => $weight,
             'price' => $weight * $category->cat_price,
             'status' => $courier == null
-                ? 'searching'
+                ? $this->faker->randomElement(['unpaid', 'searching'])
                 : $this->faker->randomElement(['pickup', 'deliver', 'completed', 'canceled'])
         ];
     }

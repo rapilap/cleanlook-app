@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('address');
             $table->float('weight');
             $table->integer('price');
-            $table->enum('status', ['searching', 'pickup', 'deliver', 'completed', 'canceled']);
+            $table->enum('status', ['unpaid', 'searching', 'pickup', 'deliver', 'completed', 'canceled']);
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users');
