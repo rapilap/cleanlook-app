@@ -75,24 +75,27 @@
 
                     <!-- Type Sampah -->
                     <div>
+                        
                         <label class="block text-sm font-medium text-gray-700">Tipe Sampah</label>
                         <div class="mt-2">
+                            @foreach ($category as $cat)
                             <label class="block">
-                                <input type="radio" name="type_sampah" value="organik" class="radio mr-2"/> Organik
+                                <input 
+                                    type="radio" 
+                                    name="type_sampah" 
+                                    value="{{ $cat->id }}" 
+                                    data-price="{{ $cat->cat_price }}">
+                                {{ ucfirst($cat->cat_name) }} (Rp. {{ number_format($cat->cat_price, 0, ',', '.') }}/kg)
                             </label>
-                            <label class="block">
-                                <input type="radio" name="type_sampah" value="anorganik" class="radio mr-2"/> Anorganik
-                            </label>
-                            <label class="block">
-                                <input type="radio" name="type_sampah" value="b3" class="radio mr-2"/> B3
-                            </label>
+                            @endforeach
                         </div>
                     </div>
 
                     <!-- Total Price -->
                     <input type="hidden" name="pickup_lat" id="pickup_lat">
                     <input type="hidden" name="pickup_long" id="pickup_long">
-                    <input type="hidden" id="price" name="price" value="0">
+                    
+                    <input type="hidden" id="price" name="price">
                     <div class="text-2xl rounded-lg p-2 border border-primary hover:border-secondary flex flex-col justify-between">
                         <div>Total:</div>
                         <span id="total" class="text-5xl font-bold items-end h-full">Rp. 0</span>
@@ -186,6 +189,10 @@
             marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
         }
 
+        // Simpan koordinat ke dalam hidden input
+        document.getElementById('pickup_lat').value = lat;
+        document.getElementById('pickup_long').value = lng;
+
         // Panggil fungsi untuk mendapatkan TPS terdekat
         fetchNearbyLandfills(lng, lat);
 
@@ -266,85 +273,43 @@
 
     document.getElementById('berat').addEventListener('input', updateTotal);
     document.querySelectorAll('input[name="type_sampah"]').forEach((radio) => {
-        radio.addEventListener('change', updateTotal);
+        radio.addEventListener('change', () => {
+            const selectedId = document.querySelector('input[name="type_sampah"]:checked').value;
+            const selectedPrice = document.querySelector('input[name="type_sampah"]:checked').dataset.price;
+
+            console.log('ID Kategori:', selectedId);
+            console.log('Harga Kategori:', selectedPrice);
+
+            // Perbarui total harga
+            updateTotal();
+        });
     });
 
-    const categories = [
-        { cat_name: "organik", cat_price: 3000 },
-        { cat_name: "anorganik", cat_price: 4000 },
-        { cat_name: "b3", cat_price: 5000 },
-    ];
-
-    // function updateTotal() {
-    //     const berat = parseFloat(document.getElementById('berat').value) || 0;
-    //     const selectedType = document.querySelector('input[name="type_sampah"]:checked')?.value;
-
-    //     // console.log('Selected Type:', selectedType);
-    //     // console.log('Selected TPS:', selectedTPS);
-
-    //     // Pastikan TPS sudah dipilih
-    //     if (!selectedTPS || !selectedType) {
-    //         console.warn('TPS atau tipe sampah belum dipilih.');
-    //         document.getElementById('total').textContent = 'Rp. 0';
-    //         return;
-    //     }
-
-    //     // Pastikan distance memiliki nilai numerik
-    //     const distance = parseFloat(selectedTPS.distance);
-    //     if (isNaN(distance)) {
-    //         console.error('Distance tidak valid:', selectedTPS.distance);
-    //         document.getElementById('total').textContent = 'Rp. 0';
-    //         return;
-    //     }
-
-    //     // Cari kategori berdasarkan tipe sampah
-    //     const category = categories.find((cat) => cat.cat_name === selectedType);
-
-    //     // console.log('Category:', category);
-
-    //     const categoryPrice = category ? category.cat_price : 0; // Jika tidak ditemukan, default 0
-
-    //     // Hitung biaya
-    //     const distanceCost = distance * 5000; // Biaya per km
-    //     const weightCost = berat * categoryPrice; // Biaya per kg
-
-    //     const totalPrice = Math.ceil(distanceCost + weightCost);
-
-    //     // console.log('Distance Cost:', distanceCost);
-    //     // console.log('Weight Cost:', weightCost);
-    //     // console.log('Total Price:', totalPrice);
-
-    //     // Tampilkan total harga
-    //     document.getElementById('total').textContent = `Rp. ${totalPrice.toLocaleString()}`;
-    // }
+    const categories = @json($category)
 
     function updateTotal() {
-        const berat = parseFloat(document.getElementById('berat').value) || 0;
-        const selectedType = document.querySelector('input[name="type_sampah"]:checked')?.value;
+    const berat = parseFloat(document.getElementById('berat').value) || 0;
+    const selectedRadio = document.querySelector('input[name="type_sampah"]:checked');
 
-        // Pastikan TPS sudah dipilih dan tipe sampah dipilih
-        if (!selectedTPS || !selectedType) {
-            document.getElementById('total').textContent = 'Rp. 0';
-            document.getElementById('hidden-price').value = 0; // Reset hidden input
-            return;
-        }
-
-        const distance = parseFloat(selectedTPS.distance);
-        const category = categories.find((cat) => cat.cat_name === selectedType);
-
-        const categoryPrice = category ? category.cat_price : 0;
-
-        const distanceCost = distance * 5000; // Biaya per km
-        const weightCost = berat * categoryPrice; // Biaya per kg
-
-        const totalPrice = Math.ceil(distanceCost + weightCost);
-
-        // Tampilkan total harga
-        document.getElementById('total').textContent = `Rp. ${totalPrice.toLocaleString()}`;
-
-        // Update hidden input dengan nilai harga
-        document.getElementById('hidden-price').value = totalPrice;
+    // Pastikan TPS dan kategori sampah dipilih
+    if (!selectedTPS || !selectedRadio) {
+        document.getElementById('total').textContent = 'Rp. 0';
+        document.getElementById('price').value = 0;
+        return;
     }
+
+    const categoryPrice = parseFloat(selectedRadio.dataset.price) || 0; // Ambil harga dari radio button
+    const distance = parseFloat(selectedTPS.distance);
+    const distanceCost = distance * 5000; // Biaya per km
+    const weightCost = berat * categoryPrice; // Biaya per kg
+
+    const totalPrice = Math.ceil(distanceCost + weightCost);
+
+    // Tampilkan total harga
+    document.getElementById('total').textContent = `Rp. ${totalPrice.toLocaleString()}`;
+    document.getElementById('price').value = totalPrice; // Update hidden input
+}
+         
 
     // Event listener untuk autocomplete input alamat
     const alamatInput = document.getElementById('alamat');
