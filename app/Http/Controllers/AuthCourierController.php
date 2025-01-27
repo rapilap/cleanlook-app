@@ -10,8 +10,8 @@ class AuthCourierController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => ['required', 'email'],
+            'password' => ['required', 'min:8'],
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -20,7 +20,7 @@ class AuthCourierController extends Controller
             return redirect('/courier/home'); // Redirect ke halaman dashboard kurir
         }
 
-        return back()->withErrors(['message' => 'Email atau password salah.']);
+        return back()->withErrors(['email' => 'Email atau password salah.']);
     }
 
     public function logout()

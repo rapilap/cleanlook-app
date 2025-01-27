@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.register');
 })->name('loginView');
-Route::post('/login', [AuthUserController::class, 'login'])->name('login');
+Route::post('/', [AuthUserController::class, 'login'])->name('login');
 Route::post('/register', [AuthUserController::class, 'register'])->name('register');
 
 Route::middleware(['auth'])->group(function () {
+    // Admin
     Route::group([
         'prefix' => 'admin',
     ], function () {
@@ -40,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/logout', [AuthUserController::class, 'logout'])->name('logout');
     });
     
+    // Customer
     Route::get('/home', [OrderController::class, 'index'])->name('user.home');
     Route::get('/home/nearby', [LandfillController::class, 'getNearbyLandfills'])->name('user.nearby');
     Route::get('/home/nearby/{id}', [LandfillController::class, 'show'])->name('landfill.show');
@@ -58,7 +60,7 @@ Route::middleware('auth')->group(function() {
 });
 
 Route::get('/courier', function() {
-return view('auth.loginCourier');
+    return view('auth.loginCourier');
 });
 Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
 
