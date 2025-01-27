@@ -39,13 +39,20 @@
         <!-- Login Section -->
         <div id="login-container" class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
             <h2 class="p-3 text-xl font-medium w-full text-center">Login ke Akun Kurir Anda!</h2>
-            <form action="{{ route('courier.login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 gap-12 rounded-t-3xl justify-center">
+            <form action="{{ route('courier.login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 rounded-t-3xl justify-center">
                 @csrf
                 <div class="flex flex-col gap-8">
-                    <input type="email" name="email" id="email" class="border w-full p-2 rounded-lg border-black hover:border-primary" placeholder="Email">
-                    <input type="password" name="password" id="password" class="border w-full p-2 rounded-lg border-black hover:border-primary" placeholder="Password">
+                    <input type="email" name="email" id="email" class="border w-full border-black hover:border-primary p-2 rounded-lg" placeholder="Email">
+                    <div class="flex flex-row gap-4">
+                        <input type="password" name="password" id="password" class="border w-full p-2 rounded-lg border-black hover:border-primary" placeholder="Password">
+                    </div>
                 </div>
-                <div class="flex flex-col items-center justify-center w-full">
+                @if ($errors->any())
+                    <div class="text-red-500">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+                <div class="flex flex-col items-center justify-center w-full mt-8">
                     <x-button variant='tertiery' class="w-3/6" type="submit">Login</x-button>
                 </div>
             </form>

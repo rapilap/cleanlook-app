@@ -40,7 +40,7 @@
 
         <div id="login-container" class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
             <h2 class="p-3 text-xl font-medium w-full text-center">Login ke Akun Anda!</h2>
-            <form action="{{ route('login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 gap-12 rounded-t-3xl justify-center">
+            <form action="{{ route('login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 rounded-t-3xl justify-center">
                 @csrf
                 <div class="flex flex-col gap-8">
                     <input type="email" name="email" id="email" class="border w-full border-black hover:border-primary p-2 rounded-lg" placeholder="Email">
@@ -48,7 +48,12 @@
                         <input type="password" name="password" id="password" class="border w-full p-2 rounded-lg border-black hover:border-primary" placeholder="Password">
                     </div>
                 </div>
-                <div class="flex flex-col items-center justify-center w-full">
+                @if ($errors->any())
+                    <div class="text-red-500">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+                <div class="flex flex-col items-center justify-center w-full mt-8">
                     <x-button variant='tertiery' class="w-3/6" type="submit">Login</x-button>
                 </div>
             </form>
@@ -58,30 +63,24 @@
             </div>
         </div>
         
-        {{-- <div id="courier-container" class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
-            <h2 class="p-3 text-xl font-medium w-full text-center">Login ke Akun Kurir Anda!</h2>
-            <form action="{{ route('courier.login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 gap-12 rounded-t-3xl justify-center">
-                @csrf
-                <div class="flex flex-col gap-8">
-                    <input type="email" name="email" id="email" class="border w-full border-slate-800 p-2 rounded" placeholder="Email">
-                    <input type="password" name="password" id="password" class="border w-full p-2 rounded border-slate-800" placeholder="Password">
-                </div>
-                <div class="flex flex-col items-center justify-center">
-                    <button class="py-2 w-1/2 rounded-lg bg-green-600 text-white" type="submit">Login</button>
-                </div>
-            </form>
-            <p class="flex flex-col h-full w-full pt-3 bg-white text-center">Anda customer? <button onclick="switchToLogin()" class="text-green-400">Login di sini!</button></p>
-        </div> --}}
-        
         <div id="register-container" 
              class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
              <h2 class="p-3 text-xl font-medium w-full text-center">Daftar Akun Baru!</h2>
             <form action="{{ route('register') }}" method="post" class="bg-white flex pt-10 flex-col px-12 gap-12 rounded-t-3xl justify-center">
                 @csrf
                 <div class="flex flex-col gap-4">
-                    <input type="text" class="border w-full p-2 rounded-lg border-black hover:border-primary" name="name" id="name" placeholder="Nama" required>
-                    <input type="email" class="border w-full p-2 rounded-lg border-black hover:border-primary" name="email" id="email" placeholder="Email" required>
-                    <input type="password" class="border w-full p-2 rounded-lg border-black hover:border-primary" name="password" id="password" placeholder="Password" required>
+                    <input type="text" class="border w-full p-2 rounded-lg border-black hover:border-primary" name="name" id="name" placeholder="Nama">
+                    @error('name')
+                        <div class="text-red-500 text-sm">{{ $message }}</div>
+                    @enderror
+                    <input type="email" class="border w-full p-2 rounded-lg border-black hover:border-primary" name="email" id="email" placeholder="Email">
+                    @error('email')
+                        <div class="text-red-500 text-sm">{{ $message }}</div>
+                    @enderror
+                    <input type="password" class="border w-full p-2 rounded-lg border-black hover:border-primary" name="password" id="password" placeholder="Password">
+                    @error('password')
+                        <div class="text-red-500 text-sm">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="flex flex-col items-center justify-center gap-2 w-full">
                     <x-button variant='tertiery' class="w-3/6" type="submit">Daftar</x-button>
@@ -97,15 +96,13 @@
             const loginContainer = document.getElementById('login-container');
             const registerContainer = document.getElementById('register-container');
             const mainContainer = document.getElementById('main-container');
-            // const courierContainer = document.getElementById('courier-container');
 
                 // Pindahkan logo ke atas
                 logo.classList.remove('translate-y-[-200px]', 'scale-75'); // Pindah ke atas dan kecilkan
                 
                 // Animasi login container muncul dari bawah
                 loginContainer.classList.add('opacity-0', 'translate-y-full');
-                // courierContainer.classList.add('opacity-0', 'translate-y-full');
-                
+
                 setTimeout(() => {
                     logo.classList.add('translate-y-[-200px]', 'scale-75'); // Pindah ke atas dan kecilkan
                     
@@ -119,14 +116,12 @@
             const loginContainer = document.getElementById('login-container');
             const registerContainer = document.getElementById('register-container');
             const mainContainer = document.getElementById('main-container');
-            // const courierContainer = document.getElementById('courier-container');
 
                 // Pindahkan logo ke atas
                 logo.classList.remove('translate-y-[-200px]' , 'scale-75'); // Pindah ke atas dan kecilkan
                 
                 // Animasi login container muncul dari bawah
                 registerContainer.classList.add('opacity-0', 'translate-y-full');
-                // courierContainer.classList.add('opacity-0', 'translate-y-full');
                 
                 setTimeout(() => {
                     logo.classList.add('translate-y-[-200px]', 'scale-75'); // Pindah ke atas dan kecilkan
@@ -135,28 +130,6 @@
                     loginContainer.classList.add('opacity-100', 'translate-y-0');
                 }, 1000)            
         } 
-       
-        // function switchToCourier() {
-        //     const logo = document.getElementById('logo');
-        //     const loginContainer = document.getElementById('login-container');
-        //     const registerContainer = document.getElementById('register-container');
-        //     const courierContainer = document.getElementById('courier-container');
-
-        //     // Ubah action form menjadi ke /courier/login
-        //     const courierForm = courierContainer.querySelector('form');
-        //     courierForm.action = '/courier'; // Ubah ke rute login kurir
-
-        //     // Animasi dan transisi antar form
-        //     logo.classList.remove('translate-y-[-200px]', 'scale-75');
-        //     registerContainer.classList.add('opacity-0', 'translate-y-full');
-        //     loginContainer.classList.add('opacity-0', 'translate-y-full');
-        //     setTimeout(() => {
-        //         logo.classList.add('translate-y-[-200px]', 'scale-75');
-        //         courierContainer.classList.remove('opacity-0', 'translate-y-full');
-        //         courierContainer.classList.add('opacity-100', 'translate-y-0');
-        //     }, 1000);
-        // }
-
 
         // Script untuk animasi
         window.onload = () => {
