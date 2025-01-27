@@ -19,16 +19,17 @@ class OrderController extends Controller
         $transaction = Transaction::create([
             'user_id' => Auth::id(),
             'courier_id' => null, // Belum ada kurir
-            'category_id' => $request->category_id,
-            'landfill_id' => $request->landfill_id,
+            'category_id' => $request->type_sampah,
+            'landfill_id' => $request->landfill,
             'pickup_lat' => $request->pickup_lat,
             'pickup_long' => $request->pickup_long,
-            'address' => $request->address,
-            'weight' => $request->weight,
+            'address' => $request->alamat,
+            'weight' => $request->berat,
             'price' => $request->price,
             'status' => 'unpaid',
         ]);
 
+        // dd($transaction);
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
