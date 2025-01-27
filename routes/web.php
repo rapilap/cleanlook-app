@@ -9,6 +9,7 @@ use App\Http\Controllers\HistoryAdminController;
 use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -77,3 +78,16 @@ Route::middleware('auth:courier')->group(function () {
     
     Route::post('/logoutcourier', [AuthCourierController::class, 'logout'])->name('courier.logout');
 });
+
+Route::get('/test-email', function () {
+    $email = 'test@example.com';
+    try {
+        Mail::raw('Testing email configuration', function ($message) use ($email) {
+            $message->to($email)
+                    ->subject('Test Email');
+        });
+        return 'Email sent successfully!';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+}); 

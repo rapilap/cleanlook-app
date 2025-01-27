@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CourierAccountMail;
 use App\Models\Courier;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AccountListController extends Controller
 {
@@ -81,8 +84,10 @@ class AccountListController extends Controller
             'plate_number.required' => 'Plat nomor harap diisi.',
         ]);
 
+        $password = Str::random(8);
+
         // Buat kurir baru
-        Courier::create([
+        $courier = Courier::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -91,8 +96,10 @@ class AccountListController extends Controller
             'address' => $request->address,
             'city' => $request->city,
             'plate_number' => $request->plate_number,
-            'password' => bcrypt('password'), // Enkripsi password
+            'password' => bcrypt($password), // Enkripsi password
         ]);
+
+        Mail::to($courier->email)->send(new CourierAccountMail($courier, $password));
 
         // Redirect ke halaman daftar kurir
         return redirect()->route('admin.index', ['type' => 'courier'])->with('success', 'Kurir berhasil ditambahkan!');
