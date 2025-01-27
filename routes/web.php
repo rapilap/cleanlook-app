@@ -44,6 +44,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home/nearby', [LandfillController::class, 'getNearbyLandfills'])->name('user.nearby');
     Route::get('/home/nearby/{id}', [LandfillController::class, 'show'])->name('landfill.show');
     Route::post('/home/pay', [OrderController::class, 'payment'])->name('user.payment');
+
+    Route::get('/history', function() {
+        return view('user.history');
+    });
+    
+    Route::get('/profile', function () {
+        return view('detailprofile');
+    });
 });
 
 Route::middleware('auth')->group(function() {
@@ -61,9 +69,9 @@ Route::middleware('auth:courier')->group(function () {
         return view('courier.pendapatan');
     });
     
+    Route::get('/courier/profile', function () {
+        return view('detailprofile');
+    });
+    
     Route::post('/logoutcourier', [AuthCourierController::class, 'logout'])->name('courier.logout');
-});
-
-Route::get('/detailprofile', function () {
-    return view('detailprofile');
 });
