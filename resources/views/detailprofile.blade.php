@@ -141,7 +141,7 @@
     </style>
 </head>
 
-<body>
+<x-app_user title="Profil">
     <div class="container">
         <div class="profile-header">
             <h1>Profile</h1>
@@ -228,6 +228,6 @@
             Profil
         </a>
     </div>
-</body>
+</x-app_user>
 
 </html>
