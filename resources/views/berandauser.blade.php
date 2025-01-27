@@ -90,6 +90,8 @@
                     </div>
 
                     <!-- Total Price -->
+                    <input type="hidden" name="pickup_lat" id="pickup_lat">
+                    <input type="hidden" name="pickup_long" id="pickup_long">
                     <input type="hidden" id="price" name="price" value="0">
                     <div class="text-2xl rounded-lg p-2 border border-primary hover:border-secondary flex flex-col justify-between">
                         <div>Total:</div>
@@ -273,47 +275,75 @@
         { cat_name: "b3", cat_price: 5000 },
     ];
 
+    // function updateTotal() {
+    //     const berat = parseFloat(document.getElementById('berat').value) || 0;
+    //     const selectedType = document.querySelector('input[name="type_sampah"]:checked')?.value;
+
+    //     // console.log('Selected Type:', selectedType);
+    //     // console.log('Selected TPS:', selectedTPS);
+
+    //     // Pastikan TPS sudah dipilih
+    //     if (!selectedTPS || !selectedType) {
+    //         console.warn('TPS atau tipe sampah belum dipilih.');
+    //         document.getElementById('total').textContent = 'Rp. 0';
+    //         return;
+    //     }
+
+    //     // Pastikan distance memiliki nilai numerik
+    //     const distance = parseFloat(selectedTPS.distance);
+    //     if (isNaN(distance)) {
+    //         console.error('Distance tidak valid:', selectedTPS.distance);
+    //         document.getElementById('total').textContent = 'Rp. 0';
+    //         return;
+    //     }
+
+    //     // Cari kategori berdasarkan tipe sampah
+    //     const category = categories.find((cat) => cat.cat_name === selectedType);
+
+    //     // console.log('Category:', category);
+
+    //     const categoryPrice = category ? category.cat_price : 0; // Jika tidak ditemukan, default 0
+
+    //     // Hitung biaya
+    //     const distanceCost = distance * 5000; // Biaya per km
+    //     const weightCost = berat * categoryPrice; // Biaya per kg
+
+    //     const totalPrice = Math.ceil(distanceCost + weightCost);
+
+    //     // console.log('Distance Cost:', distanceCost);
+    //     // console.log('Weight Cost:', weightCost);
+    //     // console.log('Total Price:', totalPrice);
+
+    //     // Tampilkan total harga
+    //     document.getElementById('total').textContent = `Rp. ${totalPrice.toLocaleString()}`;
+    // }
+
     function updateTotal() {
         const berat = parseFloat(document.getElementById('berat').value) || 0;
         const selectedType = document.querySelector('input[name="type_sampah"]:checked')?.value;
 
-        // console.log('Selected Type:', selectedType);
-        // console.log('Selected TPS:', selectedTPS);
-
-        // Pastikan TPS sudah dipilih
+        // Pastikan TPS sudah dipilih dan tipe sampah dipilih
         if (!selectedTPS || !selectedType) {
-            console.warn('TPS atau tipe sampah belum dipilih.');
             document.getElementById('total').textContent = 'Rp. 0';
+            document.getElementById('hidden-price').value = 0; // Reset hidden input
             return;
         }
 
-        // Pastikan distance memiliki nilai numerik
         const distance = parseFloat(selectedTPS.distance);
-        if (isNaN(distance)) {
-            console.error('Distance tidak valid:', selectedTPS.distance);
-            document.getElementById('total').textContent = 'Rp. 0';
-            return;
-        }
-
-        // Cari kategori berdasarkan tipe sampah
         const category = categories.find((cat) => cat.cat_name === selectedType);
 
-        // console.log('Category:', category);
+        const categoryPrice = category ? category.cat_price : 0;
 
-        const categoryPrice = category ? category.cat_price : 0; // Jika tidak ditemukan, default 0
-
-        // Hitung biaya
         const distanceCost = distance * 5000; // Biaya per km
         const weightCost = berat * categoryPrice; // Biaya per kg
 
         const totalPrice = Math.ceil(distanceCost + weightCost);
 
-        // console.log('Distance Cost:', distanceCost);
-        // console.log('Weight Cost:', weightCost);
-        // console.log('Total Price:', totalPrice);
-
         // Tampilkan total harga
         document.getElementById('total').textContent = `Rp. ${totalPrice.toLocaleString()}`;
+
+        // Update hidden input dengan nilai harga
+        document.getElementById('hidden-price').value = totalPrice;
     }
 
     // Event listener untuk autocomplete input alamat
