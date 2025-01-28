@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\CourierAccountMail;
 use App\Models\Courier;
+use App\Models\CourierLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -13,29 +14,34 @@ class AccountListController extends Controller
 {
     public function index(Request $request)
     {
-        $type = $request->get('type', 'courier');
+        $type = $request->input('type', 'courier'); // Default ke courier jika tidak ada type
         $search = $request->input('search');
 
+        // Query data berdasarkan type
         if ($type === 'courier') {
-            // $user = Courier::all();
-            $user = Courier::query();
-            $dataType = 'courier';
-            $title = 'Akun Kurir';
+            $query = Courier::query();
+            $title = 'Akun kurir';
         } else {
-            // $user = User::all();
-            $user = User::query();
-            $dataType = 'user'; 
-            $title = 'Akun Pengguna';
+            $query = User::query();
+            $title = 'Akun pengguna';
         }
 
-        $page = $user->when($search, function($query, $search) {
-            $query->where('id', 'like', "%$search%")
-            ->orWhere('name', 'like', "%$search%");
-            // ->orWhere('plate_number', 'like', "%$search$");
-        })->paginate(10);
- 
-        return view('admin.akun', compact('user', 'dataType', 'title', 'page'));
+        // Tambahkan filter pencarian jika ada
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%")
+                ->orWhere('id', 'like', "%$search%");
+            });
+        }
+
+        $page = $query->paginate(10);
+
+        return view('admin.akun', compact('page', 'type', 'title'))->with([
+            'dataType' => $type,
+        ]);
     }
+
 
     public function edit($id, Request $request)
     {
@@ -103,5 +109,29 @@ class AccountListController extends Controller
 
         // Redirect ke halaman daftar kurir
         return redirect()->route('admin.index', ['type' => 'courier'])->with('success', 'Kurir berhasil ditambahkan!');
+    }
+
+    public function destroy($id)
+    {
+        $courier = Courier::findOrFail($id);
+
+        CourierLog::create([
+            'courier_id'   => $courier->id,
+            'name'         => $courier->name,
+            'email'        => $courier->email,
+            'phone'        => $courier->phone,
+            'birthdate'    => $courier->birthdate,
+            'gender'       => $courier->gender,
+            'address'      => $courier->address,
+            'city'         => $courier->city,
+            'plate_number' => $courier->plate_number,
+            // 'deleted_at'   => now() 
+        ]);
+
+        $courier->delete();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.index', ['type' => 'courier'])
+            ->with('success', 'Akun kurir berhasil dihapus dan disimpan di log.');
     }
 }

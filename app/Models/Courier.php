@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -13,6 +14,7 @@ class Courier extends Authenticatable
     /** @use HasFactory<\Database\Factories\CourierFactory> */
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
 
     protected $fillable = [
         'image',
@@ -53,5 +55,9 @@ class Courier extends Authenticatable
 
     public function transaction() {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function courierlog() {
+        return $this->hasMany(CourierLog::class);
     }
 }
