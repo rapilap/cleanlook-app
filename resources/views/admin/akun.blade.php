@@ -15,6 +15,7 @@
                         class="max-w-fit">Akun Pengguna</x-button>
                 </div>
                 <form action="{{ route('admin.index') }}" method="GET"> 
+                    <input type="hidden" name="type" value="{{ $dataType }}">
                     <input 
                     type="text"
                     name="search"
@@ -113,7 +114,7 @@
     {{-- Pagination --}}
     {{-- <div class="absolute bottom-0 inset-x-0 flex justify-between p-3 bg-white"> --}}
     <div class="mt-auto mb-1">
-        {{ $page->links() }}
+        {{ $page->appends(request()->except('page'))->links() }}
     </div>
 </x-app>
 <script>
@@ -126,3 +127,14 @@
         }, 300);
     }
 </script>
+
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'Berhasil!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif

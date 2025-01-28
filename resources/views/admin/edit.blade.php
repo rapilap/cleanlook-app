@@ -1,3 +1,6 @@
+{{-- Sweetalert2 --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <x-app title="Detail Akun {{ $user->id }}" bodyClass="h-screen flex flex-col gap-3">
     <div class="flex flex-row flex-grow w-full h-full">
         {{-- Sidebar --}}
@@ -75,9 +78,50 @@
             </div>
 
             {{-- Footer Section --}}
-            <form action="{{ route('admin.index', ['type' => $dataType]) }}" class="mt-auto mb-3">
-                <x-button variant="secondary" class="w-full">Kembali</x-button>
-            </form>
+            
+            @if ($dataType === 'courier')
+                <div class="flex flex-row mt-auto mb-3 gap-3">
+                    <form id="delete-form-{{ $user->id }}" action="{{ route('admin.destroy', $user->id) }}" method="POST" class="w-full hidden h-fit">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+
+                    <x-button 
+                        variant='danger'
+                        class="w-full h-fit"
+                        onclick="confirmDelete({{ $user->id }})">
+                        Hapus
+                    </x-button>
+                    
+                    <form action="{{ route('admin.index', ['type' => $dataType]) }}" class="w-full">
+                        <x-button variant="secondary" class="w-full">Kembali</x-button>
+                    </form>
+
+                </div>
+            @else
+                <form action="{{ route('admin.index', ['type' => $dataType]) }}" class="mt-auto mb-3">
+                    <x-button variant="secondary" class="w-full">Kembali</x-button>
+                </form>
+            @endif
         </div>
     </div>
 </x-app>
+
+<script>
+    function confirmDelete(courierId) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data kurir ini akan dihapus dan disimpan ke log!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`delete-form-${courierId}`).submit();
+            }
+        });
+    }
+</script>

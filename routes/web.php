@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/accounts/{id}', [AccountListController::class, 'edit'])->name('admin.edit');
         Route::get('/account/add', [AccountListController::class, 'create'])->name('admin.create');
         Route::post('/account/add', [AccountListController::class, 'store'])->name('admin.store');
+        Route::delete('/account/{id}', [AccountListController::class, 'destroy'])->name('admin.destroy');
         
         Route::get('/income', [HistoryAdminController::class, 'index'])->name('admin.history.index');
     
