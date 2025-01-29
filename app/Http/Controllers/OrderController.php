@@ -41,7 +41,7 @@ class OrderController extends Controller
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isProduction = config('midtrans.isProduction');
         // Set sanitization on (default)
         \Midtrans\Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
@@ -60,7 +60,9 @@ class OrderController extends Controller
         );
         
         $snapToken = \Midtrans\Snap::getSnapToken($params);
-        return view('berandauser', compact('snapToken', 'transaction'));
+
+        // dd($snapToken, $transaction);
+        return view('checkout', compact('snapToken', 'transaction'));
     }
     
     public function calculateTotal($category_id, $weight, $distance)
