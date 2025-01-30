@@ -9,18 +9,23 @@
     <div class="mt-5">
         Pesanan Berlangsung
     </div>
-    @foreach ($ongoingOrders as $order)
-        
-    <div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 mt-2">
-        <div>
-            <div class="text-lg font-bold text-black">{{ $order->courier->name }}</div>
-            <div class="text-sm text-gray-500">Rp. {{ number_format($order->price, 0, ',', '.') }}</div>
-            <div class="text-sm text-gray-500">{{ $order->landfill->name }}</div>
+    @if (count($ongoingOrders) > 0)
+        @foreach ($ongoingOrders as $order)
+        <div class="flex justify-between items-center p-4 border border-teal-500 rounded-lg font-sans w-50 mt-2">
+            <div>
+                <div class="text-lg font-bold text-black">{{ $order->courier->name ?? 'Mencari Kurir' }}</div>
+                <div class="text-sm text-gray-500">Rp. {{ number_format($order->price, 0, ',', '.') }}</div>
+                <div class="text-sm text-gray-500">{{ $order->landfill->name }}</div>
+            </div>
+            <x-button variant='secondary' class="">Lihat</x-button>
         </div>
-        <x-button variant='secondary' class="">Lihat</x-button>
-    </div>
-    @endforeach
-
+        @endforeach
+    @else
+        <div class="w-full text-center py-3">
+            Transaksi Kosong
+        </div>    
+    @endif
+    
     <div class="mt-5">
         Riwayat Pesanan
     </div>

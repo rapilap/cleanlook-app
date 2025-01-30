@@ -21,7 +21,7 @@ class HistoryUserController extends Controller
 
         $historyQuery = Transaction::with('landfill')
             ->where('user_id', $user)
-            ->where('status', 'completed');
+            ->where('status', ['completed', 'canceled']);
 
         if (!empty($search)) {
             $historyQuery->where(function ($query) use ($search) {
