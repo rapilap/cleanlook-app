@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\CourierOrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoryAdminController;
+use App\Http\Controllers\HistoryUserController;
 use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestController;
@@ -49,9 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home/nearby/{id}', [LandfillController::class, 'show'])->name('landfill.show');
     Route::post('/home/pay', [OrderController::class, 'payment'])->name('user.payment');
 
-    Route::get('/history', function() {
-        return view('user.history');
-    });
+    Route::get('/history', [HistoryUserController::class, 'index'])->name('user.orderHistory');
     
     Route::get('/profile', function () {
         return view('detailprofile');
