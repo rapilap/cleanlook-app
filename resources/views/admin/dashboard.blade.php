@@ -14,9 +14,16 @@
             </form>
         </div>
 
-        <div class="px-6 pt-3">
-            <x-button variant='primary' class="drop-shadow-lg">Bulan</x-button>
-            <x-button variant='primary' class="drop-shadow-lg">Tahun</x-button>
+        <!-- Filter Tahun / Bulan -->
+        <div class="px-6 pt-3 flex flex-row w-full justify-between">
+            <form method="GET" action="{{ route('admin.dashboard') }}">
+                <x-button name="filter" value="month" variant='primary' class="drop-shadow-lg">Bulan</x-button>
+                <x-button name="filter" value="year" variant='primary' class="drop-shadow-lg">Tahun</x-button>
+                <x-button type="submit" name="filter" value="all" variant='primary' class="drop-shadow-lg">Semua</x-button>
+            </form>
+            <div class="px-6 pt-3">
+                <h3 class="text-lg font-semibold">Periode: {{ $periode }}</h3>
+            </div>
         </div>
 
         <!-- Cards Section -->
@@ -30,12 +37,12 @@
                     </label>
                     <div class="h-full flex items-center">
                         <label for="" class="text-4xl">
-                            Organik
+                            {{ $currentWaste->category->cat_name ?? 'Tidak Ada' }}
                         </label>
                     </div>
                     <div class="text-lg flex items-end flex-row justify-between">
                         <label for="">
-                            Total = 30 kg
+                            Total = {{ $currentWaste->total_weight ?? 0 }} kg
                         </label>
                         <label for="">
                             -0.5%
@@ -51,7 +58,7 @@
                     </label>
                     <div class="h-full flex items-center">
                         <label for="" class="text-4xl">
-                            TPS Bantargebang
+                            {{ $currentTPS->landfill->name ?? 'Tidak Ada' }}
                         </label>
                     </div>
                     <div class="text-lg flex items-end flex-row justify-between">
@@ -59,7 +66,7 @@
                             Total = 30 kg
                         </label>
                         <label for="">
-                            1.5%
+                            TPS Sukajadi (50kg)
                         </label>
                     </div>
                 </div>
@@ -80,7 +87,7 @@
                             Total = 45 pesanan
                         </label>
                         <label for="">
-                            2.3%
+                            Budi (99 pesanan)
                         </label>
                     </div>
                 </div>
