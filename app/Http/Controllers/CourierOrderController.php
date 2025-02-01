@@ -24,4 +24,26 @@ class CourierOrderController extends Controller
 
         return view('berandakurir', compact(['courier', 'order', 'history']));
     }
+
+    public function accept(Request $request, $id)
+    {
+        $order = Transaction::findOrFail($id);
+
+        // Update status menjadi "pickup" dan tambahkan courier_id
+        $order->update([
+            'status' => 'pickup',
+            'courier_id' => Auth::id(),
+        ]);
+    
+        return view('courier.courierOrder', compact('order'));
+
+    }
+
+    // public function maps($id)
+    // {
+    //     $order = Transaction::findOrFail($id);
+
+    //     return view('tracking', compact('order'));
+    // }
+
 }

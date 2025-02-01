@@ -71,6 +71,9 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/history', function () {
         return view('courier.pendapatan');
     });
+
+    Route::patch('/courier/home/order/{id}', [CourierOrderController::class, 'accept'])->name('courier.accept');
+    // Route::get('/courier/maps/{id}', [OrderController::class, 'maps'])->name('courier.maps');
     
     Route::get('/courier/profile', function () {
         return view('detailprofile');
