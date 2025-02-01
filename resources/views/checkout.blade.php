@@ -121,7 +121,7 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
                 onSuccess: function(result){
                 /* You may add your own implementation here */
                 // alert("payment success!"); 
-                window.location.href = '/profile'; // ganti url routenya
+                window.location.href = '/history'; // ganti url routenya
                 console.log(result);
                 },
                 onPending: function(result){

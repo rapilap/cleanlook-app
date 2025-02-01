@@ -46,8 +46,14 @@
                         </div>
                         <p class="mt-3"><strong>Biaya:</strong> Rp. {{ number_format($item->price, 0, ',', '.') }}</p>
                         <div class="flex justify-between mt-4">
-                            <button class="bg-green-500 text-white px-4 py-2 rounded-lg">Pick</button>
-                            <button class="bg-red-500 text-white px-4 py-2 rounded-lg">Cancel</button>
+                            @if ($item->status === 'searching')
+                                <form action="{{ route('courier.accept', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg" type="submit">Pick</button>
+                                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg">Cancel</button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 @endforeach
