@@ -84,7 +84,7 @@ class OrderController extends Controller
     }
 
     public function callback(Request $request) {
-        dd($request->all());
+        // dd($request->all());
         $serverKey = config('midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
 
