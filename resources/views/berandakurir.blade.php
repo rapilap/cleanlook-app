@@ -4,7 +4,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <x-slot name="header">
         <!-- Navbar -->
         <nav class="bg-primary py-4 px-6 flex justify-between items-center">
             <div class="text-2xl font-bold">Cleanlook</div>
@@ -15,7 +14,6 @@
                 </button>
             </form>
         </nav>
-    </x-slot>
 
     <div class="mx-5 h-full">
         <div class="pt-6">
@@ -24,11 +22,11 @@
             <p class="text-sm text-gray-600 mb-6">Semangat dan selamat bekerja dengan Cleanlook</p>
         </div>
 
-        <div class="rounded-lg px-5 py-3 shadow-xl h-[730px] md:h-[420px]">
+        <div class="rounded-lg px-5 py-3 shadow-xl h-[670px] md:h-[420px]">
             <div class="drop-shadow-xl w-full mb-3">
                 <h3 class="text-md font-bold drop-shadow-md">Pesanan</h3>
             </div>
-            <div class="overflow-x-auto max-h-[660px] md:max-h-[200px] space-y-4">
+            <div class="overflow-x-auto max-h-[600px] md:max-h-[200px] space-y-4">
                 @foreach($order as $item)
                     <div class="p-2 rounded-lg shadow-lg bg-white">
                         <div class="mb-2">
