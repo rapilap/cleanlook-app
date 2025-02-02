@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AuthCourierController;
 use App\Http\Controllers\AuthUserController;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\CourierOrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoryAdminController;
@@ -51,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/home/pay', [OrderController::class, 'payment'])->name('user.payment');
 
     Route::get('/history', [HistoryUserController::class, 'index'])->name('user.orderHistory');
+    Route::get('/history/{id}', [HistoryUserController::class, 'track'])->name('user.orderTrack');
     
     Route::get('/profile', function () {
         return view('detailprofile');
@@ -67,6 +69,8 @@ Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.
 
 Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
+    Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
+
     
     Route::get('/courier/history', function () {
         return view('courier.pendapatan');

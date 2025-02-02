@@ -27,7 +27,9 @@ class Courier extends Authenticatable
         'city',
         'plate_number',
         'password',
-        'status'
+        'status',
+        'latitude',
+        'longitude',
     ];
 
     /**
