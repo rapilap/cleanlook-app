@@ -60,4 +60,26 @@
             </div>
         </div>
     </div>
+
+    <form action="{{ route('courier.location') }}" method="POST" id="location-form">
+        @csrf
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <button type="submit" id="update-location" class="hidden"></button>
+    </form>
+    
+    <script>
+        function updateLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                    document.getElementById('update-location').click();
+                });
+            }
+        }
+    
+        setInterval(updateLocation, 10000); // Kirim lokasi setiap 10 detik
+    </script>
+    
 </x-app_user>
