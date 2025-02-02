@@ -11,7 +11,7 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
     <div class="flex flex-col shadow-2xl w-fit rounded-lg p-3 mb-3">
         <table class="w-full">
             <tr>
-                <td>No pesanan</td> <td>:</td> <td>{{ $transaction->id }}</td>
+                <td>No pesanan</td> <td>:</td> <td>{{ $transaction->order_id }}</td>
             </tr>
             <tr>
                 <td>Tanggal</td> <td>:</td> <td>{{ $transaction->date }}</td>
