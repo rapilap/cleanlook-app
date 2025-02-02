@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileControllers;
 
 Route::get('/', function () {
     return view('auth.register');
@@ -61,6 +62,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->group(function() {
 });
+Route::get('/profile/{id}', [ProfileControllers::class, 'index'])->name('user.profile');
+Route::put('/profile/{id}/update', [ProfileControllers::class, 'updateProfile'])->name('user.update');
 
 Route::get('/courier', function() {
     return view('auth.loginCourier');
@@ -79,9 +82,9 @@ Route::middleware('auth:courier')->group(function () {
     Route::patch('/courier/home/order/{id}', [CourierOrderController::class, 'accept'])->name('courier.accept');
     // Route::get('/courier/maps/{id}', [OrderController::class, 'maps'])->name('courier.maps');
     
-    Route::get('/courier/profile', function () {
-        return view('detailprofile');
-    });
+    // Route::get('/profile', function () { 
+    //     return view('detailprofile');
+    // });
     
     Route::post('/logoutcourier', [AuthCourierController::class, 'logout'])->name('courier.logout');
 });
@@ -98,3 +101,4 @@ Route::get('/test-email', function () {
         return 'Error: ' . $e->getMessage();
     }
 }); 
+
