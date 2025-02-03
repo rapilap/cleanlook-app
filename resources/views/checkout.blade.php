@@ -8,7 +8,7 @@ src="https://app.sandbox.midtrans.com/snap/snap.js"
 data-client-key="{{ config('midtrans.clientKey') }}"></script>
 
 <x-app_user title="Payment Checkout" bodyClass='p-3'>
-    <div class="flex flex-col shadow-2xl w-fit rounded-lg p-3 mb-3">
+    <div class="flex flex-col shadow-2xl w-full h-[500px] rounded-lg p-3 mb-3">
         <table class="w-full">
             <tr>
                 <td>No pesanan</td> <td>:</td> <td>{{ $transaction->order_id }}</td>
@@ -36,9 +36,9 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
             </tr>
         </table>
         <div class="bg-white h-64">
+            <div name="map" id="map" class="w-full h-full"></div>
             <div name="geolocate" id="geolocate" class="w-fit"></div>
             &ensp;
-            <div name="map" id="map" class="w-full h-full"></div>
         </div>
     </div>
     <div class="mt-14 w-full gap-3 flex flex-row justify-end">
