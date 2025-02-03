@@ -1,3 +1,8 @@
+<head>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet" />
+</head>
+
 <x-app_user title="Order" bodyClass="py-3">
     <div class="">
         <div class="drop-shadow-md border-b-2 text-center text-lg">{{ $order->id }}</div>
@@ -19,8 +24,7 @@
         </div>
 
         <div class="drop-shadow-md">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6305.92234690333!2d107.6138803237451!3d-6.889502028580156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6f8aa08188b%3A0x632d24e6061e8903!2sUniversitas%20Komputer%20Indonesia!5e1!3m2!1sen!2sid!4v1736306642798!5m2!1sen!2sid" 
-            class="w-full h-52 border drop-shadow-md" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="map" style="width: 100%; height: 340px;" class="mt-4"></div>
         </div>
 
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
@@ -57,4 +61,18 @@
 
         document.getElementById("updateStatusForm").submit();
     });
+</script>
+<script>
+    mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [{{ $order->courier->longitude }}, {{ $order->courier->latitude }}],
+        zoom: 13
+    });
+
+    new mapboxgl.Marker()
+        .setLngLat([{{ $order->courier->longitude }}, {{ $order->courier->latitude }}])
+        .addTo(map);
 </script>
