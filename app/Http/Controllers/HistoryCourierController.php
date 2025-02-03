@@ -32,16 +32,14 @@ class HistoryCourierController extends Controller
 
     // Ambil pemasukan terakhir dari transaksi terakhir hari ini
     $lastTransaction = Transaction::where('courier_id', $id_courier)
-        ->whereDate('date', $today)
-        ->latest('date')
-        ->first();
+    ->whereDate('created_at', $today)
+    ->latest('created_at')
+    ->first();
 
-    // Jika ada transaksi terakhir, tambahkan ke total pendapatan
-    if ($lastTransaction) {
-        $totalPendapatan += $lastTransaction->price;
-    }
+    // Ambil harga transaksi terakhir
+    $lastTransactionPrice = $lastTransaction ? $lastTransaction->price : 0;
 
-    return view('courier.pendapatan', compact('history_courier', 'user', 'today', 'lastTransaction', 'totalPendapatan'));
+    return view('courier.pendapatan', compact('history_courier', 'user', 'today', 'lastTransactionPrice', 'totalPendapatan'));
 }
 
 }
