@@ -30,8 +30,15 @@
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
             Tujuan
             <div class="flex flex-row text-start mt-2 justify-between pb-3">
+<<<<<<< HEAD
                 {{ $order->landfill->name }}
                 <div>
+=======
+                <div class="w-full">
+                    {{ $order->landfill->name }}
+                </div>
+                <div class="w-full">
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
                     {{ $order->landfill->address }}
                 </div>
             </div>
@@ -50,6 +57,7 @@
 </x-app_user>
 <script>
     document.getElementById("statusButton").addEventListener("click", function(event) {
+<<<<<<< HEAD
         event.preventDefault();
         let currentStatus = document.getElementById("statusField").value;
 
@@ -63,6 +71,33 @@
     });
 </script>
 <script>
+=======
+    event.preventDefault();
+    let statusField = document.getElementById("statusField");
+    let currentStatus = statusField.value;
+
+    if (currentStatus === "pickup") {
+        statusField.value = "deliver";
+
+        // Hapus marker pickup
+        pickupMarker.remove();
+
+        // Tambahkan marker baru untuk tujuan (TPS)
+        landfillMarker.addTo(map);
+
+        // Update rute ke landfill
+        updateRoute(courierLocation, landfillLocation);
+    } else if (currentStatus === "deliver") {
+        statusField.value = "completed";
+    }
+
+    document.getElementById("updateStatusForm").submit();
+});
+
+
+</script>
+{{-- <script>
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
     mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
 
     var map = new mapboxgl.Map({
@@ -75,4 +110,92 @@
     new mapboxgl.Marker()
         .setLngLat([{{ $order->courier->longitude }}, {{ $order->courier->latitude }}])
         .addTo(map);
+<<<<<<< HEAD
+=======
+</script> --}}
+
+<script>
+    mapboxgl.accessToken = "{{ config('services.mapbox.access_token') }}";
+
+    // Koordinat Titik Jemput dan TPS
+    var pickupLocation = [{{ $order->pickup_long }}, {{ $order->pickup_lat }}]; // Koordinat alamat jemput
+    var landfillLocation = [{{ $order->landfill->longitude }}, {{ $order->landfill->latitude }}]; // Koordinat TPS
+    var courierLocation = [{{ $order->courier->longitude }}, {{ $order->courier->latitude }}];
+
+    // Inisialisasi Peta
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: courierLocation, // Titik pusat peta
+        zoom: 13
+    });
+
+    // Tambahkan Marker untuk Titik Jemput
+    new mapboxgl.Marker({ color: "green" })
+        .setLngLat(courierLocation)
+        .setPopup(new mapboxgl.Popup().setHTML("<b>Kurir</b><br>{{ $order->courier->name }}"))
+        .addTo(map);
+
+    // Tambahkan Marker untuk TPS
+    var pickupMarker = new mapboxgl.Marker({ color: "red" })
+        .setLngLat(pickupLocation)
+        .setPopup(new mapboxgl.Popup().setHTML("<b>Ambil</b><br>{{ $order->address }}"))
+        .addTo(map);
+
+    var landfillMarker = new mapboxgl.Marker({ color: "red" })
+        .setLngLat(landfillLocation)
+        .setPopup(new mapboxgl.Popup().setHTML("<b>TPS</b><br>{{ $order->landfill->name }}"));
+
+    // Ambil rute antara titik jemput dan TPS
+    function updateRoute(start, end) {
+    fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&access_token={{ config('services.mapbox.access_token') }}`
+    )
+    .then(response => response.json())
+    .then(json => {
+        console.log("Route response:", json); // Debugging: cek response API
+        if (!json.routes || json.routes.length === 0) {
+            console.error("No route found");
+            return;
+        }
+
+        const routeData = json.routes[0].geometry;
+
+        if (map.getSource("route")) {
+            map.getSource("route").setData({
+                type: "Feature",
+                properties: {},
+                geometry: routeData
+            });
+        } else {
+            map.addSource("route", {
+                type: "geojson",
+                data: {
+                    type: "Feature",
+                    properties: {},
+                    geometry: routeData
+                }
+            });
+
+            map.addLayer({
+                id: "route",
+                type: "line",
+                source: "route",
+                layout: { "line-cap": "round", "line-join": "round" },
+                paint: { "line-color": "#1db7dd", "line-width": 5 }
+            });
+        }
+    })
+    .catch(error => console.error("Error fetching route:", error));
+}
+
+
+    // map.on('load', function () {
+    //     getRoute(courierLocation, pickupLocation);
+    // });
+    map.on("load", function () {
+    updateRoute(courierLocation, pickupLocation);
+});
+
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
 </script>

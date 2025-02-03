@@ -2,7 +2,7 @@
   <div class="text-white p-6 rounded-b-full h-full" style="background-color: #0D9276">
     <div>
       <div class="text-sm mb-4">
-        <p>Selamat Pagi,</p>
+        <p>Selamat Datang,</p>
         <h1 class="text-2xl font-bold" id="user-name">{{$user->name}}</h1>
       </div>
     </div>

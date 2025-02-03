@@ -73,14 +73,26 @@ Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.
 
 Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
+<<<<<<< HEAD
     
     Route::get('/courier/history', function () {
         return view('courier.pendapatan');
     });
+=======
+    Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
+
+    Route::get('/courier/history', [HistoryCourierController::class, 'index'])->name('courier.history');
+
+    Route::patch('/courier/home/order/{id}', [CourierOrderController::class, 'accept'])->name('courier.accept');
+    Route::get('/courier/home/order/{id}', [CourierOrderController::class, 'detail'])->name('courier.detail');
+    Route::patch('/courier/home/order/update/{id}', [CourierOrderController::class, 'updateStatus'])->name('order.status');
+
+    // Route::get('/courier/maps/{id}', [OrderController::class, 'maps'])->name('courier.maps');
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
     
-    Route::get('/courier/profile', function () {
-        return view('detailprofile');
-    });
+    // Route::get('/profile', function () { 
+    //     return view('detailprofile');
+    // });
     
     Route::post('/logoutcourier', [AuthCourierController::class, 'logout'])->name('courier.logout');
 });

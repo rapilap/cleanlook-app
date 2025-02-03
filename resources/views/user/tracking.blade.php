@@ -10,7 +10,11 @@
         <div class="text-center items-center p-3 drop-shadow-md border-b-2">
             Pesanan
             <div class="flex flex-col text-start">
+<<<<<<< HEAD
                 {{ $order->courier->name }}
+=======
+                {{ $order->courier->name }} ({{ $order->courier->plate_number }})
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
                 <div class="flex flex-row justify-between items-center">
                     <div>{{ $order->courier->phone ?? 'Tidak Ada' }}</div>
                     <button class="p-2 hover:bg-slate-300">
