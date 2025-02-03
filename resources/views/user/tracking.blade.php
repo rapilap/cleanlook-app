@@ -29,19 +29,13 @@
 
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
             Tujuan
-            <div class="flex flex-row text-start justify-between pb-3">
+            <div class="flex flex-row text-start mt-2 justify-between pb-3">
                 {{ $order->landfill->name }}
                 <div>
                     {{ $order->landfill->address }}
                 </div>
             </div>
         </div>
-
-        {{-- <div class="text-center pt-3 px-3">
-            <x-button variant="primary" class="w-full">
-                Konfirmasi Pengambilan
-            </x-button>
-        </div> --}}
     </div>
 </x-app_user>
 

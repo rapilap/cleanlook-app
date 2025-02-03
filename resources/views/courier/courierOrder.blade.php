@@ -4,7 +4,7 @@
 </head>
 
 <x-app_user title="Order" bodyClass="py-3">
-    <div class="">
+    <div class="overflow-auto mb-16">
         <div class="drop-shadow-md border-b-2 text-center text-lg">{{ $order->id }}</div>
 
         <div class="text-center items-center p-3 drop-shadow-md border-b-2">
@@ -29,7 +29,7 @@
 
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
             Tujuan
-            <div class="flex flex-row text-start justify-between pb-3">
+            <div class="flex flex-row text-start mt-2 justify-between pb-3">
                 {{ $order->landfill->name }}
                 <div>
                     {{ $order->landfill->address }}

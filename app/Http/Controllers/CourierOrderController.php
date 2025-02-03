@@ -21,6 +21,7 @@ class CourierOrderController extends Controller
 
         // Jika kurir belum mengambil pesanan, tampilkan semua yang courier_id = null
         $order = $activeOrder ? collect([]) : Transaction::with(['courier', 'user', 'landfill'])
+            ->whereIn('status', ['searching'])
             ->whereNull('courier_id')
             ->get();
 
