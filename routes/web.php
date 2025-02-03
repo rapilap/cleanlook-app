@@ -73,12 +73,10 @@ Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.
 
 Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
-<<<<<<< HEAD
+
     
-    Route::get('/courier/history', function () {
-        return view('courier.pendapatan');
-    });
-=======
+    
+
     Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
 
     Route::get('/courier/history', [HistoryCourierController::class, 'index'])->name('courier.history');
@@ -88,7 +86,7 @@ Route::middleware('auth:courier')->group(function () {
     Route::patch('/courier/home/order/update/{id}', [CourierOrderController::class, 'updateStatus'])->name('order.status');
 
     // Route::get('/courier/maps/{id}', [OrderController::class, 'maps'])->name('courier.maps');
->>>>>>> baad1804da9abbee120eed27c261ff002465d5df
+
     
     // Route::get('/profile', function () { 
     //     return view('detailprofile');
