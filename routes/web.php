@@ -7,6 +7,7 @@ use App\Http\Controllers\CourierController;
 use App\Http\Controllers\CourierOrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoryAdminController;
+use App\Http\Controllers\HistoryCourierController;
 use App\Http\Controllers\HistoryUserController;
 use App\Http\Controllers\LandfillController;
 use App\Http\Controllers\OrderController;
@@ -74,10 +75,7 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
     Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
 
-    
-    Route::get('/courier/history', function () {
-        return view('courier.pendapatan');
-    });
+    Route::get('/courier/history', [HistoryCourierController::class, 'index'])->name('courier.history');
 
     Route::patch('/courier/home/order/{id}', [CourierOrderController::class, 'accept'])->name('courier.accept');
     Route::get('/courier/home/order/{id}', [CourierOrderController::class, 'detail'])->name('courier.detail');
@@ -103,5 +101,4 @@ Route::get('/test-email', function () {
     } catch (\Exception $e) {
         return 'Error: ' . $e->getMessage();
     }
-}); 
-
+});
