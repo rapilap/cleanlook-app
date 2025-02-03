@@ -20,7 +20,7 @@
             </div>
             <div class="ml-2">
               <p class="text-sm font-medium">Pemasukkan</p>
-              <p class="text-lg font-bold" id="total-income">Rp. {{ number_format($lastTransaction, 0, ',', '.') }}</p>
+              <p class="text-lg font-bold" id="total-income">Rp. {{ number_format($lastTransactionPrice, 0, ',', '.') }}</p>
             </div>
           </div>
           </div>
