@@ -97,45 +97,14 @@ class LandfillController extends Controller
         return redirect()->route('landfill.index')->with('success', 'Data berhasil dihapus');
     }
 
-    // public function getNearbyLandfills(Request $request)
-    // {
-    //     $latitude = $request->input('latitude');
-    //     $longitude = $request->input('longitude');
-
-    //     $landfills = Landfill::select(
-    //         'id',
-    //         'name',
-    //         'address',
-    //         'latitude',
-    //         'longitude',
-    //         'capacity',
-    //         DB::raw("(
-    //             6371 * acos(
-    //                 cos(radians($latitude)) *
-    //                 cos(radians(latitude)) *
-    //                 cos(radians(longitude) - radians($longitude)) +
-    //                 sin(radians($latitude)) *
-    //                 sin(radians(latitude))
-    //             )
-    //         ) AS distance")
-    //     )
-    //     ->orderBy('distance', 'asc') // Urutkan berdasarkan jarak
-    //     ->limit(5) // Ambil hanya 5 TPS terdekat
-    //     ->get();
-
-    //     return response()->json($landfills);
-    // }
-
     public function getNearbyLandfills(Request $request) {
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
     
-        // Validasi input
         if (!$latitude || !$longitude) {
             return response()->json(['error' => 'Koordinat tidak valid'], 400);
         }
     
-        // Cari TPS terdekat
         $landfills = Landfill::select('id', 'name', 'latitude', 'longitude')
             ->get()
             ->map(function ($landfill) use ($latitude, $longitude) {
@@ -143,16 +112,15 @@ class LandfillController extends Controller
                 $landfill->distance = $distance;
                 return $landfill;
             })
-            ->sortBy('distance') // Urutkan berdasarkan jarak
+            ->sortBy('distance')
             ->values()
-            ->take(5); // Ambil 5 TPS terdekat
+            ->take(1);
     
         return response()->json($landfills);
     }
     
-    // Fungsi kalkulasi jarak Haversine Formula
     private function calculateDistance($lat1, $lon1, $lat2, $lon2) {
-        $earthRadius = 6371; // Radius bumi dalam kilometer
+        $earthRadius = 6371;
         $dLat = deg2rad($lat2 - $lat1);
         $dLon = deg2rad($lon2 - $lon1);
     
@@ -162,7 +130,7 @@ class LandfillController extends Controller
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
         $distance = $earthRadius * $c;
     
-        return $distance; // Jarak dalam kilometer
+        return $distance;
     }    
 
     public function show($id)
