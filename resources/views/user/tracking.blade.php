@@ -19,12 +19,12 @@
                         </svg>
                     </button>
                 </div>
-                {{-- {{ $order->address }} --}}
+                {{ $order->status == 'pickup' ? 'Sedang Diambil' : ($order->status == 'deliver' ? 'Sedang Diantar' : 'Selesai') }}
             </div>
         </div>
 
         <div class="drop-shadow-md">
-            <div id="map" style="width: 100%; height: 400px;" class="mt-4"></div>
+            <div id="map" style="width: 100%; height: 380px;" class="mt-4"></div>
         </div>
 
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
