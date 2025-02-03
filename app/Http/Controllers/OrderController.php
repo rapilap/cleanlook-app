@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -16,52 +17,49 @@ class OrderController extends Controller
         return view('berandauser',compact('category'));
     }
 
-    
     public function payment(Request $request)
     {
-        
-        $request->request->add(['price'=>$request->price, 'status' => 'unpaid']);
+        $request->request->add(['price' => $request->price, 'status' => 'unpaid']);
+
+        $order_id = 'CL-' . time() . '-' . uniqid();
+
         $transaction = Transaction::create([
             'user_id' => Auth::id(),
-            'courier_id' => null, // Belum ada kurir
+            'courier_id' => null,
             'category_id' => $request->type_sampah,
             'landfill_id' => $request->landfill,
-            'date'=>now(),
+            'date' => now(),
             'pickup_lat' => $request->pickup_lat,
             'pickup_long' => $request->pickup_long,
             'address' => $request->alamat,
             'weight' => $request->berat,
             'price' => $request->price,
             'status' => 'unpaid',
+            'order_id' => $order_id, // Langsung masukkan order_id
         ]);
 
         $user = Auth::user();
-        
-        // dd($transaction);
+
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-        // Set sanitization on (default)
         \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => $transaction->id,
+        $params = [
+            'transaction_details' => [
+                'order_id' => $order_id,
                 'gross_amount' => $transaction->price,
-            ),
-            'customer_details' => array(
+            ],
+            'customer_details' => [
                 'first_name' => $user->name,
                 'last_name' => '',
                 'phone' => $user->phone,
-            ),
-        );
-        
+            ],
+        ];
+
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        // dd($snapToken, $transaction);
         return view('checkout', compact('snapToken', 'transaction'));
     }
     
@@ -84,14 +82,21 @@ class OrderController extends Controller
     }
 
     public function callback(Request $request) {
-        $serverKey = config('midtrans.server_key ');
+        // dd($request->all());
+        $serverKey = config('midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
-
-        if($hashed == $request->signature_key) {
-            if($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
-                $order = Transaction::find($request->order_id);
-                $order->update(['status' => 'searching']);
+    
+        if ($hashed == $request->signature_key) {
+            if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                $order = Transaction::where('order_id', $request->order_id)->first();
+    
+                if ($order) { // Cek apakah transaksi ditemukan
+                    $order->update(['status' => 'searching']);
+                } else {
+                    Log::error('Transaction not found: ' . $request->order_id);
+                }
             }
         }
     }
+    
 }

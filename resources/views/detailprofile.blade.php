@@ -141,7 +141,13 @@
     </style>
 </head>
 
+{{-- @dump($data); --}}
 <x-app_user title="Profil">
+<form action="{{ route('user.update', ['id'=>$data->id]) }}" method="POST">
+    
+    @method('PUT')
+    @csrf
+
     <div class="container">
         <div class="profile-header">
             <h1>Profile</h1>
@@ -151,83 +157,61 @@
             <button class="change-photo-btn">Ubah foto</button>
         </div>
 
-        <form action="/update-profile" method="POST">
+        <div>
             <div class="form-group">
                 <label for="firstName">nama</label>
-                <input type="text" class="form-control" id="firstName" placeholder="enter your first name">
+                <input value="{{ $data->name }}" name="name" type="text" class="form-control" id="firstName" placeholder="enter your first name">
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="enter your email">
+                <input value="{{ $data->email }}" name="email" type="email" class="form-control" id="email" placeholder="enter your email">
             </div>
 
             <div class="form-group">
                 <label for="alamat">Alamat</label>
-                <input type="text" class="form-control" id="alamat" placeholder="enter your address">
+                <input value="{{ $data->address }}" name="address" type="text" class="form-control" id="alamat" placeholder="enter your address">
             </div>
 
             <div class="form-group">
                 <label for="phone">No. Handphone</label>
-                <input type="tel" class="form-control" id="phone" placeholder="enter your Number">
+                <input value="{{ $data->phone }}" name="phone" type="tel" class="form-control" id="phone" placeholder="enter your Number">
             </div>
 
             <div class="form-group">
                 <label for="birthDate">Tanggal Lahir</label>
-                <input type="date" class="form-control" id="birthDate" placeholder="enter your Birth Date">
+                <input value="{{ $data->birthdate }}" name="birthdate" type="date" class="form-control" id="birthDate" placeholder="enter your Birth Date">
             </div>
 
             <div class="form-group">
                 <label for="gender">Jenis kelamin</label>
-                <select class="form-control" id="gender">
+                <select class="form-control" id="gender" name="gender">
                     <option value="">Masukan Jenis Kelamin</option>
-                    <option value="male">Pria</option>
-                    <option value="female">Wanita</option>
+                    <option value="P" {{ old('gender', $data->gender ?? '') == 'P' ? 'selected' : '' }}>Wanita</option>
+                    <option value="L" {{ old('gender', $data->gender ?? '') == 'L' ? 'selected' : '' }}>Pria</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="enter your password">
+                <label for="password">New Password</label>
+                <input name="password" type="password" class="form-control" id="password" placeholder="enter your password">
+                @error('password')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirmation">Confirm Password</label>
+                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="Confirm new password">
             </div>
 
             <div class="button-group">
                 <button type="button" class="btn btn-edit">Edit</button>
                 <button type="submit" class="btn btn-save">Save</button>
             </div>
-        </form>
+        </div>
     </div>
-
-    <!-- Tambahkan navigation bar di bawah -->
-    <div class="nav-bottom">
-        <a href="/berandauser" class="nav-item">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12 2L3 9V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V9L12 2Z"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Beranda
-        </a>
-        <a href="/pesanan" class="nav-item">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M9 5H7C6.46957 5 5.96086 5.21071 5.58579 5.58579C5.21071 5.96086 5 6.46957 5 7V19C5 19.5304 5.21071 20.0391 5.58579 20.4142C5.96086 20.7893 6.46957 21 7 21H17C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V7C19 6.46957 18.7893 5.96086 18.4142 5.58579C18.0391 5.21071 17.5304 5 17 5H15"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Pesanan
-        </a>
-        <a href="/detailprofile" class="nav-item active">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Profil
-        </a>
-    </div>
+</form>
 </x-app_user>
 
 </html>

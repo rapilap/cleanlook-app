@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AuthCourierController;
 use App\Http\Controllers\AuthUserController;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\CourierOrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoryAdminController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileControllers;
 
 Route::get('/', function () {
     return view('auth.register');
@@ -52,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/home/pay', [OrderController::class, 'payment'])->name('user.payment');
 
     Route::get('/history', [HistoryUserController::class, 'index'])->name('user.orderHistory');
+    Route::get('/history/{id}', [HistoryUserController::class, 'track'])->name('user.orderTrack');
     
     Route::get('/profile', function () {
         return view('detailprofile');
@@ -60,6 +63,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->group(function() {
 });
+Route::get('/profile/{id}', [ProfileControllers::class, 'index'])->name('user.profile');
+Route::put('/profile/{id}/update', [ProfileControllers::class, 'updateProfile'])->name('user.update');
 
 Route::get('/courier', function() {
     return view('auth.loginCourier');
@@ -68,7 +73,10 @@ Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.
 
 Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
-    Route::get('/courier/history', [HistoryCourierController::class, 'index'])->name('courier.history');
+    
+    Route::get('/courier/history', function () {
+        return view('courier.pendapatan');
+    });
     
     Route::get('/courier/profile', function () {
         return view('detailprofile');
@@ -88,4 +96,4 @@ Route::get('/test-email', function () {
     } catch (\Exception $e) {
         return 'Error: ' . $e->getMessage();
     }
-});
+}); 

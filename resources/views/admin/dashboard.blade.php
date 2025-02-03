@@ -14,102 +14,80 @@
             </form>
         </div>
 
-        <div class="px-6 pt-3">
-            <x-button variant='primary' class="drop-shadow-lg">Bulan</x-button>
-            <x-button variant='primary' class="drop-shadow-lg">Tahun</x-button>
+        <!-- Filter -->
+        <div class="px-6 pt-3 flex flex-row w-full justify-between">
+            <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-4">
+                <div class="flex flex-col">
+                    <label for="start_date" class="text-sm font-semibold">Tanggal Awal</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}" class="border border-gray-300 rounded-lg p-2 shadow-md">
+                </div>
+                
+                <div class="flex flex-col">
+                    <label for="end_date" class="text-sm font-semibold">Tanggal Akhir</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}" class="border border-gray-300 rounded-lg p-2 shadow-md">
+                </div>
+        
+                <x-button type="submit" variant="primary" class="drop-shadow-lg mt-5">Filter</x-button>
+            </form>
+            
+            <div class="px-6 pt-3">
+                <h3 class="text-lg font-semibold">
+                    Periode: {{ $periode ?? 'Semua Waktu' }}
+                </h3>
+            </div>
         </div>
 
         <!-- Cards Section -->
         <div class="px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
 
-            <div class="flex flex-row w-full gap-4 pt-2 h-44">
-                <div class="h-full bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md w-full">
-                    <div class="p-2 text-2xl gap-3 flex flex-col h-full">
-                        <label for="" class="">
-                        Sampah Dominan:
-                    </label>
-                    <div class="h-full flex items-center">
-                        <label for="" class="text-4xl">
-                            Organik
-                        </label>
+                <div class="h-44 bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md p-4 flex flex-col justify-between">
+                    <label class="text-2xl font-semibold">Sampah Dominan:</label>
+                    <div class="flex-1 flex items-center">
+                        <span class="text-4xl font-bold">
+                            {{ $currentWaste->category->cat_name ?? 'Tidak Ada' }}
+                        </span>
                     </div>
-                    <div class="text-lg flex items-end flex-row justify-between">
-                        <label for="">
-                            Total = 30 kg
-                        </label>
-                        <label for="">
-                            -0.5%
-                        </label>
+                    <div class="text-lg flex justify-between">
+                        <span>Total = {{ $currentWaste->total_weight ?? 0 }} kg</span>
                     </div>
                 </div>
-            </div>
-            
-            <div class="h-full bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md w-full ">
-                <div class="p-2 text-2xl gap-3 flex flex-col h-full">
-                    <label for="" class="">
-                        TPS Dominan:
-                    </label>
-                    <div class="h-full flex items-center">
-                        <label for="" class="text-4xl">
-                            TPS Bantargebang
-                        </label>
-                    </div>
-                    <div class="text-lg flex items-end flex-row justify-between">
-                        <label for="">
-                            Total = 30 kg
-                        </label>
-                        <label for="">
-                            1.5%
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="h-full bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md w-full ">
-                <div class="p-2 text-2xl gap-3 flex flex-col h-full">
-                    <label for="" class="">
-                        Kurir Teladan:
-                    </label>
-                    <div class="h-full flex items-center">
-                        <label for="" class="text-4xl">
-                            Rahmat
-                        </label>
-                    </div>
-                    <div class="text-lg flex items-end flex-row justify-between">
-                        <label for="">
-                            Total = 45 pesanan
-                        </label>
-                        <label for="">
-                            2.3%
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="h-full bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md w-full ">
-                <div class="p-2 text-2xl gap-3 flex flex-col h-full">
-                    <label for="" class="">
-                        Pendapatan:
-                    </label>
-                    <div class="h-full flex items-center">
-                        <label for="" class="text-4xl">
-                            Rp. 1.500.000
-                        </label>
-                    </div>
-                    <div class="text-lg flex items-end flex-row justify-between">
-                        <label for="">
-                            -0.5%
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
         
-        <!-- Overview Section -->
-        <div class="w-full mt-3">
-            <h3 class="text-lg font-semibold">Overview</h3>
-            <div class="h-52 rounded-lg shadow-md border border-primary"></div>
+                <div class="h-44 bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md p-4 flex flex-col justify-between">
+                    <label class="text-2xl font-semibold">TPS Dominan:</label>
+                    <div class="flex-1 flex items-center">
+                        <span class="text-4xl font-bold">
+                            {{ $currentTPS->landfill->name ?? 'Tidak Ada' }}
+                        </span>
+                    </div>
+                    <div class="text-lg flex justify-between">
+                        <span>Total = {{ $currentTPS->total_tps ?? 0 }} kg</span>
+                    </div>
+                </div>
+        
+                <div class="h-44 bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md p-4 flex flex-col justify-between">
+                    <label class="text-2xl font-semibold">Kurir Teladan:</label>
+                    <div class="flex-1 flex items-center">
+                        <span class="text-4xl font-bold">
+                            {{ $topCourier->courier->name ?? 'Tidak Ada' }}
+                        </span>
+                    </div>
+                    <div class="text-lg flex justify-between">
+                        <span>Total = {{ $topCourier->total_orders ?? 0 }} pesanan</span>
+                    </div>
+                </div>
+        
+                <div class="h-44 bg-white rounded-lg drop-shadow-lg border border-primary hover:border-secondary shadow-md p-4 flex flex-col justify-between">
+                    <label class="text-2xl font-semibold">Pendapatan:</label>
+                    <div class="flex-1 flex items-center">
+                        <span class="text-4xl font-bold">
+                            Rp. {{ number_format($currentRevenue, 0, ',', '.') }}
+                        </span>
+                    </div>
+                    <div class="text-lg flex justify-between">
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     </div>
 </x-app>

@@ -17,7 +17,13 @@
                 <div class="text-sm text-gray-500">Rp. {{ number_format($order->price, 0, ',', '.') }}</div>
                 <div class="text-sm text-gray-500">{{ $order->landfill->name }}</div>
             </div>
-            <x-button variant='secondary' class="">Lihat</x-button>
+            @if ($order->status == 'searching')
+                <x-button variant='secondary' class="btn" disabled="disabled">Lihat</x-button>
+            @else
+                <form action="{{ route('user.orderTrack', $order->id) }}" method="GET">
+                    <x-button variant='secondary' class="">Lihat</x-button>
+                </form>
+            @endif
         </div>
         @endforeach
     @else
