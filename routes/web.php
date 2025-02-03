@@ -80,6 +80,9 @@ Route::middleware('auth:courier')->group(function () {
     });
 
     Route::patch('/courier/home/order/{id}', [CourierOrderController::class, 'accept'])->name('courier.accept');
+    Route::get('/courier/home/order/{id}', [CourierOrderController::class, 'detail'])->name('courier.detail');
+    Route::patch('/courier/home/order/update/{id}', [CourierOrderController::class, 'updateStatus'])->name('order.status');
+
     // Route::get('/courier/maps/{id}', [OrderController::class, 'maps'])->name('courier.maps');
     
     // Route::get('/profile', function () { 

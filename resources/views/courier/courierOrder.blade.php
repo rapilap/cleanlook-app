@@ -33,10 +33,28 @@
             </div>
         </div>
 
-        <div class="text-center pt-3 px-3">
-            <x-button variant="primary" class="w-full">
-                Konfirmasi Pengambilan
+        <form id="updateStatusForm" action="{{ route('order.status', $order->id) }}" method="POST" class="text-center pt-3 px-3">
+            @csrf
+            @method("PATCH")
+            <input type="hidden" name="status" id="statusField" value="{{ $order->status }}">
+        
+            <x-button variant="secondary" class="w-full" id="statusButton">
+                {{ $order->status == 'pickup' ? 'Konfirmasi Pengambilan' : ($order->status == 'deliver' ? 'Selesaikan' : 'Selesai') }}
             </x-button>
-        </div>
+        </form>
     </div>
 </x-app_user>
+<script>
+    document.getElementById("statusButton").addEventListener("click", function(event) {
+        event.preventDefault();
+        let currentStatus = document.getElementById("statusField").value;
+
+        if (currentStatus === "pickup") {
+            document.getElementById("statusField").value = "deliver";
+        } else if (currentStatus === "deliver") {
+            document.getElementById("statusField").value = "completed";
+        }
+
+        document.getElementById("updateStatusForm").submit();
+    });
+</script>
