@@ -4,27 +4,27 @@
 </head>
 
 <x-app_user title="Order" bodyClass="py-3">
-    <div class="overflow-auto mb-16">
+    <div class="">
         <div class="drop-shadow-md border-b-2 text-center text-lg">{{ $order->id }}</div>
 
         <div class="text-center items-center p-3 drop-shadow-md border-b-2">
-            Pengambilan
+            Pesanan
             <div class="flex flex-col text-start">
-                {{ $order->user->name }}
+                {{ $order->courier->name }}
                 <div class="flex flex-row justify-between items-center">
-                    <div>{{ $order->user->phone ?? 'Tidak Ada' }}</div>
+                    <div>{{ $order->courier->phone ?? 'Tidak Ada' }}</div>
                     <button class="p-2 hover:bg-slate-300">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                             <path d="M22.707 16.293l-4-4a1 1 0 0 0-1.414 0l-3 3a1 1 0 0 1-1.414 0l-6-6a1 1 0 0 1 0-1.414l3-3a1 1 0 0 0 0-1.414l-4-4A1 1 0 0 0 4 2H2a1 1 0 0 0-1 1C1 11.837 9.163 20 18 20a1 1 0 0 0 1-1v-2a1 1 0 0 0-.293-.707z"/>
                         </svg>
                     </button>
                 </div>
-                {{ $order->address }}
+                {{ $order->status == 'pickup' ? 'Sedang Diambil' : ($order->status == 'deliver' ? 'Sedang Diantar' : 'Selesai') }}
             </div>
         </div>
 
         <div class="drop-shadow-md">
-            <div id="map" style="width: 100%; height: 340px;" class="mt-4"></div>
+            <div id="map" style="width: 100%; height: 380px;" class="mt-4"></div>
         </div>
 
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
@@ -36,32 +36,9 @@
                 </div>
             </div>
         </div>
-
-        <form id="updateStatusForm" action="{{ route('order.status', $order->id) }}" method="POST" class="text-center pt-3 px-3">
-            @csrf
-            @method("PATCH")
-            <input type="hidden" name="status" id="statusField" value="{{ $order->status }}">
-        
-            <x-button variant="secondary" class="w-full" id="statusButton">
-                {{ $order->status == 'pickup' ? 'Konfirmasi Pengambilan' : ($order->status == 'deliver' ? 'Selesaikan' : 'Selesai') }}
-            </x-button>
-        </form>
     </div>
 </x-app_user>
-<script>
-    document.getElementById("statusButton").addEventListener("click", function(event) {
-        event.preventDefault();
-        let currentStatus = document.getElementById("statusField").value;
 
-        if (currentStatus === "pickup") {
-            document.getElementById("statusField").value = "deliver";
-        } else if (currentStatus === "deliver") {
-            document.getElementById("statusField").value = "completed";
-        }
-
-        document.getElementById("updateStatusForm").submit();
-    });
-</script>
 <script>
     mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
 

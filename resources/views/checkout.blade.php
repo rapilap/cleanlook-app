@@ -11,7 +11,7 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
     <div class="flex flex-col shadow-2xl w-fit rounded-lg p-3 mb-3">
         <table class="w-full">
             <tr>
-                <td>No pesanan</td> <td>:</td> <td>{{ $transaction->id }}</td>
+                <td>No pesanan</td> <td>:</td> <td>{{ $transaction->order_id }}</td>
             </tr>
             <tr>
                 <td>Tanggal</td> <td>:</td> <td>{{ $transaction->date }}</td>
@@ -51,34 +51,6 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
     </div>
 </x-app_user>
 
-<script type="text/javascript">
-    // For example trigger on button clicked, or any time you need
-    var payButton = document.getElementById('pay-button');
-    payButton.addEventListener('click', function () {
-
-      // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
-            window.snap.pay('{{ $snapToken }}', {
-                onSuccess: function(result){
-                /* You may add your own implementation here */
-                // alert("payment success!"); 
-                window.location.href = '/profile'; // ganti url routenya
-                console.log(result);
-                },
-                onPending: function(result){
-                /* You may add your own implementation here */
-                alert("wating your payment!"); console.log(result);
-                },
-                onError: function(result){
-                /* You may add your own implementation here */
-                alert("payment failed!"); console.log(result);
-                },
-                onClose: function(){
-                /* You may add your own implementation here */
-                alert('you closed the popup without finishing the payment');
-                }
-            })
-    });
-</script>
 <script>
     mapboxgl.accessToken = "{{ config('services.mapbox.access_token') }}";
 
@@ -102,7 +74,7 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
 
     // Tambahkan Marker untuk TPS
     new mapboxgl.Marker({ color: "red" })
-        .setLngLat(landfillLocation)
+    .setLngLat(landfillLocation)
         .setPopup(new mapboxgl.Popup().setHTML("<b>TPS</b><br>{{ $transaction->landfill->name }}"))
         .addTo(map);
 
@@ -136,5 +108,34 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
 
     map.on('load', function () {
         getRoute(pickupLocation, landfillLocation);
+    });
+</script>
+
+<script type="text/javascript">
+    // For example trigger on button clicked, or any time you need
+    var payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', function () {
+
+        // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+            window.snap.pay('{{ $snapToken }}', {
+                onSuccess: function(result){
+                /* You may add your own implementation here */
+                // alert("payment success!"); 
+                window.location.href = '/history'; // ganti url routenya
+                console.log(result);
+                },
+                onPending: function(result){
+                /* You may add your own implementation here */
+                alert("wating your payment!"); console.log(result);
+                },
+                onError: function(result){
+                /* You may add your own implementation here */
+                alert("payment failed!"); console.log(result);
+                },
+                onClose: function(){
+                /* You may add your own implementation here */
+                alert('you closed the popup without finishing the payment');
+                }
+            })
     });
 </script>

@@ -39,7 +39,7 @@
         <!-- Login Section -->
 
         <div id="login-container" class="bg-gray-200 h-[60%] w-full rounded-t-xl opacity-0 translate-y-full absolute bottom-0 transition-all duration-1000">
-            <h2 class="p-3 text-xl font-medium w-full text-center">Login ke Akun Anda!</h2>
+            <h2 class="p-3 text-xl font-medium w-full text-center">Login ke Akun Anda Sekarang!</h2>
             <form action="{{ route('login') }}" method="POST" class="bg-white flex pt-10 flex-col px-12 rounded-t-3xl justify-center">
                 @csrf
                 <div class="flex flex-col gap-8">

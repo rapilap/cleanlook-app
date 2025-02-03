@@ -36,4 +36,11 @@ class HistoryUserController extends Controller
         return view('user.history', compact('ongoingOrders', 'history', 'search'));
     }
 
+    public function track($id)
+    {
+        $order = Transaction::findOrFail($id);
+
+        return view('user.tracking', compact('order'));
+    }
+
 }
