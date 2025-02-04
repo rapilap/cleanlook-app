@@ -14,10 +14,10 @@ class CourierOrderController extends Controller
         $idCourier = $courier->id;
 
         // Cek apakah kurir sudah mengambil pesanan
-        $activeOrder = Transaction::with(['courier', 'user', 'landfill'])
+        $activeOrders = Transaction::with(['courier', 'user', 'landfill'])
             ->where('courier_id', $idCourier)
             ->whereNotIn('status', ['completed'])
-            ->first(); // Ambil 1 pesanan yang sedang berjalan
+            ->get(); // Ambil 1 pesanan yang sedang berjalan
 
         // Jika kurir belum mengambil pesanan, tampilkan semua yang courier_id = null
         $order = $activeOrder ? collect([]) : Transaction::with(['courier', 'user', 'landfill'])
