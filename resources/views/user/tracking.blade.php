@@ -122,3 +122,33 @@
 });
 
 </script>
+
+<script>
+    let courierId = "{{ $activeOrder->courier_id ?? '' }}"; // Pastikan variabel tidak null
+
+    function updateCourierLocation() {
+        if (!courierId) {
+            console.warn("Tidak ada courier_id aktif.");
+            return;
+        }
+
+        $.ajax({
+            url: `/courier/get-location/${courierId}`,
+            type: "GET",
+            success: function(response) {
+                console.log("Lokasi kurir terbaru:", response);
+                let lat = response.latitude;
+                let lng = response.longitude;
+
+                // Update marker di Mapbox
+                marker.setLngLat([lng, lat]);
+            },
+            error: function(xhr) {
+                console.error("Gagal mengambil lokasi kurir:", xhr);
+            }
+        });
+    }
+
+    // Panggil fungsi update setiap 5 detik
+    setInterval(updateCourierLocation, 5000);
+</script>

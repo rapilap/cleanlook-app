@@ -101,14 +101,14 @@
         </div>
     </div>
 
-    <form action="{{ route('courier.location') }}" method="POST" id="location-form">
+    {{-- <form action="{{ route('courier.location') }}" method="POST" id="location-form">
         @csrf
         <input type="hidden" id="latitude" name="latitude">
         <input type="hidden" id="longitude" name="longitude">
         <button type="submit" id="update-location" class="hidden"></button>
-    </form>
+    </form> --}}
     
-    <script>
+    {{-- <script>
         function updateLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
@@ -120,6 +120,28 @@
         }
     
         setInterval(updateLocation, 10000); // Kirim lokasi setiap 10 detik
-    </script>
+    </script> --}}
     
 </x-app_user>
+<script>
+    navigator.geolocation.watchPosition(function(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+    
+        $.ajax({
+            url: "/courier/update-location",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                latitude: latitude,
+                longitude: longitude
+            },
+            success: function(response) {
+                console.log("Lokasi berhasil diperbarui!", response);
+            }
+        });
+    }, function(error) {
+        console.error("Gagal mendapatkan lokasi:", error);
+    });
+</script>
+    
