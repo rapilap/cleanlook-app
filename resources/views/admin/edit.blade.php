@@ -7,7 +7,7 @@
         <div class="w-fit flex flex-col gap-5 p-7 items-center h-auto">
             <div class="avatar">
                 <div class="w-64 rounded-full items-center border">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-avatar.png') }}">
                 </div>
             </div>
 
