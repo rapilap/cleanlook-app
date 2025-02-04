@@ -28,6 +28,33 @@
       </div>
     </div>
   </div>
+  <div class="flex justify-between items-center pl-6 pr-6">
+    <span class="text-lg font-bold">Transactions History</span>
+    <button class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">See all</button>
+</div>
+
+<div id="transaction-list" class="mt-4 space-y-4 p-3 drop-shadow-lg">
+    @foreach($history_courier as $history)
+        <div style="display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 20px; border: 1px solid #00b894; border-radius: 10px; 
+            background-color: #fff; width: 100%; max-width: 100%; font-family: Arial, sans-serif; font-size: medium; box-shadow: #00b894; ">
+            
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: bold;">{{ $history->user->name }}</span>
+                <span style="color: gray; font-size: 14px;">Today</span>
+            </div>
+            
+            <div style="font-weight: bold; color: {{ $history->price < 0 ? '#d63031' : '#00b894' }};">
+                {{ $history->price < 0 ? '-' : '+' }}Rp. {{ number_format(abs($history->price), 0, ',', '.') }},00
+            </div>
+        </div>
+    @endforeach
+</div>
+
+  </div>
+  
+
+
 
   <div class="flex justify-between items-center pl-6">
     <span class="text-lg font-bold">Riwayat Pesanan</span>
@@ -52,7 +79,7 @@
                 Transaksi Kosong
             </div>
         @endif
-    </div>
+    </div> 
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>

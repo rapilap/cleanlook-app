@@ -30,10 +30,15 @@
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
             Tujuan
             <div class="flex flex-row text-start mt-2 justify-between pb-3">
+<<<<<<< HEAD
+                {{ $order->landfill->name }}
+                <div>
+=======
                 <div class="w-full">
                     {{ $order->landfill->name }}
                 </div>
                 <div class="w-full">
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
                     {{ $order->landfill->address }}
                 </div>
             </div>
@@ -52,6 +57,21 @@
 </x-app_user>
 <script>
     document.getElementById("statusButton").addEventListener("click", function(event) {
+<<<<<<< HEAD
+        event.preventDefault();
+        let currentStatus = document.getElementById("statusField").value;
+
+        if (currentStatus === "pickup") {
+            document.getElementById("statusField").value = "deliver";
+        } else if (currentStatus === "deliver") {
+            document.getElementById("statusField").value = "completed";
+        }
+
+        document.getElementById("updateStatusForm").submit();
+    });
+</script>
+<script>
+=======
     event.preventDefault();
     let statusField = document.getElementById("statusField");
     let currentStatus = statusField.value;
@@ -77,6 +97,7 @@
 
 </script>
 {{-- <script>
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
     mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
 
     var map = new mapboxgl.Map({
@@ -89,6 +110,8 @@
     new mapboxgl.Marker()
         .setLngLat([{{ $order->courier->longitude }}, {{ $order->courier->latitude }}])
         .addTo(map);
+<<<<<<< HEAD
+=======
 </script> --}}
 
 <script>
@@ -174,4 +197,5 @@
     updateRoute(courierLocation, pickupLocation);
 });
 
+>>>>>>> baad1804da9abbee120eed27c261ff002465d5df
 </script>
