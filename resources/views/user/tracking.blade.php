@@ -1,6 +1,8 @@
 <head>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet" />
+    <!-- Tambahkan ini sebelum script $.ajax -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <x-app_user title="Order" bodyClass="py-3">
@@ -133,7 +135,7 @@
         }
 
         $.ajax({
-            url: `/courier/get-location/${courierId}`,
+            url: `/history/get-location/${courierId}`,
             type: "GET",
             success: function(response) {
                 console.log("Lokasi kurir terbaru:", response);
