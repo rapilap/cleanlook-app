@@ -44,7 +44,7 @@
         <span class="text-sm text-gray-600">Riwayat</span>
       </a>
 
-      <a href="{{ route('user.profile', ['id' => $user->id ?? '']) }}" class="flex flex-col items-center py-2 px-4 rounded-lg hover:bg-primary hover:text-white {{ Request::is('courier/profile*') ? 'bg-primary text-white' : '' }}">
+      <a href="{{ route('user.profile', ['id' => $user->id ?? '']) }}" class="flex flex-col items-center py-2 px-4 rounded-lg hover:bg-primary hover:text-white {{ Request::is('profile*') ? 'bg-primary text-white' : '' }}">
         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 12c2.209 0 4-1.791 4-4s-1.791-4-4-4-4 1.791-4 4 1.791 4 4 4z"></path>
           <path d="M4 20h16"></path>
