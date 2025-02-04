@@ -34,77 +34,72 @@
             </div>
             <div class="overflow-x-auto max-h-[600px] md:max-h-[200px] space-y-4">
                 @if (count($order) > 0)
-                
-                    @if ($activeOrders->isNotEmpty())
-                        @foreach ($activeOrders as $activeOrder)
-                            
-                            <div class="active-order">
-                                <div class="p-2 rounded-lg shadow-lg bg-white">
-                                    <div class="mb-2">
-                                            <p><strong>Id Pesanan:</strong></p>
-                                            <p class="p-2 rounded">{{ $activeOrder->id }}</p>
-                                        </div>
-                                        <div class="mb-2">
-                                            <p><strong>Penjemputan:</strong></p>
-                                            <p class="p-2 rounded">{{ $activeOrder->address }}</p>
-                                        </div>
-                                        <div class="mb-2">
-                                            <p><strong>Pengantaran:</strong></p>
-                                            <p class="p-2 rounded">{{ $activeOrder->landfill->name }}</p>
-                                        </div>
-                                        
-                                        <div class="flex flex-row items-center space-x-4 mt-2">
-                                            <p><strong>Berat Sampah:</strong></p>
-                                            <span class="bg-green-200 text-green-700 px-2 py-1 rounded">
-                                                {{ $activeOrder->weight }} kg
-                                            </span>
-                                        </div>
-                                        <p class="mt-3"><strong>Biaya:</strong> Rp. {{ number_format($activeOrder->price, 0, ',', '.') }}</p>
-                                        <div class="flex justify-between mt-4">
-                                            <a href="{{ route('courier.detail', $activeOrder->id) }}" class="btn btn-warning">
-                                                Lihat
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                    @foreach($order as $item)
+                        <div class="p-2 rounded-lg shadow-lg bg-white">
+                            <div class="mb-2">
+                                <p><strong>Id Pesanan:</strong></p>
+                                <p class="p-2 rounded">{{ $item->id }}</p>
                             </div>
-                        @endforeach
-                        @else    
-                        @foreach($order as $item)
+                            <div class="mb-2">
+                                <p><strong>Penjemputan:</strong></p>
+                                <p class="p-2 rounded">{{ $item->address }}</p>
+                            </div>
+                            <div class="mb-2">
+                                <p><strong>Pengantaran:</strong></p>
+                                <p class="p-2 rounded">{{ $item->landfill->name }}</p>
+                            </div>
+                            
+                            <div class="flex flex-row items-center space-x-4 mt-2">
+                                <p><strong>Berat Sampah:</strong></p>
+                                <span class="bg-green-200 text-green-700 px-2 py-1 rounded">
+                                    {{ $item->weight }} kg
+                                </span>
+                            </div>
+                            <p class="mt-3"><strong>Biaya:</strong> Rp. {{ number_format($item->price, 0, ',', '.') }}</p>
+                            <div class="flex justify-between mt-4">
+                                @if ($item->status === 'searching')
+                                    <form action="{{ route('courier.accept', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="bg-green-500 text-white px-4 py-2 rounded-lg" type="submit">Ambil</button>
+                                        {{-- <button class="bg-red-500 text-white px-4 py-2 rounded-lg">Cancel</button> --}}
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                    @if ($activeOrder)
+                        <div class="active-order">
                             <div class="p-2 rounded-lg shadow-lg bg-white">
                                 <div class="mb-2">
                                     <p><strong>Id Pesanan:</strong></p>
-                                    <p class="p-2 rounded">{{ $item->id }}</p>
+                                    <p class="p-2 rounded">{{ $activeOrder->id }}</p>
                                 </div>
                                 <div class="mb-2">
                                     <p><strong>Penjemputan:</strong></p>
-                                    <p class="p-2 rounded">{{ $item->address }}</p>
+                                    <p class="p-2 rounded">{{ $activeOrder->address }}</p>
                                 </div>
                                 <div class="mb-2">
                                     <p><strong>Pengantaran:</strong></p>
-                                    <p class="p-2 rounded">{{ $item->landfill->name }}</p>
+                                    <p class="p-2 rounded">{{ $activeOrder->landfill->name }}</p>
                                 </div>
                                 
                                 <div class="flex flex-row items-center space-x-4 mt-2">
                                     <p><strong>Berat Sampah:</strong></p>
                                     <span class="bg-green-200 text-green-700 px-2 py-1 rounded">
-                                        {{ $item->weight }} kg
+                                        {{ $activeOrder->weight }} kg
                                     </span>
                                 </div>
-                                <p class="mt-3"><strong>Biaya:</strong> Rp. {{ number_format($item->price, 0, ',', '.') }}</p>
+                                <p class="mt-3"><strong>Biaya:</strong> Rp. {{ number_format($activeOrder->price, 0, ',', '.') }}</p>
                                 <div class="flex justify-between mt-4">
-                                    @if ($item->status === 'searching')
-                                        <form action="{{ route('courier.accept', $item->id) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button class="bg-green-500 text-white px-4 py-2 rounded-lg" type="submit">Ambil</button>
-                                            {{-- <button class="bg-red-500 text-white px-4 py-2 rounded-lg">Cancel</button> --}}
-                                        </form>
-                                        @endif
+                                    <a href="{{ route('courier.detail', $activeOrder->id) }}" class="btn btn-warning">
+                                        Lihat
+                                    </a>
                                 </div>
                             </div>
-                            @endforeach
+                        </div>
                     @endif
+                    
                 @else
                     <p class="w-full text-center p-3">Belum ada pesanan masuk nih! Tunggu Ya!</p>
                 @endif
