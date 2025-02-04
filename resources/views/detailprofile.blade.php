@@ -143,49 +143,63 @@
 
 {{-- @dump($data); --}}
 <x-app_user title="Profil">
-<form action="{{ route('user.update', ['id'=>$data->id]) }}" method="POST">
+<form action="{{ route('user.update', ['id'=>$data->id]) }}" method="POST" enctype="multipart/form-data">
     
     @method('PUT')
     @csrf
 
     <div class="container">
-        <div class="profile-header">
-            <h1>Profile</h1>
-            <div class="profile-picture">
-                <i>👤</i>
+        <div class="profile-header flex-col flex items-center">
+            <h1 class="text-secondary text-5xl font-medium text-start mb-3 w-full">Profil pengguna</h1>
+            <div class="avatar">
+                <div class="w-32 rounded-full items-center border">
+                    {{-- <img id="previewImage" src="{{ $data->image ? asset('storage/' . $data->image) : asset('images/default-avatar.png') }}"> --}}
+                    <img id="previewImage" src="{{ $data->image ? asset('storage/' . $data->image) : asset('images/default-avatar.png') }}">
+
+                </div>
             </div>
-            <button class="change-photo-btn">Ubah foto</button>
+                <input 
+                type="file" 
+                name="image" 
+                id="imageInput" 
+                accept="image/*"
+                class="file:bg-secondary
+                file:px-6 file:py-2 file:m-5
+                file:text-white file:font-medium
+                file:border file:border-secondary
+                file:rounded-lg"
+                value="{{ old('image') }}">
         </div>
 
         <div>
             <div class="form-group">
-                <label for="firstName">nama</label>
-                <input value="{{ $data->name }}" name="name" type="text" class="form-control" id="firstName" placeholder="enter your first name">
+                <label for="firstName">Nama</label>
+                <input value="{{ $data->name }}" name="name" type="text" class="form-control border border-primary hover:border-secondary" id="firstName" placeholder="enter your first name">
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input value="{{ $data->email }}" name="email" type="email" class="form-control" id="email" placeholder="enter your email">
+                <input value="{{ $data->email }}" name="email" type="email" class="form-control border border-primary hover:border-secondary" id="email" placeholder="enter your email">
             </div>
 
             <div class="form-group">
                 <label for="alamat">Alamat</label>
-                <input value="{{ $data->address }}" name="address" type="text" class="form-control" id="alamat" placeholder="enter your address">
+                <input value="{{ $data->address }}" name="address" type="text" class="form-control border border-primary hover:border-secondary" id="alamat" placeholder="enter your address">
             </div>
 
             <div class="form-group">
-                <label for="phone">No. Handphone</label>
-                <input value="{{ $data->phone }}" name="phone" type="tel" class="form-control" id="phone" placeholder="enter your Number">
+                <label for="phone">No. Telepon</label>
+                <input value="{{ $data->phone }}" name="phone" type="tel" class="form-control border border-primary hover:border-secondary" id="phone" placeholder="enter your Number">
             </div>
 
             <div class="form-group">
                 <label for="birthDate">Tanggal Lahir</label>
-                <input value="{{ $data->birthdate }}" name="birthdate" type="date" class="form-control" id="birthDate" placeholder="enter your Birth Date">
+                <input value="{{ $data->birthdate }}" name="birthdate" type="date" class="form-control border border-primary hover:border-secondary" id="birthDate" placeholder="enter your Birth Date">
             </div>
 
             <div class="form-group">
                 <label for="gender">Jenis kelamin</label>
-                <select class="form-control" id="gender" name="gender">
+                <select class="form-control border border-primary hover:border-secondary" id="gender" name="gender">
                     <option value="">Masukan Jenis Kelamin</option>
                     <option value="P" {{ old('gender', $data->gender ?? '') == 'P' ? 'selected' : '' }}>Wanita</option>
                     <option value="L" {{ old('gender', $data->gender ?? '') == 'L' ? 'selected' : '' }}>Pria</option>
@@ -193,21 +207,21 @@
             </div>
 
             <div class="form-group">
-                <label for="password">New Password</label>
-                <input name="password" type="password" class="form-control" id="password" placeholder="enter your password">
+                <label for="password">Password Baru</label>
+                <input name="password" type="password" class="form-control border border-primary hover:border-secondary" id="password" placeholder="enter your password">
                 @error('password')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
-                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="Confirm new password">
+                <label for="password_confirmation">Konfirmasi Password</label>
+                <input name="password_confirmation" type="password" class="form-control border border-primary hover:border-secondary" id="password_confirmation" placeholder="Confirm new password">
             </div>
 
             <div class="button-group">
-                <button type="button" class="btn btn-edit">Edit</button>
-                <button type="submit" class="btn btn-save">Save</button>
+                <button type="button" class="btn btn-edit" id="edit-btn">Ubah</button>
+                <button type="submit" class="btn btn-save" id="save-btn">Simpan</button>
             </div>
         </div>
     </div>
@@ -215,3 +229,16 @@
 </x-app_user>
 
 </html>
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        let reader = new FileReader();
+        reader.onload = function(){
+            let output = document.getElementById('previewImage');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+
+
+</script>

@@ -1,13 +1,28 @@
 <x-app title="Tambah Akun" bodyClass="h-screen flex flex-col gap-3">
     {{-- Sidebar --}}
-    <form action="{{ route('admin.store') }}" method="POST" class="w-full h-full flex flex-row flex-grow">
+    <form action="{{ route('admin.store') }}" method="POST" class="w-full h-full flex flex-row flex-grow" enctype="multipart/form-data">
         @csrf
         <div class="w-fit flex flex-col gap-5 p-7 items-center">
             <div class="avatar">
                 <div class="w-64 rounded-full items-center border">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <img id="previewImage" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                 </div>
             </div>
+            <input 
+            type="file" 
+            name="image" 
+            id="imageInput" 
+            accept="image/*"
+            class="file:bg-secondary
+            file:px-6 file:py-2 file:m-5
+            file:text-white file:font-medium
+            file:border file:border-secondary
+            file:rounded-lg"
+            value="{{ old('image') }}">
+            {{-- <x-button onclick="document.getElementById('imageInput').click()" variant='secondary'>Upload Foto</x-button> --}}
+            @error('image')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         {{-- Main Content --}}
@@ -143,3 +158,14 @@
         </div>
     </form>
 </x-app>
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        let reader = new FileReader();
+        reader.onload = function(){
+            let output = document.getElementById('previewImage');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+</script>
