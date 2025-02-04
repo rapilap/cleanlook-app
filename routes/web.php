@@ -72,18 +72,9 @@ Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.
 
 Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
-
-
-    
-    
-
-    Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
-
-
     // Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
     Route::post('/courier/home/update-location', [CourierController::class, 'updateLocation']);
     
-
     Route::get('/courier/history', [HistoryCourierController::class, 'index'])->name('courier.history');
     
     Route::patch('/courier/home/order/{id}', [CourierOrderController::class, 'accept'])->name('courier.accept');
