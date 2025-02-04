@@ -20,6 +20,7 @@ class HistoryCourierController extends Controller
 
         $history_courier = Transaction::with('courier')
             ->where('courier_id', $id_courier)
+            ->where('status', ['completed'])
             ->orderBy('id', 'desc')
             ->get();
 
