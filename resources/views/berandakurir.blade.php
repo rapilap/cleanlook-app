@@ -1,8 +1,14 @@
-<x-app_user title="Home">
+<head>
+
     @vite('resources/css/app.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tambahkan ini sebelum script $.ajax -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+    <x-app_user title="Home">
 
         <!-- Navbar -->
         <nav class="bg-primary py-4 px-6 flex justify-between items-center">
@@ -101,14 +107,14 @@
         </div>
     </div>
 
-    <form action="{{ route('courier.location') }}" method="POST" id="location-form">
+    {{-- <form action="{{ route('courier.location') }}" method="POST" id="location-form">
         @csrf
         <input type="hidden" id="latitude" name="latitude">
         <input type="hidden" id="longitude" name="longitude">
         <button type="submit" id="update-location" class="hidden"></button>
-    </form>
+    </form> --}}
     
-    <script>
+    {{-- <script>
         function updateLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
@@ -120,6 +126,28 @@
         }
     
         setInterval(updateLocation, 10000); // Kirim lokasi setiap 10 detik
-    </script>
+    </script> --}}
     
 </x-app_user>
+<script>
+    navigator.geolocation.watchPosition(function(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+    
+        $.ajax({
+            url: "/courier/home/update-location",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                latitude: latitude,
+                longitude: longitude
+            },
+            success: function(response) {
+                console.log("Lokasi berhasil diperbarui!", response);
+            }
+        });
+    }, function(error) {
+        console.error("Gagal mendapatkan lokasi:", error);
+    });
+</script>
+    

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\CourierAccountMail;
 use App\Models\Courier;
 use App\Models\CourierLog;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -46,18 +47,46 @@ class AccountListController extends Controller
     public function edit($id, Request $request)
     {
         $type = $request->get('type', 'courier');
+        
+        // Ambil bulan saat ini
+        $currentMonth = now()->format('Y-m');
+        $formattedMonth = now()->format('F Y');
 
         if ($type === 'courier') {
             $user = Courier::find($id);
+
+            // Hitung total pesanan yang dilakukan oleh kurir di bulan ini
+            $totalT = Transaction::where('courier_id', $user->id)
+                ->whereDate('date', 'like', "$currentMonth%")
+                ->whereIn('status', ['completed'])
+                ->count();
+
+            // Hitung total pemasukan kurir di bulan ini
+            $totalIncome = Transaction::where('courier_id', $user->id)
+                ->whereDate('date', 'like', "$currentMonth%")
+                ->whereIn('status', ['completed'])
+                ->sum('price');
+
             $dataType = 'courier';
         } else if ($type === 'user') {
             $user = User::find($id);
+
+            // Hitung total pesanan yang dilakukan oleh user di bulan ini
+            $totalT = Transaction::where('user_id', $user->id)
+                ->whereDate('date', 'like', "$currentMonth%")
+                ->count();
+
+            // Hitung total pengeluaran user di bulan ini
+            $totalIncome = Transaction::where('user_id', $user->id)
+                ->whereDate('date', 'like', "$currentMonth%")
+                ->sum('price');
+
             $dataType = 'user';
         }
-        // $user = Courier::find($id);
 
-        return view('admin.edit', compact('user', 'dataType'));
+        return view('admin.edit', compact('user', 'dataType', 'formattedMonth', 'totalT', 'totalIncome'));
     }
+
 
     public function create()
     {
@@ -133,5 +162,10 @@ class AccountListController extends Controller
         // Redirect dengan pesan sukses
         return redirect()->route('admin.index', ['type' => 'courier'])
             ->with('success', 'Akun kurir berhasil dihapus dan disimpan di log.');
+    }
+
+    public function summary()
+    {
+
     }
 }

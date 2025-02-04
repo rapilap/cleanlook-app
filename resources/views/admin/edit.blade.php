@@ -14,17 +14,21 @@
             <div class="stats stats-vertical drop-shadow-lg w-full">
                 <div class="stat">
                     <div class="stat-title">Jumlah Pesanan</div>
-                    <div class="stat-value">34</div>
+                    <div class="stat-value">{{ $totalT }}</div>
                 </div>
 
                 <div class="stat h-full">
                     @if ($dataType === 'courier')
                         <div class="stat-title">Total Pendapatan</div>
+                        {{-- <div class="stat-value">Rp. {{ $totalIncome }}</div> --}}
                     @else
                         <div class="stat-title">Total Pengeluaran</div>
                     @endif
-                    <div class="stat-value">Rp. 270.000</div>
+                    <div class="stat-value">Rp. {{ number_format($totalIncome, 0, ',', '.') }}</div>
                 </div>
+            </div>
+            <div>
+                {{ $formattedMonth }}
             </div>
         </div>
 

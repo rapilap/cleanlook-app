@@ -41,7 +41,7 @@ data-client-key="{{ config('midtrans.clientKey') }}"></script>
             &ensp;
         </div>
     </div>
-    <div class="mt-14 w-full gap-3 flex flex-row justify-end">
+    <div class="mt-10 w-full gap-3 flex flex-row justify-end mb-16">
         <form action="{{ route('user.home') }}" class="w-full">
             <x-button type='submit' variant='danger' class="w-full">Kembali</x-button>
         </form>
