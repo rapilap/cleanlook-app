@@ -98,7 +98,8 @@ class AccountListController extends Controller
     {
         // Validasi input
         $request->validate([
-            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'email' => 'required|email:rfc,dns|unique:couriers,email',
             'email' => 'required|email|unique:couriers,email',
             'phone' => 'required|string|max:15',
             'birthdate' => 'required|date',
@@ -109,6 +110,7 @@ class AccountListController extends Controller
             // 'password' => 'required|string|min:8|confirmed',
         ], [
             // Custom error messages
+            'image.required' => 'Foto harap diisi',
             'name.required' => 'Nama lengkap harap diisi.',
             'email.required' => 'Email harap diisi.',
             'phone.required' => 'Nomor telepon harap diisi.',
@@ -119,10 +121,23 @@ class AccountListController extends Controller
             'plate_number.required' => 'Plat nomor harap diisi.',
         ]);
 
+        $request->merge([
+            'email' => strtolower(trim($request->email)),
+        ]);
+        
         $password = Str::random(8);
+
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            // dd($file);
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = $file->store('uploads', 'public');
+        }
 
         // Buat kurir baru
         $courier = Courier::create([
+            'image' => $filename,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,

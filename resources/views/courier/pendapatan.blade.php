@@ -30,7 +30,7 @@
   </div>
   <div class="flex justify-between items-center pl-6 pr-6">
     <span class="text-lg font-bold">Transactions History</span>
-    <button class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">Reload</button>
+    <button class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">See all</button>
 </div>
 
 <div id="transaction-list" class="mt-4 space-y-4 p-3 drop-shadow-lg">
@@ -79,7 +79,7 @@
                 Transaksi Kosong
             </div>
         @endif
-    </div>
+    </div> 
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
