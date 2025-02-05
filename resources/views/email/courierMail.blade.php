@@ -6,7 +6,7 @@
     <title>Informasi Akun Kurir</title>
 </head>
 <body>
-    <h1>Selamat, {{ $courier->name }}</h1>
+    <h1>Selamat, {{ $courier->name }}!</h1>
     <p>Akun kurir Anda telah dibuat oleh admin. Berikut adalah informasi akun Anda:</p>
     <ul>
         <li><strong>Email:</strong> {{ $courier->email }}</li>

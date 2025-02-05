@@ -13,6 +13,11 @@ class OrderController extends Controller
     public function index()
     {
         $category = Category::all();
+        $user = Auth::user();
+
+        if (!$user->hasVerifiedEmail()) {
+            return redirect()->route('user.home')->with('warning', 'Silakan verifikasi email Anda untuk melanjutkan.');
+        }
         
         return view('berandauser',compact('category'));
     }
@@ -26,7 +31,7 @@ class OrderController extends Controller
             'alamat.required' => 'Alamat harap diisi.',
             'berat.required' => 'Berat harap diisi.',
         ]);
-        
+
         $request->request->add(['price' => $request->price, 'status' => 'unpaid']);
         
         $order_id = 'CL-' . time() . '-' . uniqid();

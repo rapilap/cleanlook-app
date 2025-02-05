@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -34,14 +35,14 @@ class AuthUserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => [
                 'required',
-                'regex:/^[a-zA-Z\s]+$/', // Hanya huruf dan spasi
+                'regex:/^[a-zA-Z\s]+$/',
                 'max:255',
             ],
             'email' => 'required|email|unique:users,email|max:255',
             'password' => [
                 'required',
-                'min:6',
-                'regex:/[0-9]/', // Harus mengandung angka
+                'min:8',
+                'regex:/[0-9]/',
             ],
         ], [
             // Custom error messages
@@ -69,6 +70,8 @@ class AuthUserController extends Controller
             'password' => bcrypt($request->password),
             'role' => 'user'
         ]);
+
+        event(new Registered($user));
 
         Auth::attempt($request->only('email', 'password'));
 
