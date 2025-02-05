@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountListController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthCourierController;
 use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\CourierController;
@@ -39,44 +40,13 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Email verifikasi telah dikirim ulang.');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->middleware('guest')->name('password.request');
+Route::get('/forgot-password', [AuthController::class, 'index'])->middleware('guest')->name('password.request');
 
-Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email|exists:users,email']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
 
-    $status = Password::sendResetLink($request->only('email'));
-
-    return $status === Password::RESET_LINK_SENT
-        ? back()->with(['status' => __($status)])
-        : back()->withErrors(['email' => __($status)]);
-})->middleware('guest')->name('password.email');
-
-Route::get('/reset-password/{token}', function ($token) {
-    return view('auth.reset-password', ['token' => $token]);
-})->middleware('guest')->name('password.reset');
-
-Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email|exists:users,email',
-        'password' => 'required|min:6|confirmed',
-        'token' => 'required'
-    ]);
-
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->forceFill([
-                'password' => bcrypt($password)
-            ])->save();
-        }
-    );
-
-    return $status === Password::PASSWORD_RESET
-        ? redirect()->route('loginView')->with('status', __($status))
-        : back()->withErrors(['email' => [__($status)]]);
-    })->middleware('guest')->name('password.update');
+Route::get('/reset-password/{token}', [AuthController::class, 'password'])->middleware('guest')->name('password.reset');
+ 
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Admin

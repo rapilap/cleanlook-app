@@ -58,6 +58,7 @@
             </form>
             <div class="flex flex-col h-full w-full pt-5 bg-white text-center">
                 <p>Anda user? <a href="/" class="text-green-400">Login di sini!</a></p>
+                <p>Lupa password? <a href="/forgot-password" class="text-green-400">Klik di sini!</a></p>
             </div>
         </div>
     </div>
