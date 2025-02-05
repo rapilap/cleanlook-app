@@ -81,7 +81,7 @@
                     <div class="flex items-center gap-3">
                       <div class="avatar">
                         <div class="mask mask-squircle h-12 w-12">
-                            <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-avatar.png') }}">
+                            <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('assets/default-avatar.png') }}">
                         </div>
                       </div>
                       <div>

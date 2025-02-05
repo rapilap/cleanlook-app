@@ -13,16 +13,18 @@ use Illuminate\Support\Facades\Validator;
 class ProfileControllers extends Controller
 {
     public function index($id)
-    {
-        $data = '';
-        if (Auth::guard('courier')->check()) {
-            $data = Courier::findOrFail($id);
-        } else {
-            $data = User::findOrFail($id);
-        }
-
+{
+    if (Auth::guard('courier')->check()) {
+        $data = Courier::findOrFail($id);
         return view('detailprofile', compact('data'));
+    } elseif (Auth::guard('web')->check()) {
+        $data = User::findOrFail($id);
+        return view('detailprofile', compact('data'));
+    } else {
+        return redirect()->route('login')->with('error', 'Unauthorized access');
     }
+}
+
 
     // public function updateProfile(Request $request)
     // {
@@ -81,19 +83,73 @@ class ProfileControllers extends Controller
     //     return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
     // }
 
+    // public function updateProfile(Request $request)
+    // {
+    //     if (Auth::guard('courier')->check()) {
+    //         $user = Auth::guard('courier')->user();
+    //     } else {
+    //         $user = Auth::user();
+    //     }
+
+    //     // Validasi
+    //     $request->validate([
+    //         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users,email,' . $user->id . '|unique:couriers,email,' . $user->id,
+    //         'address' => 'required|string|max:255',
+    //         'phone' => 'required|string|max:15',
+    //         'birthdate' => 'required|date',
+    //         'gender' => 'required|in:L,P',
+    //         'password' => 'nullable|string|min:8|confirmed'
+    //     ]);
+
+    //     // Proses upload gambar
+    //     if ($request->hasFile('image')) {
+    //         // Hapus foto lama jika ada
+    //         if ($user->image) {
+    //             Storage::delete('public/uploads/' . $user->image);
+    //         }
+
+    //         // Simpan foto baru
+    //         $file = $request->file('image');
+    //         $filename = time() . '_' . $file->getClientOriginalName();
+    //         $file->storeAs('public/uploads', $filename);
+
+    //         // Simpan path ke database
+    //         $user->update(['image' => 'uploads/' . $filename]);
+
+    //     }
+
+    //     // Update data pengguna
+    //     $user->update([
+    //         'image' => $user->image,
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'address' => $request->address,
+    //         'phone' => $request->phone,
+    //         'birthdate' => $request->birthdate,
+    //         'gender' => $request->gender,
+    //         'password' => $request->password ? Hash::make($request->password) : $user->password,
+    //     ]);
+
+    //     return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+    // }
+
     public function updateProfile(Request $request)
     {
         if (Auth::guard('courier')->check()) {
             $user = Auth::guard('courier')->user();
+            $table = 'couriers';
         } else {
             $user = Auth::user();
+            $table = 'users';
         }
 
-        // Validasi
+        // Validasi data
         $request->validate([
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id . '|unique:couriers,email,' . $user->id,
+            'email' => "required|email|unique:$table,email," . $user->id,
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
             'birthdate' => 'required|date',
@@ -101,28 +157,23 @@ class ProfileControllers extends Controller
             'password' => 'nullable|string|min:8|confirmed'
         ]);
 
-        // Proses upload gambar
+        // Proses upload gambar (jika ada)
         if ($request->hasFile('image')) {
-            // Hapus foto lama jika ada
             if ($user->image) {
-                Storage::delete('public/uploads/' . $user->image);
+                Storage::delete('public/' . $user->image);
             }
 
-            // Simpan foto baru
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/uploads', $filename);
 
-            // Simpan path ke database
-            $user->update(['image' => 'uploads/' . $filename]);
-
+            $user->image = 'uploads/' . $filename;
         }
 
         // Update data pengguna
         $user->update([
-            'image' => $user->image,
             'name' => $request->name,
-            'email' => $request->email,
+            // 'email' => $request->email,
             'address' => $request->address,
             'phone' => $request->phone,
             'birthdate' => $request->birthdate,
@@ -132,5 +183,6 @@ class ProfileControllers extends Controller
 
         return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
     }
+
 
 }

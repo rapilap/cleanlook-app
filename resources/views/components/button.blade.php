@@ -10,6 +10,7 @@
         'secondary' => 'btn-secondary-custom',
         'tertiery' => 'btn-tertiery-custom',
         'danger' => 'bg-red-500 text-white hover:bg-red-600',
+        'warning' => 'bg-yellow-400 text-white hover:bg-yellow-500',
         'success' => 'bg-green-500 text-white hover:bg-green-600',
     ];
     $variantClass = $variants[$variant] ?? $variants['primary'];
