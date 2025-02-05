@@ -60,6 +60,7 @@
             <div class="flex flex-col h-full w-full pt-5 bg-white text-center gap-2">
                 <p>Belum punya akun? <button onclick="switchToRegister()" class="text-green-400">Daftar di sini!</button></p>
                 <p>Anda kurir? <a href="/courier" class="text-green-400">Login di sini!</a></p>
+                <p>Lupa password? <a href="/forgot-password" class="text-green-400">Klik di sini!</a></p>
             </div>
         </div>
         
