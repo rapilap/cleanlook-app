@@ -51,6 +51,9 @@
                         <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
                         <input type="text" id="alamat" name="alamat" class="w-full p-2 border border-primary hover:border-secondary rounded mt-1 focus:ring-green-500 focus:border-green-500" placeholder="Masukkan alamat pengambilan">
                         <ul id="autocomplete-list" class="absolute bg-white border border-gray-300 rounded w-fit z-10"></ul>
+                        @error('alamat')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="flex-col w-full">
                         <label for="landfill" class="block text-sm font-medium text-gray-700">Pilih TPS</label>
@@ -66,6 +69,9 @@
                     <div>
                         <label for="berat" class="block text-sm font-medium text-gray-700">Berat sampah</label>
                         <input type="number" id="berat" name="berat" class="w-full p-2 border border-primary hover:border-secondary rounded mt-1 focus:ring-green-500 focus:border-green-500" placeholder="Max: 50kg">
+                        @error('berat')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Type Sampah -->

@@ -51,28 +51,13 @@
         </form>
     </div>
 </x-app_user>
-{{-- <script>
-    
-    mapboxgl.accessToken = '{{ config("services.mapbox.access_token") }}';
-    
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [{{ $order->courier->longitude }}, {{ $order->courier->latitude }}],
-        zoom: 13
-        });
-        
-        new mapboxgl.Marker()
-        .setLngLat([{{ $order->courier->longitude }}, {{ $order->courier->latitude }}])
-        .addTo(map);
-    </script> --}}
 
 <script>
     mapboxgl.accessToken = "{{ config('services.mapbox.access_token') }}";
 
     // Koordinat Titik Jemput dan TPS
-    var pickupLocation = [{{ $order->pickup_long }}, {{ $order->pickup_lat }}]; // Koordinat alamat jemput
-    var landfillLocation = [{{ $order->landfill->longitude }}, {{ $order->landfill->latitude }}]; // Koordinat TPS
+    var pickupLocation = [{{ $order->pickup_long }}, {{ $order->pickup_lat }}];
+    var landfillLocation = [{{ $order->landfill->longitude }}, {{ $order->landfill->latitude }}];
     var courierLocation = [{{ $order->courier->longitude }}, {{ $order->courier->latitude }}];
 
     // Inisialisasi Peta
@@ -84,9 +69,9 @@
     });
 
     // Tambahkan Marker untuk Titik Jemput
-    new mapboxgl.Marker({ color: "green" })
-    .setLngLat(courierLocation)
-    .setPopup(new mapboxgl.Popup().setHTML("<b>Kurir</b><br>{{ $order->courier->name }}"))
+    var marker = new mapboxgl.Marker({ color: "green" })
+        .setLngLat(courierLocation)
+        .setPopup(new mapboxgl.Popup().setHTML("<b>Kurir</b><br>{{ $order->courier->name }}"))
         .addTo(map);
 
     // Tambahkan Marker untuk TPS
@@ -142,45 +127,19 @@
     .catch(error => console.error("Error fetching route:", error));
 }
 
-
-// map.on('load', function () {
-    //     getRoute(courierLocation, pickupLocation);
-    // });
     map.on("load", function () {
     updateRoute(courierLocation, pickupLocation);
 });
 
 </script>
 <script>
-    // document.getElementById("statusButton").addEventListener("click", function(event) {
-    //     event.preventDefault();
-    //     let statusField = document.getElementById("statusField");
-    //     let currentStatus = statusField.value;
 
-    //     if (currentStatus === "pickup") {
-    //         statusField.value = "deliver";
-
-    //         // Hapus marker pickup
-    //         pickupMarker.remove();
-
-    //         // Tambahkan marker baru untuk tujuan (TPS)
-    //         landfillMarker.addTo(map);
-
-    //         // Update rute ke landfill
-    //         updateRoute(courierLocation, landfillLocation);
-    //     } else if (currentStatus === "deliver") {
-    //         statusField.value = "completed";
-    //     }
-
-    //     document.getElementById("updateStatusForm").submit();
-    // });
     document.getElementById("statusButton").addEventListener("click", function(event) {
         event.preventDefault();
         let statusField = document.getElementById("statusField");
         let currentStatus = statusField.value;
 
         if (currentStatus === "pickup") {
-            // Tampilkan konfirmasi sebelum mengubah ke "deliver"
             Swal.fire({
                 title: "Apakah Anda yakin?",
                 text: "Setelah konfirmasi, status akan berubah menjadi 'Dalam Pengiriman'.",
@@ -194,20 +153,16 @@
                 if (result.isConfirmed) {
                     statusField.value = "deliver";
 
-                    // Hapus marker pickup
                     pickupMarker.remove();
 
-                    // Tambahkan marker baru untuk tujuan (TPS)
                     landfillMarker.addTo(map);
 
-                    // Update rute ke landfill
                     updateRoute(courierLocation, landfillLocation);
 
                     document.getElementById("updateStatusForm").submit();
                 }
             });
-        } else if (currentStatus === "deliver") {
-            // Tampilkan konfirmasi sebelum mengubah ke "completed"
+        }else if (currentStatus === "deliver") {
             Swal.fire({
                 title: "Apakah Anda yakin?",
                 text: "Setelah pesanan selesai, status tidak dapat diubah!",
