@@ -61,7 +61,7 @@
     });
 
     // Tambahkan Marker untuk Titik Jemput
-    new mapboxgl.Marker({ color: "green" })
+    var marker = new mapboxgl.Marker({ color: "green" })
         .setLngLat(courierLocation)
         .setPopup(new mapboxgl.Popup().setHTML("<b>Kurir</b><br>{{ $order->courier->name }}"))
         .addTo(map);
@@ -143,11 +143,26 @@
             type: "GET",
             success: function(response) {
                 console.log("Lokasi kurir terbaru:", response);
+                
                 let lat = response.latitude;
                 let lng = response.longitude;
 
-                // Update marker di Mapbox
-                marker.setLngLat([lng, lat]);
+                // Pastikan lokasi benar
+                if (!lat || !lng) {
+                    console.error("Data lokasi kosong atau tidak valid");
+                    return;
+                }
+
+                // Update lokasi courierLocation
+                courierLocation = [lng, lat];
+
+                // Update marker kurir di Mapbox
+                marker.setLngLat(courierLocation);
+
+                // Jika status sudah deliver, pastikan rute diperbarui ke TPS
+                if (statusField.value === "deliver") {
+                    updateRoute(courierLocation, landfillLocation);
+                }
             },
             error: function(xhr) {
                 console.error("Gagal mengambil lokasi kurir:", xhr);

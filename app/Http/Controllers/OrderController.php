@@ -16,11 +16,19 @@ class OrderController extends Controller
         
         return view('berandauser',compact('category'));
     }
-
+    
     public function payment(Request $request)
     {
+        $request->validate([
+            'alamat' => 'required',
+            'berat' => 'required',
+        ], [
+            'alamat.required' => 'Alamat harap diisi.',
+            'berat.required' => 'Berat harap diisi.',
+        ]);
+        
         $request->request->add(['price' => $request->price, 'status' => 'unpaid']);
-
+        
         $order_id = 'CL-' . time() . '-' . uniqid();
 
         $transaction = Transaction::create([
@@ -31,8 +39,8 @@ class OrderController extends Controller
             'date' => now(),
             'pickup_lat' => $request->pickup_lat,
             'pickup_long' => $request->pickup_long,
-            'address' => $request->alamat,
-            'weight' => $request->berat,
+            'alamat' => $request->alamat,
+            'berat' => $request->berat,
             'price' => $request->price,
             'status' => 'unpaid',
             'order_id' => $order_id, // Langsung masukkan order_id
