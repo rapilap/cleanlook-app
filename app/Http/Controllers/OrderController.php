@@ -44,8 +44,8 @@ class OrderController extends Controller
             'date' => now(),
             'pickup_lat' => $request->pickup_lat,
             'pickup_long' => $request->pickup_long,
-            'alamat' => $request->alamat,
-            'berat' => $request->berat,
+            'address' => $request->alamat,
+            'weight' => $request->berat,
             'price' => $request->price,
             'status' => 'unpaid',
             'order_id' => $order_id, // Langsung masukkan order_id
