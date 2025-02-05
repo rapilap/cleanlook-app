@@ -70,7 +70,7 @@ Route::get('/courier', function() {
 });
 Route::post('/courier', [AuthCourierController::class, 'login'])->name('courier.login');
 
-Route::middleware('auth:courier')->group(function () {
+Route::middleware(['auth:courier'])->group(function () {
     Route::get('/courier/home', [CourierOrderController::class, 'index'])->name('courier.home');
     // Route::post('/courier/home', [CourierController::class, 'updateLocation'])->name('courier.location');
     Route::post('/courier/home/update-location', [CourierController::class, 'updateLocation']);
@@ -81,8 +81,8 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/home/order/{id}', [CourierOrderController::class, 'detail'])->name('courier.detail');
     Route::patch('/courier/home/order/update/{id}', [CourierOrderController::class, 'updateStatus'])->name('order.status');
     
-    Route::get('/courier/profile/{id}', [ProfileControllers::class, 'index'])->name('user.profile');
-    Route::put('/courier/profile/{id}/update', [ProfileControllers::class, 'updateProfile'])->name('user.update');
+    Route::get('/courier/profile/{id}', [ProfileControllers::class, 'index'])->name('courier.profile');
+    Route::put('/courier/profile/{id}/update', [ProfileControllers::class, 'updateProfile'])->name('courier.update');
     // Route::get('/courier/maps/{id}', [OrderController::class, 'maps'])->name('courier.maps');
 
     

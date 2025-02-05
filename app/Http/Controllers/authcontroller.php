@@ -30,12 +30,13 @@ class AuthController extends Controller
             $user = Auth::guard($guard)->user();
 
             // Cek apakah admin
-            if ($role === 'user' && $user->is_admin) {
+            if ($role === 'admin' && $user->is_admin) {
                 return redirect('/admin/dashboard');
             }
 
             // Redirect berdasarkan role
             return $role === 'user' ? redirect('/berandauser') : redirect('/berandakurir');
+            dd($credentials);
         }
 
         return back()->withErrors(['email' => 'Email atau password salah.']);

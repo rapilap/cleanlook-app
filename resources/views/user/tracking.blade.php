@@ -11,29 +11,33 @@
 
         <div class="text-center items-center p-3 drop-shadow-md border-b-2">
             Pesanan
-            <div class="flex flex-col text-start">
-                {{ $order->courier->name }} ({{ $order->courier->plate_number }})
-                <div class="flex flex-row justify-between items-center">
-                    <div>{{ $order->courier->phone ?? 'Tidak Ada' }}</div>
-                    <button class="p-2 hover:bg-slate-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <path d="M22.707 16.293l-4-4a1 1 0 0 0-1.414 0l-3 3a1 1 0 0 1-1.414 0l-6-6a1 1 0 0 1 0-1.414l3-3a1 1 0 0 0 0-1.414l-4-4A1 1 0 0 0 4 2H2a1 1 0 0 0-1 1C1 11.837 9.163 20 18 20a1 1 0 0 0 1-1v-2a1 1 0 0 0-.293-.707z"/>
-                        </svg>
-                    </button>
+            <div class="grid grid-cols-2 items-center p-3">
+                <div class="flex flex-col text-start">
+                    {{ $order->courier->name }} ({{ $order->courier->plate_number }})
+                    <div class="flex flex-row justify-between items-center">
+                        <div>{{ $order->courier->phone ?? 'Tidak Ada' }}</div>
+                    </div>
+                    {{ $order->status == 'pickup' ? 'Sedang Diambil' : ($order->status == 'deliver' ? 'Sedang Diantar' : 'Selesai') }}
                 </div>
-                {{ $order->status == 'pickup' ? 'Sedang Diambil' : ($order->status == 'deliver' ? 'Sedang Diantar' : 'Selesai') }}
+                <div class="flex justify-end">
+                    <img class="w-24 h-24 rounded-full object-cover border-2 border-black" 
+                         src="{{ $order->courier->image ? asset('storage/' . $order->courier->image) : asset('assets/default-avatar.png') }}">
+                </div>
             </div>
+            
         </div>
 
         <div class="drop-shadow-md">
-            <div id="map" style="width: 100%; height: 380px;" class="mt-4"></div>
+            <div id="map" class="mt-4 w-full h-[450px] md:h-[280px]"></div>
         </div>
 
         <div class="text-center pt-3 px-3 border-b-2 drop-shadow-md">
             Tujuan
             <div class="flex flex-row text-start mt-2 justify-between pb-3">
-                {{ $order->landfill->name }}
-                <div>
+                <div class="w-full">
+                    {{ $order->landfill->name }}
+                </div>
+                <div class="w-full text-end">
                     {{ $order->landfill->address }}
                 </div>
             </div>

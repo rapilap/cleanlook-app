@@ -154,10 +154,11 @@
             <div class="avatar">
                 <div class="w-32 rounded-full items-center border">
                     {{-- <img id="previewImage" src="{{ $data->image ? asset('storage/' . $data->image) : asset('images/default-avatar.png') }}"> --}}
-                    <img id="previewImage" src="{{ $data->image ? asset('storage/' . $data->image) : asset('images/default-avatar.png') }}">
+                    <img id="previewImage" src="{{ $data->image ? asset('storage/' . $data->image) : asset('assets/default-avatar.png') }}">
 
                 </div>
             </div>
+            @if (Auth::guard('web')->check())
                 <input 
                 type="file" 
                 name="image" 
@@ -169,37 +170,38 @@
                 file:border file:border-secondary
                 file:rounded-lg"
                 value="{{ old('image') }}">
+            @endif
         </div>
 
         <div>
             <div class="form-group">
                 <label for="firstName">Nama</label>
-                <input value="{{ $data->name }}" name="name" type="text" class="form-control border border-primary hover:border-secondary" id="firstName" placeholder="enter your first name">
+                <input value="{{ $data->name }}" name="name" type="text" class="form-control border border-primary hover:border-secondary" id="firstName" placeholder="Masukkan nama" disabled>
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input value="{{ $data->email }}" name="email" type="email" class="form-control border border-primary hover:border-secondary" id="email" placeholder="enter your email">
+                <input value="{{ $data->email }}" name="email" type="email" class="form-control border border-primary hover:border-secondary" id="email" placeholder="Masukkan email" disabled>
             </div>
 
             <div class="form-group">
                 <label for="alamat">Alamat</label>
-                <input value="{{ $data->address }}" name="address" type="text" class="form-control border border-primary hover:border-secondary" id="alamat" placeholder="enter your address">
+                <input value="{{ $data->address }}" name="address" type="text" class="form-control border border-primary hover:border-secondary" id="alamat" placeholder="Masukkan alamat" disabled>
             </div>
 
             <div class="form-group">
                 <label for="phone">No. Telepon</label>
-                <input value="{{ $data->phone }}" name="phone" type="tel" class="form-control border border-primary hover:border-secondary" id="phone" placeholder="enter your Number">
+                <input value="{{ $data->phone }}" name="phone" type="tel" class="form-control border border-primary hover:border-secondary" id="phone" placeholder="Masukkan no telepon" disabled>
             </div>
 
             <div class="form-group">
                 <label for="birthDate">Tanggal Lahir</label>
-                <input value="{{ $data->birthdate }}" name="birthdate" type="date" class="form-control border border-primary hover:border-secondary" id="birthDate" placeholder="enter your Birth Date">
+                <input value="{{ $data->birthdate }}" name="birthdate" type="date" class="form-control border border-primary hover:border-secondary" id="birthDate" placeholder="Masukkan tanggal lahir" disabled>
             </div>
 
             <div class="form-group">
                 <label for="gender">Jenis kelamin</label>
-                <select class="form-control border border-primary hover:border-secondary" id="gender" name="gender">
+                <select class="form-control border border-primary hover:border-secondary" id="gender" name="gender" disabled>
                     <option value="">Masukan Jenis Kelamin</option>
                     <option value="P" {{ old('gender', $data->gender ?? '') == 'P' ? 'selected' : '' }}>Wanita</option>
                     <option value="L" {{ old('gender', $data->gender ?? '') == 'L' ? 'selected' : '' }}>Pria</option>
@@ -208,7 +210,7 @@
 
             <div class="form-group">
                 <label for="password">Password Baru</label>
-                <input name="password" type="password" class="form-control border border-primary hover:border-secondary" id="password" placeholder="enter your password">
+                <input name="password" type="password" class="form-control border border-primary hover:border-secondary" id="password" placeholder="Masukkan password baru" disabled>
                 @error('password')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -216,12 +218,12 @@
 
             <div class="form-group">
                 <label for="password_confirmation">Konfirmasi Password</label>
-                <input name="password_confirmation" type="password" class="form-control border border-primary hover:border-secondary" id="password_confirmation" placeholder="Confirm new password">
+                <input name="password_confirmation" type="password" class="form-control border border-primary hover:border-secondary" id="password_confirmation" placeholder="Konfirmasi password" disabled>
             </div>
 
             <div class="button-group">
-                <button type="button" class="btn btn-edit" id="edit-btn">Ubah</button>
-                <button type="submit" class="btn btn-save" id="save-btn">Simpan</button>
+                <x-button variant='warning' type="button" class="btn btn-edit text-xl" id="edit-btn">Ubah</x-button>
+                <x-button variant='secondary' type="submit" class="btn btn-save text-xl" id="save-btn">Simpan</x-button>
             </div>
         </div>
     </div>
@@ -239,6 +241,15 @@
         };
         reader.readAsDataURL(event.target.files[0]);
     });
-
-
 </script>
+<script>
+    document.getElementById('edit-btn').addEventListener('click', function () {
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.removeAttribute('disabled');
+        });
+    
+        document.getElementById('edit-btn').classList.add('hidden');
+        document.getElementById('save-btn').classList.remove('hidden');
+    });
+    </script>
+    
